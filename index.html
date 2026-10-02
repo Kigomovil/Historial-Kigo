@@ -106,3 +106,39 @@ function calcularTotales(lista){
 document.getElementById('totalGeneral').innerText='$'+tGen.toLocaleString();
 document.getElementById('totalVentas').innerText=lista.length;
 }
+<script>
+function renderVentas(lista){
+  const box = document.getElementById('listaVentas');
+  if(!lista.length){ box.innerHTML='<div style="text-align:center;padding:30px;color:#999;font-size:13px">Sin ventas aún<br><small>Agrega tu primera venta arriba</small></div>'; return; }
+  box.innerHTML = lista.map(v=>`
+    <div class="venta-card">
+      <div style="width:42px;height:42px;background:#111;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:12px">${(v.metodo||'E').charAt(0).toUpperCase()}</div>
+      <div style="flex:1">
+        <div style="font-weight:800;font-size:13px;color:#111">${v.producto} <span style="color:#E53935">$${v.monto}</span></div>
+        <div style="font-size:11px;color:#666">${v.cliente} • ${v.fechaTxt} ${v.hora} • ${v.metodo}</div>
+        ${v.nota?`<div style="font-size:11px;color:#888;margin-top:2px">📝 ${v.nota}</div>`:''}
+      </div>
+      <button onclick="borrarVenta('${v.id}')" style="background:#fff1f1;border:1px solid #ffdede;color:#E53935;border-radius:8px;padding:6px 8px;font-weight:800">X</button>
+    </div>
+  `).join('');
+}
+
+function filtrar(){
+  const q = document.getElementById('buscador').value.toLowerCase();
+  const f = document.getElementById('filtroFecha').value;
+  let filtradas = ventasCache;
+  if(f) filtradas = filtradas.filter(v=>v.fecha===f);
+  if(q) filtradas = filtradas.filter(v=> (v.producto+' '+v.cliente+' '+v.nota).toLowerCase().includes(q));
+  renderVentas(filtradas);
+  calcularTotales(filtradas);
+}
+
+function borrarVenta(id){
+  if(!confirm('¿Borrar esta venta?')) return;
+  db.ref('ventas/'+id).remove();
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>
