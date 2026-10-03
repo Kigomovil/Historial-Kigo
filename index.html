@@ -28,7 +28,6 @@
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:900px;background:#fff;border-top:1px solid #eee;display:flex;padding:8px 0 12px;z-index:10}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer;font-weight:600;border:none;background:transparent}
 .nav-item.active{color:#0a7a2e}
-/* HISTORIAL NUEVO */
 .filtros-top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .filtro-tab{padding:10px 16px;border-radius:12px;border:1.5px solid #d1d5db;background:#fff;font-weight:600;font-size:13px;cursor:pointer}
 .filtro-tab.active{background:#0a9a4a;color:#fff;border-color:#0a9a4a;box-shadow:0 2px 8px rgba(10,154,74,.3)}
@@ -36,7 +35,6 @@
 .meses-box{display:flex;gap:6px;flex-wrap:wrap}
 .mes{padding:8px 12px;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;font-size:13px;font-weight:600;cursor:pointer}
 .mes.active{background:#0a9a4a;color:#fff;border-color:#0a9a4a}
-.mes.past{background:#f3f4f6;color:#9ca3af}
 .barra-filtros{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;padding:8px;display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
 .search-input{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #d1d5db;border-radius:10px;padding:8px 12px;flex:1;min-width:140px}
 .search-input input,.search-input select{border:none;outline:none;font-size:13px;width:100%;background:transparent}
@@ -52,61 +50,31 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 </head>
 <body>
 <div class="app">
-
-<!-- REGISTRO -->
 <div id="vistaRegistro" class="card">
 <div class="top-line"><span id="fechaTop">02 Oct 2026 - 9:41 PM</span><span style="display:flex;align-items:center;gap:4px"><i data-lucide="sun" style="width:14px;height:14px;color:#f59e0b"></i> 24°C</span></div>
 <div class="title">Registro de Venta</div>
-
 <div class="label">Nombre del Cliente</div>
-<div class="input-wrap">
-<input id="cliente" class="input" placeholder="Ej: Juan Pérez" oninput="calcTotal()">
-<button class="btn-x" onclick="clearInput('cliente')">x</button>
-</div>
-
+<div class="input-wrap"><input id="cliente" class="input" placeholder="Ej: Juan Pérez" oninput="calcTotal()"><button class="btn-x" onclick="clearInput('cliente')">x</button></div>
 <div class="label">Fecha</div>
-<div class="input-wrap">
-<input id="fechaVenta" type="date" class="input">
-<button class="btn-x" onclick="resetFechaHoy()">x</button>
-</div>
-
+<div class="input-wrap"><input id="fechaVenta" type="date" class="input"><button class="btn-x" onclick="resetFechaHoy()">x</button></div>
 <div class="label">Tipo de Servicio</div>
 <div class="tipo-box">
 <button id="btnMoto" class="tipo active" onclick="setTipo('moto')"><i data-lucide="bike" style="width:18px"></i> Moto Mandado</button>
 <button id="btnTrans" class="tipo" onclick="setTipo('transporte')"><i data-lucide="car" style="width:18px"></i> Transporte</button>
 </div>
-
 <div class="label">Precio</div>
-<div class="input-wrap">
-<input id="precio" type="number" class="input" placeholder="$ 0.00" oninput="calcTotal()">
-<button class="btn-x" onclick="clearInput('precio')">x</button>
-</div>
-
+<div class="input-wrap"><input id="precio" type="number" class="input" placeholder="$ 0.00" oninput="calcTotal()"><button class="btn-x" onclick="clearInput('precio')">x</button></div>
 <div class="label">Repartidor</div>
-<div class="input-wrap">
-<select id="repartidor" class="input"><option value="">Seleccionar repartidor</option></select>
-<button class="btn-x" onclick="clearInput('repartidor')">x</button>
-</div>
-
+<div class="input-wrap"><select id="repartidor" class="input"><option value="">Seleccionar repartidor</option></select><button class="btn-x" onclick="clearInput('repartidor')">x</button></div>
 <div class="label">Descuento</div>
-<div class="input-wrap">
-<input id="descuento" type="number" class="input" placeholder="$ 0.00 (opcional)" oninput="calcTotal()">
-<button class="btn-x" onclick="clearInput('descuento')">x</button>
-</div>
-
-<div class="total-box">
-<span>Total</span>
-<span id="totalTxt" style="font-size:28px;font-weight:900;color:#0a7a2e">$ 0.00</span>
-</div>
-
+<div class="input-wrap"><input id="descuento" type="number" class="input" placeholder="$ 0.00 (opcional)" oninput="calcTotal()"><button class="btn-x" onclick="clearInput('descuento')">x</button></div>
+<div class="total-box"><span>Total</span><span id="totalTxt" style="font-size:28px;font-weight:900;color:#0a7a2e">$ 0.00</span></div>
 <button class="btn-reg" onclick="registrarVenta()"><i data-lucide="check" style="width:20px"></i> Registrar Venta</button>
 </div>
 
-<!-- HISTORIAL NUEVO COMO IMAGEN -->
 <div id="vistaHistorial" class="card" style="display:none">
 <div class="title-h">Historial de Ventas</div>
 <div class="sub-h">Historial de pedidos y pagos • <span id="mesTitulo">Octubre 2026</span></div>
-
 <div class="filtros-top">
 <button class="filtro-tab active" onclick="filtrarTiempo('todos')" id="fTodos">Todos</button>
 <button class="filtro-tab" onclick="filtrarTiempo('ayer')" id="fAyer">Ayer</button>
@@ -114,30 +82,23 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <button class="filtro-tab" onclick="filtrarTiempo('mes')" id="fMes">Este Mes</button>
 <button class="filtro-tab active" style="background:#0a9a4a;color:#fff" onclick="toggleMeses()" id="fBusMes">Búsqueda por Mes</button>
 </div>
-
 <div id="bloqueMeses">
 <div class="meses-title"><i data-lucide="calendar" style="width:14px"></i> MESES DE 2026</div>
 <div class="meses-box" id="mesesBox"></div>
 </div>
-
 <div class="barra-filtros">
 <div class="search-input"><i data-lucide="search" style="width:16px"></i><input id="buscarCliente" placeholder="Buscar por Cliente" oninput="aplicarFiltros()"></div>
 <div class="search-input"><i data-lucide="users" style="width:16px"></i><select id="filtroRepartidor" onchange="aplicarFiltros()"><option value="">Filtrar por Repartidor</option></select></div>
 <div class="search-input"><i data-lucide="calendar" style="width:16px"></i><select id="filtroMesAnio" onchange="aplicarFiltros()"><option>Octubre 2026</option></select></div>
-<div class="search-input"><i data-lucide="calendar-days" style="width:16px"></i><input id="filtroFechaExacta" type="date" value="2026-10-02" onchange="aplicarFiltros()"></div>
+<div class="search-input"><i data-lucide="calendar-days" style="width:16px"></i><input id="filtroFechaExacta" type="date" onchange="aplicarFiltros()"></div>
 <button class="btn-limpiar" onclick="limpiarFiltros()"><i data-lucide="plus-circle" style="width:16px"></i> Limpiar filtros</button>
 </div>
-
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
 <div style="font-weight:800">Órdenes (<span id="countOrdenes">0</span>)</div>
 <div style="font-size:12px;color:#666">Ordenado por: <b style="color:#0a7a2e">Número más alto</b> <i data-lucide="arrow-up-down" style="width:14px;color:#0a7a2e"></i></div>
 </div>
-
 <div class="tabla-wrap">
-<table>
-<thead><tr><th>PEDIDO</th><th>CLIENTE Y SERVICIO</th><th>REPARTIDOR</th><th>TOTAL</th><th>PAGA A KIGO</th><th>GANANCIA</th><th>ESTADO</th><th>ACCIONES</th></tr></thead>
-<tbody id="tbodyVentas"></tbody>
-</table>
+<table><thead><tr><th>PEDIDO</th><th>CLIENTE Y SERVICIO</th><th>REPARTIDOR</th><th>TOTAL</th><th>PAGA A KIGO</th><th>GANANCIA</th><th>ESTADO</th><th>ACCIONES</th></tr></thead><tbody id="tbodyVentas"></tbody></table>
 </div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:#666">
 <span id="mostrandoTxt">Mostrando 0 de 0 resultados</span>
@@ -145,18 +106,8 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 </div>
 </div>
 
-<div id="vistaClientes" class="card" style="display:none">
-<div class="title-h" style="font-size:22px">Clientes</div>
-<div id="listaClientes"></div>
-</div>
-<div id="vistaRepartidores" class="card" style="display:none">
-<div class="title-h" style="font-size:22px">Repartidores</div>
-<div style="display:flex;gap:8px;margin-top:10px">
-<div style="position:relative;flex:1"><input id="nuevoRep" class="input" placeholder="Nombre repartidor"><button class="btn-x" onclick="clearInput('nuevoRep')">x</button></div>
-<button onclick="addRepartidor()" style="background:#0a7a2e;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800"><i data-lucide="plus" style="width:18px"></i></button>
-</div>
-<div id="listaReps" style="margin-top:12px"></div>
-</div>
+<div id="vistaClientes" class="card" style="display:none"><div class="title-h" style="font-size:22px">Clientes</div><div id="listaClientes"></div></div>
+<div id="vistaRepartidores" class="card" style="display:none"><div class="title-h" style="font-size:22px">Repartidores</div><div style="display:flex;gap:8px;margin-top:10px"><div style="position:relative;flex:1"><input id="nuevoRep" class="input" placeholder="Nombre repartidor"><button class="btn-x" onclick="clearInput('nuevoRep')">x</button></div><button onclick="addRepartidor()" style="background:#0a7a2e;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800"><i data-lucide="plus" style="width:18px"></i></button></div><div id="listaReps" style="margin-top:12px"></div></div>
 </div>
 <div class="nav">
 <button id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><i data-lucide="clipboard-edit" style="width:20px"></i> Registro</button>
@@ -182,19 +133,18 @@ function resetFechaHoy(){ const hoy=new Date().toISOString().split('T')[0]; docu
 function setTipo(t){ tipoActual=t; document.getElementById('btnMoto').className=t==='moto'?'tipo active':'tipo'; document.getElementById('btnTrans').className=t==='transporte'?'tipo active':'tipo'; lucide.createIcons(); }
 function calcTotal(){ let p=parseFloat(document.getElementById('precio').value)||0; let d=parseFloat(document.getElementById('descuento').value)||0; let tot=p-d; if(tot<0) tot=0; document.getElementById('totalTxt').innerText='$ '+tot.toFixed(2); return tot; }
 function showTab(n){ document.getElementById('vistaRegistro').style.display=n==='Registro'?'block':'none'; document.getElementById('vistaHistorial').style.display=n==='Historial'?'block':'none'; document.getElementById('vistaClientes').style.display=n==='Clientes'?'block':'none'; document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none'; document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); document.getElementById('nav'+n).classList.add('active'); window.scrollTo(0,0); }
-// Fecha automatica hoy
-(function(){ const hoy=new Date().toISOString().split('T')[0]; document.getElementById('fechaVenta').value=hoy; document.getElementById('filtroFechaExacta').value=hoy; const ahora=new Date(); document.getElementById('fechaTop').innerText=ahora.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+ahora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}); })();
-// Meses 2026
+(function(){ const hoy=new Date().toISOString().split('T')[0]; document.getElementById('fechaVenta').value=hoy; const ahora=new Date(); document.getElementById('fechaTop').innerText=ahora.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+ahora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}); })();
 const mesesN=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-let mesSel=9; // Octubre
-function renderMeses(){ document.getElementById('mesesBox').innerHTML=mesesN.map((m,i)=>`<button class="mes ${i<=mesSel?'active':''}" onclick="selMes(${i})">${m}</button>`).join(''); }
-function selMes(i){ mesSel=i; renderMeses(); document.getElementById('mesTitulo').innerText=mesesN[i]+' 2026'; document.getElementById('filtroMesAnio').innerHTML=`<option>${mesesN[i]} 2026</option>`; aplicarFiltros(); }
+let mesSel=new Date().getMonth();
+function renderMeses(){ document.getElementById('mesesBox').innerHTML=mesesN.map((m,i)=>`<button class="mes ${i===mesSel?'active':''}" onclick="selMes(${i})">${m}</button>`).join(''); document.getElementById('mesTitulo').innerText=mesesN[mesSel]+' 2026'; document.getElementById('filtroMesAnio').innerHTML=`<option>${mesesN[mesSel]} 2026</option>`; }
+function selMes(i){ mesSel=i; renderMeses(); aplicarFiltros(); }
 renderMeses();
 function toggleMeses(){ const b=document.getElementById('bloqueMeses'); b.style.display=b.style.display==='none'?'block':'none'; }
-function filtrarTiempo(t){ document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); if(t==='todos') document.getElementById('fTodos').classList.add('active'); if(t==='ayer') document.getElementById('fAyer').classList.add('active'); if(t==='semana') document.getElementById('fSemana').classList.add('active'); if(t==='mes') document.getElementById('fMes').classList.add('active'); filtroTiempo=t; aplicarFiltros(); }
 let filtroTiempo='todos';
+function filtrarTiempo(t){ filtroTiempo=t; document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById(t==='todos'?'fTodos':t==='ayer'?'fAyer':t==='semana'?'fSemana':t==='mes'?'fMes':'fBusMes').classList.add('active'); aplicarFiltros(); }
 </script>
 <script>
+// FUNCIÓN ACTUALIZADA - REGISTRO -> HISTORIAL ORGANIZADO POR FECHA
 function registrarVenta(){
  let cliente=document.getElementById('cliente').value.trim();
  let fechaInput=document.getElementById('fechaVenta').value;
@@ -212,18 +162,35 @@ function registrarVenta(){
    cliente, tipo:tipoActual, precio, descuento, total, pagaKigo, ganancia, repartidor,
    fecha:fechaInput,
    fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' • '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}),
-   timestamp:f.getTime(),
+   timestamp:f.getTime()+(Date.now()%1000),
    estado:'Pagado',
    pedido:'#'+Math.floor(1000+Math.random()*9000)
  };
  db.ref('ventas').push(data).then(()=>{
+   // 1. Se borra toda la info de Registro y queda limpio
    document.getElementById('cliente').value='';
    document.getElementById('precio').value='';
    document.getElementById('descuento').value='';
    document.getElementById('repartidor').value='';
+   document.getElementById('totalTxt').innerText='$ 0.00';
    resetFechaHoy();
-   calcTotal();
+   setTipo('moto');
+
+   // 2. Se organiza en la fecha adecuada en Historial
+   const fechaVenta=new Date(fechaInput+'T12:00:00');
+   mesSel=fechaVenta.getMonth();
+   renderMeses();
+   document.getElementById('filtroFechaExacta').value='';
+   document.getElementById('buscarCliente').value='';
+   document.getElementById('filtroRepartidor').value='';
+   filtroTiempo='todos';
+   document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active'));
+   document.getElementById('fTodos').classList.add('active');
+   document.getElementById('fBusMes').classList.add('active');
+
+   // 3. Pasa de Registro a Historial y queda guardado
    showTab('Historial');
+   setTimeout(()=>{ aplicarFiltros(); lucide.createIcons(); },400);
  });
 }
 
@@ -231,7 +198,6 @@ let ventasCache=[];
 db.ref('ventas').on('value',snap=>{
  const val=snap.val()||{};
  ventasCache=Object.entries(val).map(([id,v])=>({id,...v})).sort((a,b)=>b.timestamp-a.timestamp);
- // llenar filtro repartidor
  const repsUnicos=[...new Set(ventasCache.map(v=>v.repartidor).filter(Boolean))];
  document.getElementById('filtroRepartidor').innerHTML='<option value="">Filtrar por Repartidor</option>'+repsUnicos.map(r=>`<option value="${r}">${r}</option>`).join('');
  aplicarFiltros();
@@ -243,11 +209,9 @@ function aplicarFiltros(){
  const q=document.getElementById('buscarCliente').value.toLowerCase();
  const rep=document.getElementById('filtroRepartidor').value;
  const fechaEx=document.getElementById('filtroFechaExacta').value;
- // filtro por mes seleccionado
  lista=lista.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel && d.getFullYear()===2026; });
  if(filtroTiempo==='ayer'){ const ayer=new Date(); ayer.setDate(ayer.getDate()-1); const ayStr=ayer.toISOString().split('T')[0]; lista=lista.filter(v=>v.fecha===ayStr); }
- if(filtroTiempo==='semana'){ const hoy=new Date(); const hace7=new Date(); hace7.setDate(hoy.getDate()-7); lista=lista.filter(v=>{ const d=new Date(v.fecha); return d>=hace7; }); }
- if(filtroTiempo==='mes'){ /* ya filtrado por mes */ }
+ if(filtroTiempo==='semana'){ const hoy=new Date(); const hace7=new Date(); hace7.setDate(hoy.getDate()-7); lista=lista.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d>=hace7; }); }
  if(q) lista=lista.filter(v=>v.cliente.toLowerCase().includes(q));
  if(rep) lista=lista.filter(v=>v.repartidor===rep);
  if(fechaEx) lista=lista.filter(v=>v.fecha===fechaEx);
@@ -261,8 +225,8 @@ function renderTabla(lista){
  if(!lista.length){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">Sin resultados</td></tr>'; return; }
  tbody.innerHTML=lista.map((v,i)=>`
   <tr>
-    <td><b>${v.pedido||'#'+(1248-i)}</b><br><small style="color:#6b7280;display:flex;align-items:center;gap:4px"><i data-lucide="calendar" style="width:12px"></i> ${v.fecha} • ${v.fechaTxt.split('•')[1]||''}</small></td>
-    <td><div style="display:flex;gap:8px;align-items:center"><div style="width:28px;height:28px;background:#0a9a4a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="bike" style="width:14px"></i></div><div><b>${v.cliente}</b><br><small style="color:#6b7280">Motocicleta • ${v.tipo==='moto'?'Entrega Express':'Entrega Estándar'}</small></div></div></td>
+    <td><b>${v.pedido||'#'+(1248-i)}</b><br><small style="color:#6b7280;display:flex;align-items:center;gap:4px"><i data-lucide="calendar" style="width:12px"></i> ${v.fecha}</small></td>
+    <td><div style="display:flex;gap:8px;align-items:center"><div style="width:28px;height:28px;background:#0a9a4a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="bike" style="width:14px"></i></div><div><b>${v.cliente}</b><br><small style="color:#6b7280">${v.tipo==='moto'?'Moto Mandado':'Transporte'}</small></div></div></td>
     <td>${v.repartidor||'--'}</td>
     <td><b>$${(v.total||0).toLocaleString('es-MX')}</b></td>
     <td>$${(v.pagaKigo||0).toLocaleString('es-MX')}</td>
@@ -276,7 +240,7 @@ function renderTabla(lista){
 
 function borrarVenta(id){ if(!confirm('¿Borrar esta venta?')) return; db.ref('ventas/'+id).remove(); }
 function editarEstado(id){ const v=ventasCache.find(x=>x.id===id); if(!v) return; const nuevo=v.estado==='Pagado'?'Debe':'Pagado'; db.ref('ventas/'+id).update({estado:nuevo}); }
-function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; document.querySelectorAll('.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById('fTodos').classList.add('active'); mesSel=new Date().getMonth(); renderMeses(); aplicarFiltros(); }
+function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById('fTodos').classList.add('active'); document.getElementById('fBusMes').classList.add('active'); mesSel=new Date().getMonth(); renderMeses(); aplicarFiltros(); }
 
 function renderClientes(){
  const map={};
