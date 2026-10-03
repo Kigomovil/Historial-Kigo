@@ -30,7 +30,7 @@
 .nav-item.active{color:#0a7a2e}
 .filtros-top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .filtro-tab{padding:10px 16px;border-radius:12px;border:1.5px solid #d1d5db;background:#fff;font-weight:600;font-size:13px;cursor:pointer}
-.filtro-tab.active{background:#0a9a4a;color:#fff;border-color:#0a9a4a;box-shadow:0 2px 8px rgba(10,154,74,.3)}
+.filtro-tab.active{background:#0a9a4a;color:#fff;border-color:#0a9a4a}
 .meses-title{font-size:12px;font-weight:700;color:#6b7280;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
 .meses-box{display:flex;gap:6px;flex-wrap:wrap}
 .mes{padding:8px 12px;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;font-size:13px;font-weight:600;cursor:pointer}
@@ -46,12 +46,18 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .badge-pagado{background:#0a9a4a;color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
 .badge-debe{background:#dc2626;color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700}
 .acc-btn{width:30px;height:30px;border-radius:8px;border:1px solid #ddd;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin-right:4px}
+/* TARJETA EXITO CENTRO */
+#overlayExito{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:9999}
+#cardExito{background:#fff;border-radius:20px;padding:28px 22px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);width:85%;max-width:340px;animation:pop.3s ease}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
 </style>
 </head>
 <body>
+<div id="overlayExito"><div id="cardExito"><div style="width:64px;height:64px;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="check" style="width:32px;height:32px;color:#0a9a4a"></i></div><div style="font-weight:900;font-size:20px;color:#111827">¡Registro Exitoso!</div><div style="font-size:13px;color:#6b7280;margin-top:6px">Venta guardada en Historial</div></div></div>
+
 <div class="app">
 <div id="vistaRegistro" class="card">
-<div class="top-line"><span id="fechaTop">02 Oct 2026 - 9:41 PM</span><span style="display:flex;align-items:center;gap:4px"><i data-lucide="sun" style="width:14px;height:14px;color:#f59e0b"></i> 24°C</span></div>
+<div class="top-line"><span id="fechaTop"></span><span style="display:flex;align-items:center;gap:4px"><i data-lucide="sun" style="width:14px;height:14px;color:#f59e0b"></i> 24°C</span></div>
 <div class="title">Registro de Venta</div>
 <div class="label">Nombre del Cliente</div>
 <div class="input-wrap"><input id="cliente" class="input" placeholder="Ej: Juan Pérez" oninput="calcTotal()"><button class="btn-x" onclick="clearInput('cliente')">x</button></div>
@@ -93,17 +99,9 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <div class="search-input"><i data-lucide="calendar-days" style="width:16px"></i><input id="filtroFechaExacta" type="date" onchange="aplicarFiltros()"></div>
 <button class="btn-limpiar" onclick="limpiarFiltros()"><i data-lucide="plus-circle" style="width:16px"></i> Limpiar filtros</button>
 </div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
-<div style="font-weight:800">Órdenes (<span id="countOrdenes">0</span>)</div>
-<div style="font-size:12px;color:#666">Ordenado por: <b style="color:#0a7a2e">Número más alto</b> <i data-lucide="arrow-up-down" style="width:14px;color:#0a7a2e"></i></div>
-</div>
-<div class="tabla-wrap">
-<table><thead><tr><th>PEDIDO</th><th>CLIENTE Y SERVICIO</th><th>REPARTIDOR</th><th>TOTAL</th><th>PAGA A KIGO</th><th>GANANCIA</th><th>ESTADO</th><th>ACCIONES</th></tr></thead><tbody id="tbodyVentas"></tbody></table>
-</div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:#666">
-<span id="mostrandoTxt">Mostrando 0 de 0 resultados</span>
-<div style="display:flex;gap:6px"><button class="filtro-tab" style="padding:6px 10px">‹ Anterior</button><button class="filtro-tab active" style="padding:6px 14px">1</button><button class="filtro-tab" style="padding:6px 10px">Siguiente ›</button></div>
-</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px"><div style="font-weight:800">Órdenes (<span id="countOrdenes">0</span>)</div><div style="font-size:12px;color:#666">Ordenado por: <b style="color:#0a7a2e">Número más alto</b></div></div>
+<div class="tabla-wrap"><table><thead><tr><th>PEDIDO</th><th>CLIENTE Y SERVICIO</th><th>REPARTIDOR</th><th>TOTAL</th><th>PAGA A KIGO</th><th>GANANCIA</th><th>ESTADO</th><th>ACCIONES</th></tr></thead><tbody id="tbodyVentas"></tbody></table></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:#666"><span id="mostrandoTxt">Mostrando 0 de 0 resultados</span><div style="display:flex;gap:6px"><button class="filtro-tab" style="padding:6px 10px">‹ Anterior</button><button class="filtro-tab active" style="padding:6px 14px">1</button><button class="filtro-tab" style="padding:6px 10px">Siguiente ›</button></div></div>
 </div>
 
 <div id="vistaClientes" class="card" style="display:none"><div class="title-h" style="font-size:22px">Clientes</div><div id="listaClientes"></div></div>
@@ -141,10 +139,16 @@ function selMes(i){ mesSel=i; renderMeses(); aplicarFiltros(); }
 renderMeses();
 function toggleMeses(){ const b=document.getElementById('bloqueMeses'); b.style.display=b.style.display==='none'?'block':'none'; }
 let filtroTiempo='todos';
-function filtrarTiempo(t){ filtroTiempo=t; document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById(t==='todos'?'fTodos':t==='ayer'?'fAyer':t==='semana'?'fSemana':t==='mes'?'fMes':'fBusMes').classList.add('active'); aplicarFiltros(); }
+function filtrarTiempo(t){ filtroTiempo=t; document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById(t==='todos'?'fTodos':t==='ayer'?'fAyer':t==='semana'?'fSemana':t==='mes'?'fMes':'fBusMes').classList.add('active'); document.getElementById('fBusMes').classList.add('active'); aplicarFiltros(); }
 </script>
 <script>
-// FUNCIÓN ACTUALIZADA - REGISTRO -> HISTORIAL ORGANIZADO POR FECHA
+function mostrarExito(){
+ const ov=document.getElementById('overlayExito');
+ ov.style.display='flex';
+ lucide.createIcons();
+ setTimeout(()=>{ ov.style.display='none'; },2000);
+}
+
 function registrarVenta(){
  let cliente=document.getElementById('cliente').value.trim();
  let fechaInput=document.getElementById('fechaVenta').value;
@@ -162,36 +166,36 @@ function registrarVenta(){
    cliente, tipo:tipoActual, precio, descuento, total, pagaKigo, ganancia, repartidor,
    fecha:fechaInput,
    fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' • '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}),
-   timestamp:f.getTime()+(Date.now()%1000),
+   timestamp:Date.now(),
    estado:'Pagado',
    pedido:'#'+Math.floor(1000+Math.random()*9000)
  };
+ // Guardar en Firebase /ventas
  db.ref('ventas').push(data).then(()=>{
-   // 1. Se borra toda la info de Registro y queda limpio
-   document.getElementById('cliente').value='';
-   document.getElementById('precio').value='';
-   document.getElementById('descuento').value='';
-   document.getElementById('repartidor').value='';
-   document.getElementById('totalTxt').innerText='$ 0.00';
-   resetFechaHoy();
-   setTipo('moto');
-
-   // 2. Se organiza en la fecha adecuada en Historial
-   const fechaVenta=new Date(fechaInput+'T12:00:00');
-   mesSel=fechaVenta.getMonth();
-   renderMeses();
-   document.getElementById('filtroFechaExacta').value='';
-   document.getElementById('buscarCliente').value='';
-   document.getElementById('filtroRepartidor').value='';
-   filtroTiempo='todos';
-   document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active'));
-   document.getElementById('fTodos').classList.add('active');
-   document.getElementById('fBusMes').classList.add('active');
-
-   // 3. Pasa de Registro a Historial y queda guardado
-   showTab('Historial');
-   setTimeout(()=>{ aplicarFiltros(); lucide.createIcons(); },400);
- });
+   // Mostrar tarjeta éxito centro 2 segundos
+   mostrarExito();
+   setTimeout(()=>{
+     // Borrar todo Registro
+     document.getElementById('cliente').value='';
+     document.getElementById('precio').value='';
+     document.getElementById('descuento').value='';
+     document.getElementById('repartidor').value='';
+     document.getElementById('totalTxt').innerText='$ 0.00';
+     resetFechaHoy();
+     setTipo('moto');
+     // Organizar Historial en fecha adecuada
+     const fechaVenta=new Date(fechaInput+'T12:00:00');
+     mesSel=fechaVenta.getMonth();
+     renderMeses();
+     document.getElementById('filtroFechaExacta').value='';
+     document.getElementById('buscarCliente').value='';
+     document.getElementById('filtroRepartidor').value='';
+     filtroTiempo='todos';
+     // Pasar a Historial
+     showTab('Historial');
+     aplicarFiltros();
+   },2100);
+ }).catch(err=>{ alert('Error Firebase: '+err.message+'\nRevisa las Reglas de Realtime Database'); console.error(err); });
 }
 
 let ventasCache=[];
@@ -202,14 +206,14 @@ db.ref('ventas').on('value',snap=>{
  document.getElementById('filtroRepartidor').innerHTML='<option value="">Filtrar por Repartidor</option>'+repsUnicos.map(r=>`<option value="${r}">${r}</option>`).join('');
  aplicarFiltros();
  renderClientes();
-});
+}, err=>{ console.error('Error leyendo ventas:',err); });
 
 function aplicarFiltros(){
  let lista=[...ventasCache];
  const q=document.getElementById('buscarCliente').value.toLowerCase();
  const rep=document.getElementById('filtroRepartidor').value;
  const fechaEx=document.getElementById('filtroFechaExacta').value;
- lista=lista.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel && d.getFullYear()===2026; });
+ lista=lista.filter(v=>{ if(!v.fecha) return true; const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; });
  if(filtroTiempo==='ayer'){ const ayer=new Date(); ayer.setDate(ayer.getDate()-1); const ayStr=ayer.toISOString().split('T')[0]; lista=lista.filter(v=>v.fecha===ayStr); }
  if(filtroTiempo==='semana'){ const hoy=new Date(); const hace7=new Date(); hace7.setDate(hoy.getDate()-7); lista=lista.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d>=hace7; }); }
  if(q) lista=lista.filter(v=>v.cliente.toLowerCase().includes(q));
@@ -222,10 +226,10 @@ function renderTabla(lista){
  const tbody=document.getElementById('tbodyVentas');
  document.getElementById('countOrdenes').innerText=lista.length;
  document.getElementById('mostrandoTxt').innerText=`Mostrando ${lista.length} de ${lista.length} resultados`;
- if(!lista.length){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">Sin resultados</td></tr>'; return; }
- tbody.innerHTML=lista.map((v,i)=>`
+ if(!lista.length){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">Sin ventas en '+mesesN[mesSel]+'</td></tr>'; return; }
+ tbody.innerHTML=lista.map(v=>`
   <tr>
-    <td><b>${v.pedido||'#'+(1248-i)}</b><br><small style="color:#6b7280;display:flex;align-items:center;gap:4px"><i data-lucide="calendar" style="width:12px"></i> ${v.fecha}</small></td>
+    <td><b>${v.pedido}</b><br><small style="color:#6b7280">${v.fecha}</small></td>
     <td><div style="display:flex;gap:8px;align-items:center"><div style="width:28px;height:28px;background:#0a9a4a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="bike" style="width:14px"></i></div><div><b>${v.cliente}</b><br><small style="color:#6b7280">${v.tipo==='moto'?'Moto Mandado':'Transporte'}</small></div></div></td>
     <td>${v.repartidor||'--'}</td>
     <td><b>$${(v.total||0).toLocaleString('es-MX')}</b></td>
@@ -240,7 +244,7 @@ function renderTabla(lista){
 
 function borrarVenta(id){ if(!confirm('¿Borrar esta venta?')) return; db.ref('ventas/'+id).remove(); }
 function editarEstado(id){ const v=ventasCache.find(x=>x.id===id); if(!v) return; const nuevo=v.estado==='Pagado'?'Debe':'Pagado'; db.ref('ventas/'+id).update({estado:nuevo}); }
-function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById('fTodos').classList.add('active'); document.getElementById('fBusMes').classList.add('active'); mesSel=new Date().getMonth(); renderMeses(); aplicarFiltros(); }
+function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; mesSel=new Date().getMonth(); renderMeses(); aplicarFiltros(); }
 
 function renderClientes(){
  const map={};
