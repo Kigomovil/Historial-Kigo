@@ -8,7 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#f2f4f3}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#eef1ed}
 .app{max-width:900px;margin:0 auto;background:#f5f5f5;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:90px}
 .card{background:#fff;border-radius:20px;margin:12px 14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
 .top-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:#666;margin-bottom:10px}
@@ -46,7 +46,7 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .badge-pagado{background:#0a9a4a;color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;cursor:pointer;border:none}
 .badge-debe{background:#dc2626;color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;border:none}
 .acc-btn{width:30px;height:30px;border-radius:8px;border:1px solid #ddd;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin-right:4px}
-#overlayExito,#overlayEdit,#overlayDel,#overlayCliEdit,#overlayCliDel{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
+#overlayExito,#overlayEdit,#overlayDel,#overlayCliEdit,#overlayCliDel,#overlayRepEdit,#overlayRepDel{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
 .card-modal{background:#fff;border-radius:20px;padding:22px;width:95%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.25);animation:pop.25s ease}
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
 .btn-si{background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;flex:1;cursor:pointer}
@@ -73,6 +73,31 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .suggest-box{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #ddd;border-radius:12px;margin-top:6px;z-index:50;max-height:180px;overflow:auto;box-shadow:0 8px 20px rgba(0,0,0,.12);display:none}
 .suggest-item{padding:10px 12px;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f3f4f6}
 .suggest-item:hover{background:#f0fdf4}
+/* REPARTIDORES COMO IMAGEN */
+.portal-title{display:flex;align-items:center;gap:10px;font-weight:900;font-size:28px;color:#2d3a2e;margin-bottom:18px}
+.portal-icon{width:36px;height:36px;background:#d6ecc0;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.rep-tabs{display:flex;justify-content:center;gap:32px;margin-bottom:22px;flex-wrap:wrap}
+.rep-tab{padding:10px 22px;border-radius:12px;border:1.5px solid transparent;font-weight:600;font-size:16px;cursor:pointer;background:transparent;color:#6b7280}
+.rep-tab.active{background:#fff;border-color:#6fbf8a;color:#0a7a2e;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.rep-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:700px){.rep-stats{grid-template-columns:1fr}}
+.rep-stat{background:#fff;border:1.5px solid #6fbf8a;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.rep-stat-icon{width:42px;height:42px;background:#d6ecc0;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#2d5a2e}
+.rep-stat-num{font-size:26px;font-weight:800;color:#2d3a2e;line-height:1}
+.rep-stat-label{font-size:13px;color:#4b5563}
+.rep-list-header{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px;flex-wrap:wrap;gap:10px}
+.rep-search{flex:1;max-width:360px;display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #ddd;border-radius:20px;padding:8px 12px}
+.rep-row{background:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:10px;flex-wrap:wrap}
+.rep-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.rep-info{flex:1;min-width:140px}
+.rep-name{font-weight:800;font-size:14px;color:#111827}
+.rep-sub{font-size:11px;color:#4b5563;display:flex;align-items:center;gap:4px;margin-top:2px}
+.rep-badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rep-badge{background:#d6ecc0;color:#065f46;border-radius:14px;padding:5px 10px;font-size:11px;font-weight:700}
+.rep-status{border-radius:14px;padding:5px 10px;font-size:11px;font-weight:700;border:none}
+.rep-status.disp{background:#10b981;color:#fff}
+.rep-status.inact{background:#d1d5db;color:#4b5563}
+.rep-btn{border:1.5px solid #d1d5db;background:#fff;border-radius:18px;padding:5px 10px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -80,14 +105,20 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <div id="overlayEdit"><div class="card-modal"><div style="font-weight:900;font-size:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><span>Editar Pedido</span><button onclick="cerrarEdit()" style="border:none;background:#f3f4f6;width:28px;height:28px;border-radius:50%;font-weight:800;cursor:pointer">x</button></div>
 <div class="label">Número Pedido</div><input id="ePedido" class="input" style="padding-right:14px"><div class="label">Nombre Cliente</div><input id="eCliente" class="input" style="padding-right:14px"><div class="label">Fecha</div><input id="eFecha" type="date" class="input" style="padding-right:14px"><div class="label">Repartidor</div><input id="eRep" class="input" style="padding-right:14px"><div class="label">Tipo Servicio</div><select id="eTipo" class="input" style="padding-right:14px"><option value="moto">Moto Mandado</option><option value="transporte">Transporte</option></select><div class="label">Precio / Total</div><input id="eTotal" type="number" class="input" style="padding-right:14px"><div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarEdit()">Guardar</button><button class="btn-si" onclick="cerrarEdit()" style="background:#6b7280">Cancelar</button></div></div></div>
 <div id="overlayDel"><div class="card-modal" style="text-align:center"><div style="width:64px;height:64px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="trash-2" style="width:28px;color:#dc2626"></i></div><div style="font-weight:900;font-size:18px">¿Deseas confirmar la eliminación de este pedido?</div><div style="font-size:12px;color:#6b7280;margin-top:6px">Esta acción no se puede deshacer</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn-si" onclick="confirmarDel()">Sí</button><button class="btn-no" onclick="cerrarDel()">No</button></div></div></div>
-
 <div id="overlayCliEdit"><div class="card-modal"><div style="font-weight:900;font-size:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><span>Editar Cliente</span><button onclick="cerrarCliEdit()" style="border:none;background:#f3f4f6;width:28px;height:28px;border-radius:50%;font-weight:800;cursor:pointer">x</button></div>
-<div class="label">Nombre / Empresa</div><input id="ceNombre" class="input" style="padding-right:14px">
-<div class="label">Dirección</div><input id="ceDir" class="input" style="padding-right:14px">
-<div class="label">Teléfono</div><input id="ceTel" class="input" style="padding-right:14px">
-<div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarCliEdit()">Guardar</button><button class="btn-si" onclick="cerrarCliEdit()" style="background:#6b7280">Cancelar</button></div>
-</div></div>
+<div class="label">Nombre / Empresa</div><input id="ceNombre" class="input" style="padding-right:14px"><div class="label">Dirección</div><input id="ceDir" class="input" style="padding-right:14px"><div class="label">Teléfono</div><input id="ceTel" class="input" style="padding-right:14px"><div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarCliEdit()">Guardar</button><button class="btn-si" onclick="cerrarCliEdit()" style="background:#6b7280">Cancelar</button></div></div></div>
 <div id="overlayCliDel"><div class="card-modal" style="text-align:center"><div style="width:64px;height:64px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="trash-2" style="width:28px;color:#dc2626"></i></div><div style="font-weight:900;font-size:18px">¿Deseas eliminar este cliente?</div><div style="font-size:12px;color:#6b7280;margin-top:6px" id="cliDelName">Esta acción no se puede deshacer</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn-si" onclick="confirmarCliDel()">Sí</button><button class="btn-no" onclick="cerrarCliDel()">No</button></div></div></div>
+
+<div id="overlayRepEdit"><div class="card-modal"><div style="font-weight:900;font-size:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><span id="repEditTitle">Editar Repartidor</span><button onclick="cerrarRepEdit()" style="border:none;background:#f3f4f6;width:28px;height:28px;border-radius:50%;font-weight:800;cursor:pointer">x</button></div>
+<div class="label">Nombre</div><input id="reNombre" class="input" style="padding-right:14px">
+<div class="label">Teléfono</div><input id="reTel" class="input" style="padding-right:14px">
+<div class="label">Moto</div><input id="reMoto" class="input" placeholder="Ej: Honda CB125" style="padding-right:14px">
+<div class="label">Estado</div><select id="reEstado" class="input" style="padding-right:14px"><option value="Disponible">Disponible</option><option value="Inactivo">Inactivo</option></select>
+<div class="label">Tarifa Mandado</div><input id="reTarifaM" type="number" class="input" style="padding-right:14px" value="35">
+<div class="label">Tarifa Transporte</div><input id="reTarifaT" type="number" class="input" style="padding-right:14px" value="80">
+<div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarRepEdit()">Guardar</button><button class="btn-si" onclick="cerrarRepEdit()" style="background:#6b7280">Cancelar</button></div>
+</div></div>
+<div id="overlayRepDel"><div class="card-modal" style="text-align:center"><div style="width:64px;height:64px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="trash-2" style="width:28px;color:#dc2626"></i></div><div style="font-weight:900;font-size:18px">¿Deseas eliminar este repartidor?</div><div style="font-size:12px;color:#6b7280;margin-top:6px" id="repDelName">Esta acción no se puede deshacer</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn-si" onclick="confirmarRepDel()">Sí</button><button class="btn-no" onclick="cerrarRepDel()">No</button></div></div></div>
 
 <div class="app">
 <div id="vistaRegistro" class="card">
@@ -127,7 +158,6 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <button id="cTabNuevo" class="c-tab" onclick="switchClientes('nuevo')"><i data-lucide="plus" style="width:16px"></i> Agregar Nuevo</button>
 <button id="cTabRanking" class="c-tab" onclick="switchClientes('ranking')"><i data-lucide="trophy" style="width:16px"></i> Ranking</button>
 </div>
-
 <div id="clientesListado">
 <div class="stats-clientes">
 <div class="stat-card"><div class="s-top"><i data-lucide="users" style="width:14px"></i> Total Clientes</div><div class="s-num" id="statTotalClientes">0</div><div class="s-sub">registrados</div></div>
@@ -136,12 +166,35 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 </div>
 <div id="listaClientesImagen"></div>
 </div>
-
 <div id="clientesNuevo" style="display:none"><div class="card" style="margin:0"><div style="font-weight:900;font-size:18px;margin-bottom:12px">Agregar Nuevo Cliente</div><div class="label">Nombre / Empresa</div><input id="nCliNombre" class="input" placeholder="Ej: Ana García"><div class="label">Dirección</div><input id="nCliDir" class="input" placeholder="Ej: Av. Reforma 1280, CDMX"><div class="label">Teléfono</div><input id="nCliTel" class="input" placeholder="Ej: +52 55 2345 6789"><button class="btn-reg" onclick="guardarNuevoCliente()"><i data-lucide="save" style="width:16px"></i> Guardar Cliente</button></div></div>
 <div id="clientesRanking" style="display:none"><div class="card" style="margin:0"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Ranking por Pedidos</div><div id="rankingLista"></div></div></div>
 </div>
 
-<div id="vistaRepartidores" class="card" style="display:none"><div class="title-h" style="font-size:22px">Repartidores</div><div style="display:flex;gap:8px;margin-top:10px"><div style="position:relative;flex:1"><input id="nuevoRep" class="input" placeholder="Nombre repartidor"><button class="btn-x" onclick="clearInput('nuevoRep')">x</button></div><button onclick="addRepartidor()" style="background:#0a7a2e;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800"><i data-lucide="plus" style="width:18px"></i></button></div><div id="listaReps" style="margin-top:12px"></div></div>
+<!-- PORTAL REPARTIDORES COMO IMAGEN -->
+<div id="vistaRepartidores" class="card" style="display:none;background:#eef1ed;box-shadow:none;border-radius:20px">
+<div class="portal-title"><div class="portal-icon"><i data-lucide="bike" style="width:20px;color:#2d5a2e"></i></div> Portal Repartidores</div>
+<div class="rep-tabs">
+<button id="rTabListado" class="rep-tab active" onclick="switchReps('listado')">Listado de Repartidores</button>
+<button id="rTabNuevo" class="rep-tab" onclick="switchReps('nuevo')">Agregar Nuevo</button>
+<button id="rTabRanking" class="rep-tab" onclick="switchReps('ranking')">Ranking</button>
+</div>
+
+<div id="repsListado">
+<div class="rep-stats">
+<div class="rep-stat"><div class="rep-stat-icon"><i data-lucide="users" style="width:20px"></i></div><div><div class="rep-stat-label">Total Repartidores</div><div class="rep-stat-num" id="repStatTotal">0</div></div></div>
+<div class="rep-stat"><div class="rep-stat-icon"><i data-lucide="user-check" style="width:20px"></i></div><div><div class="rep-stat-label">Activos Hoy</div><div class="rep-stat-num" id="repStatActivos">0</div></div></div>
+<div class="rep-stat"><div class="rep-stat-icon"><i data-lucide="package" style="width:20px"></i></div><div><div class="rep-stat-label">Entregas mes</div><div class="rep-stat-num" id="repStatEntregas">0</div></div></div>
+</div>
+<div class="rep-list-header"><div style="font-weight:800;font-size:18px;color:#2d3a2e">Repartidores</div><div class="rep-search"><i data-lucide="search" style="width:16px;color:#888"></i><input id="buscarRep" placeholder="Buscar por nombre o teléfono..." style="border:none;outline:none;font-size:13px;width:100%;background:transparent" oninput="renderReps()"></div></div>
+<div id="listaRepsImagen"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:11px;color:#6b7280"><span id="repsMostrando">Mostrando 0-0 de 0 repartidores</span><div style="display:flex;gap:6px;align-items:center"><button class="filtro-tab" style="padding:4px 8px" onclick="cambiarPagReps(-1)">←</button><span id="repPag" style="border:1.5px solid #6fbf8a;border-radius:8px;padding:4px 10px;background:#fff;color:#0a7a2e;font-weight:700">1</span><button class="filtro-tab" style="padding:4px 8px" onclick="cambiarPagReps(1)">→</button></div></div>
+</div>
+
+<div id="repsNuevo" style="display:none"><div class="card" style="margin:0;background:#fff"><div style="font-weight:900;font-size:18px;margin-bottom:12px">Agregar Nuevo Repartidor</div><div class="label">Nombre</div><input id="nuevoRepNombre" class="input" placeholder="Ej: Carlos Mendoza"><div class="label">Teléfono</div><input id="nuevoRepTel" class="input" placeholder="+52 55 1234 5678"><div class="label">Moto</div><input id="nuevoRepMoto" class="input" placeholder="Ej: Honda CB125"><button class="btn-reg" onclick="agregarRepNuevo()"><i data-lucide="plus" style="width:16px"></i> Guardar Repartidor</button></div></div>
+
+<div id="repsRanking" style="display:none"><div class="card" style="margin:0;background:#fff"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Ranking Repartidores por Entregas</div><div id="rankingReps"></div></div></div>
+</div>
+
 </div>
 <div class="nav"><button id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><i data-lucide="clipboard-edit" style="width:20px"></i> Registro</button><button id="navHistorial" class="nav-item" onclick="showTab('Historial')"><i data-lucide="clock" style="width:20px"></i> Historial</button><button id="navClientes" class="nav-item" onclick="showTab('Clientes')"><i data-lucide="users" style="width:20px"></i> Clientes</button><button id="navRepartidores" class="nav-item" onclick="showTab('Repartidores')"><i data-lucide="user-cog" style="width:20px"></i> Repartidores</button></div>
 <script>
@@ -161,12 +214,12 @@ function clearInput(id){ const el=document.getElementById(id); el.value=''; if(e
 function resetFechaHoy(){ document.getElementById('fechaVenta').value=new Date().toISOString().split('T')[0]; }
 function setTipo(t){ tipoActual=t; document.getElementById('btnMoto').className=t==='moto'?'tipo active':'tipo'; document.getElementById('btnTrans').className=t==='transporte'?'tipo active':'tipo'; lucide.createIcons(); }
 function calcTotal(){ let p=parseFloat(document.getElementById('precio').value)||0; let d=parseFloat(document.getElementById('descuento').value)||0; let tot=p-d; if(tot<0) tot=0; document.getElementById('totalTxt').innerText='$ '+tot.toFixed(2); return tot; }
-function showTab(n){ document.getElementById('vistaRegistro').style.display=n==='Registro'?'block':'none'; document.getElementById('vistaHistorial').style.display=n==='Historial'?'block':'none'; document.getElementById('vistaClientes').style.display=n==='Clientes'?'block':'none'; document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none'; document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); document.getElementById('nav'+n).classList.add('active'); window.scrollTo(0,0); if(n==='Clientes') renderClientesImagen(); }
+function showTab(n){ document.getElementById('vistaRegistro').style.display=n==='Registro'?'block':'none'; document.getElementById('vistaHistorial').style.display=n==='Historial'?'block':'none'; document.getElementById('vistaClientes').style.display=n==='Clientes'?'block':'none'; document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none'; document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); document.getElementById('nav'+n).classList.add('active'); window.scrollTo(0,0); if(n==='Clientes') renderClientesImagen(); if(n==='Repartidores') renderReps(); }
 (function(){ resetFechaHoy(); document.getElementById('fechaTop').innerText=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}); })();
 const mesesN=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 let mesSel=new Date().getMonth();
 function renderMeses(){ document.getElementById('mesesBox').innerHTML=mesesN.map((m,i)=>`<button class="mes ${i===mesSel?'active':''}" onclick="selMes(${i})">${m}</button>`).join(''); document.getElementById('mesTitulo').innerText=mesesN[mesSel]+' 2026'; document.getElementById('filtroMesAnio').innerHTML=`<option>${mesesN[mesSel]} 2026</option>`; if(document.getElementById('statMesNombre')) document.getElementById('statMesNombre').innerText=mesesN[mesSel]; }
-function selMes(i){ mesSel=i; pagina=1; renderMeses(); aplicarFiltros(); renderClientesImagen(); }
+function selMes(i){ mesSel=i; pagina=1; renderMeses(); aplicarFiltros(); renderClientesImagen(); renderReps(); }
 renderMeses();
 function toggleMeses(){ const b=document.getElementById('bloqueMeses'); b.style.display=b.style.display==='none'?'block':'none'; }
 let filtroTiempo='todos';
@@ -191,8 +244,10 @@ let ventasCache=[], ventasFiltradas=[];
 let pagina=1; const POR_PAGINA=300;
 let idEditar=null, idEliminar=null;
 let clientesDB={}, clienteEditId=null, clienteDelId=null, clienteDelNombre=null;
+let repartidoresDB={}, repEditId=null, repDelId=null, repPagina=1, REP_POR_PAG=10;
 
 db.ref('clientes').on('value',s=>{ clientesDB=s.val()||{}; renderClientesImagen(); });
+db.ref('repartidores').on('value',s=>{ repartidoresDB=s.val()||{}; renderReps(); refreshRepsSelect(); });
 db.ref('ventas').on('value',snap=>{
  const val=snap.val()||{};
  ventasCache=Object.entries(val).map(([id,v])=>({id,...v, pagaKigoBase:v.pagaKigoBase||Math.round((v.total||0)*0.2)})).sort((a,b)=>b.timestamp-a.timestamp);
@@ -200,9 +255,10 @@ db.ref('ventas').on('value',snap=>{
  document.getElementById('filtroRepartidor').innerHTML='<option value="">Filtrar por Repartidor</option>'+repsUnicos.map(r=>`<option value="${r}">${r}</option>`).join('');
  aplicarFiltros();
  renderClientesImagen();
+ renderReps();
 });
 
-// AUTOCOMPLETADO CLIENTE EN REGISTRO
+// AUTOCOMPLETADO CLIENTE
 function obtenerNombresClientes(){
  const nombres=new Set();
  Object.values(clientesDB).forEach(c=>{ if(c.nombre) nombres.add(c.nombre); });
@@ -219,10 +275,7 @@ function filtrarSugerencias(q){
  box.style.display='block';
  lucide.createIcons();
 }
-function seleccionarCliente(nombre){
- document.getElementById('cliente').value=nombre;
- ocultarSugerencias();
-}
+function seleccionarCliente(nombre){ document.getElementById('cliente').value=nombre; ocultarSugerencias(); }
 function ocultarSugerencias(){ document.getElementById('sugerenciasClientes').style.display='none'; }
 document.addEventListener('click',e=>{ if(!e.target.closest('#cliente') &&!e.target.closest('#sugerenciasClientes')) ocultarSugerencias(); });
 
@@ -246,23 +299,11 @@ function guardarNuevoCliente(){
    switchClientes('listado');
  });
 }
-
-// EDITAR / ELIMINAR CLIENTE
 function abrirCliEdit(nombre){
  const entry=Object.entries(clientesDB).find(([id,c])=>c.nombre===nombre);
- if(entry){
-   clienteEditId=entry[0];
-   document.getElementById('ceNombre').value=entry[1].nombre||'';
-   document.getElementById('ceDir').value=entry[1].direccion||'';
-   document.getElementById('ceTel').value=entry[1].telefono||'';
- }else{
-   clienteEditId=null;
-   document.getElementById('ceNombre').value=nombre;
-   document.getElementById('ceDir').value='sin especificación';
-   document.getElementById('ceTel').value='sin especificación';
- }
- document.getElementById('overlayCliEdit').style.display='flex';
- clienteDelNombre=nombre;
+ if(entry){ clienteEditId=entry[0]; document.getElementById('ceNombre').value=entry[1].nombre||''; document.getElementById('ceDir').value=entry[1].direccion||''; document.getElementById('ceTel').value=entry[1].telefono||''; }
+ else{ clienteEditId=null; document.getElementById('ceNombre').value=nombre; document.getElementById('ceDir').value='sin especificación'; document.getElementById('ceTel').value='sin especificación'; }
+ document.getElementById('overlayCliEdit').style.display='flex'; clienteDelNombre=nombre;
 }
 function cerrarCliEdit(){ document.getElementById('overlayCliEdit').style.display='none'; clienteEditId=null; }
 function guardarCliEdit(){
@@ -270,90 +311,158 @@ function guardarCliEdit(){
  const nuevaDir=document.getElementById('ceDir').value.trim();
  const nuevoTel=document.getElementById('ceTel').value.trim();
  if(!nuevoNombre){ alert('Nombre requerido'); return; }
- if(clienteEditId){
-   db.ref('clientes/'+clienteEditId).update({nombre:nuevoNombre, direccion:nuevaDir||'sin especificación', telefono:nuevoTel||'sin especificación'}).then(()=>cerrarCliEdit());
- }else{
-   db.ref('clientes').push({nombre:nuevoNombre, direccion:nuevaDir||'sin especificación', telefono:nuevoTel||'sin especificación', fecha:Date.now()}).then(()=>cerrarCliEdit());
- }
- if(clienteDelNombre && clienteDelNombre!==nuevoNombre){
-   ventasCache.filter(v=>v.cliente===clienteDelNombre).forEach(v=>{ db.ref('ventas/'+v.id).update({cliente:nuevoNombre}); });
- }
+ if(clienteEditId){ db.ref('clientes/'+clienteEditId).update({nombre:nuevoNombre, direccion:nuevaDir||'sin especificación', telefono:nuevoTel||'sin especificación'}).then(()=>cerrarCliEdit()); }
+ else{ db.ref('clientes').push({nombre:nuevoNombre, direccion:nuevaDir||'sin especificación', telefono:nuevoTel||'sin especificación', fecha:Date.now()}).then(()=>cerrarCliEdit()); }
+ if(clienteDelNombre && clienteDelNombre!==nuevoNombre){ ventasCache.filter(v=>v.cliente===clienteDelNombre).forEach(v=>{ db.ref('ventas/'+v.id).update({cliente:nuevoNombre}); }); }
 }
-
 function abrirCliDel(nombre){
  clienteDelNombre=nombre;
  const entry=Object.entries(clientesDB).find(([id,c])=>c.nombre===nombre);
  clienteDelId=entry?entry[0]:null;
  document.getElementById('cliDelName').innerText='Cliente: '+nombre;
- document.getElementById('overlayCliDel').style.display='flex';
- lucide.createIcons();
+ document.getElementById('overlayCliDel').style.display='flex'; lucide.createIcons();
 }
 function cerrarCliDel(){ document.getElementById('overlayCliDel').style.display='none'; clienteDelId=null; clienteDelNombre=null; }
-function confirmarCliDel(){
- if(clienteDelId){ db.ref('clientes/'+clienteDelId).remove(); }
- // Si quieres borrar también histórico de ese cliente, descomenta:
- // ventasCache.filter(v=>v.cliente===clienteDelNombre).forEach(v=>{ db.ref('ventas/'+v.id).remove(); });
- cerrarCliDel();
-}
+function confirmarCliDel(){ if(clienteDelId){ db.ref('clientes/'+clienteDelId).remove(); } cerrarCliDel(); }
 
 function renderClientesImagen(){
  const map={};
- ventasCache.forEach(v=>{
-   if(!map[v.cliente]) map[v.cliente]={total:0, pedidos:0, ultima:0};
-   map[v.cliente].total+= (v.total||0);
-   map[v.cliente].pedidos++;
-   map[v.cliente].ultima=Math.max(map[v.cliente].ultima, v.timestamp||0);
- });
+ ventasCache.forEach(v=>{ if(!map[v.cliente]) map[v.cliente]={total:0, pedidos:0, ultima:0}; map[v.cliente].total+= (v.total||0); map[v.cliente].pedidos++; map[v.cliente].ultima=Math.max(map[v.cliente].ultima, v.timestamp||0); });
  Object.values(clientesDB).forEach(c=>{ if(!map[c.nombre]) map[c.nombre]={total:0, pedidos:0, ultima:c.fecha||0}; });
- const lista=Object.entries(map).map(([nombre, d])=>{
-   const extra=Object.values(clientesDB).find(x=>x.nombre===nombre);
-   return { nombre, direccion: extra?extra.direccion:'sin especificación', telefono: extra?extra.telefono:'sin especificación', total:d.total, pedidos:d.pedidos, ultima:d.ultima };
- });
-
- const totalClientes=lista.length;
- document.getElementById('statTotalClientes').innerText=totalClientes;
+ const lista=Object.entries(map).map(([nombre, d])=>{ const extra=Object.values(clientesDB).find(x=>x.nombre===nombre); return { nombre, direccion: extra?extra.direccion:'sin especificación', telefono: extra?extra.telefono:'sin especificación', total:d.total, pedidos:d.pedidos, ultima:d.ultima }; });
+ document.getElementById('statTotalClientes').innerText=lista.length;
  const ventasMes=ventasCache.filter(v=>{ const dd=new Date(v.fecha+'T12:00:00'); return dd.getMonth()===mesSel; });
- const ingMes=ventasMes.reduce((a,b)=>a+(b.total||0),0);
- document.getElementById('statIngMes').innerText='$'+ingMes.toLocaleString('es-MX');
+ document.getElementById('statIngMes').innerText='$'+ventasMes.reduce((a,b)=>a+(b.total||0),0).toLocaleString('es-MX');
  document.getElementById('statMesNombre').innerText=mesesN[mesSel];
  document.getElementById('statMesDetalle').innerText=ventasMes.length+' pedidos en '+mesesN[mesSel];
- const ingTotal=ventasCache.reduce((a,b)=>a+(b.total||0),0);
- document.getElementById('statIngTotal').innerText='$'+ingTotal.toLocaleString('es-MX');
+ document.getElementById('statIngTotal').innerText='$'+ventasCache.reduce((a,b)=>a+(b.total||0),0).toLocaleString('es-MX');
  document.getElementById('statIngTotalSub').innerText='hasta hoy • '+ventasCache.length+' pedidos';
-
  const cont=document.getElementById('listaClientesImagen');
  if(!lista.length){ cont.innerHTML='<div style="text-align:center;color:#999;padding:16px;background:#fff;border-radius:12px;font-size:12px">Sin clientes aún</div>'; }
  else{
-  const sorted=[...lista].sort((a,b)=>b.total-a.total);
-  cont.innerHTML=sorted.map(c=>`
+  cont.innerHTML=[...lista].sort((a,b)=>b.total-a.total).map(c=>`
    <div class="cliente-row">
-    <div class="cliente-row-left">
-      <div class="c-name">${c.nombre}</div>
-      <div class="c-meta"><i data-lucide="map-pin" style="width:11px"></i> Dir: ${c.direccion}</div>
-      <div class="c-meta"><i data-lucide="phone" style="width:11px"></i> Tel: ${c.telefono}</div>
-    </div>
-    <div class="cliente-row-mid">
-      <div style="text-align:center"><div class="c-label">Total pedidos</div><div class="c-val">${c.pedidos}</div></div>
-      <div style="text-align:left"><div class="c-label green">Ingresos totales</div><div class="c-val green">$${c.total.toLocaleString('es-MX')}</div></div>
-    </div>
-    <div style="display:flex;gap:4px">
-      <button class="acc-btn" onclick="abrirCliEdit('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="pencil" style="width:12px"></i></button>
-      <button class="acc-btn" style="border-color:#fca5a5" onclick="abrirCliDel('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:12px;color:#dc2626"></i></button>
-    </div>
-   </div>
-  `).join('');
+    <div class="cliente-row-left"><div class="c-name">${c.nombre}</div><div class="c-meta"><i data-lucide="map-pin" style="width:11px"></i> Dir: ${c.direccion}</div><div class="c-meta"><i data-lucide="phone" style="width:11px"></i> Tel: ${c.telefono}</div></div>
+    <div class="cliente-row-mid"><div style="text-align:center"><div class="c-label">Total pedidos</div><div class="c-val">${c.pedidos}</div></div><div style="text-align:left"><div class="c-label green">Ingresos totales</div><div class="c-val green">$${c.total.toLocaleString('es-MX')}</div></div></div>
+    <div style="display:flex;gap:4px"><button class="acc-btn" onclick="abrirCliEdit('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="pencil" style="width:12px"></i></button><button class="acc-btn" style="border-color:#fca5a5" onclick="abrirCliDel('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:12px;color:#dc2626"></i></button></div>
+   </div>`).join('');
  }
-
- const rankSorted=[...lista].sort((a,b)=>b.pedidos-a.pedidos);
- document.getElementById('rankingLista').innerHTML=rankSorted.map((c,i)=>{
-   let medalla='';
-   if(i===0) medalla='<div style="width:26px;height:26px;background:#FFD700;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px">🥇</div>';
-   else if(i===1) medalla='<div style="width:26px;height:26px;background:#C0C0C0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px">🥈</div>';
-   else if(i===2) medalla='<div style="width:26px;height:26px;background:#CD7F32;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px">🥉</div>';
-   else medalla=`<div style="width:26px;height:26px;background:#f3f4f6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#6b7280">#${i+1}</div>`;
-   return `<div class="rank-row">${medalla}<div style="flex:1;overflow:hidden"><div style="font-weight:800;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nombre}</div><div style="font-size:9px;color:#6b7280">${c.pedidos} pedidos • $${c.total.toLocaleString('es-MX')}</div></div><div style="font-weight:800;font-size:11px;color:#0a7a2e">${c.pedidos} ped.</div></div>`;
+ document.getElementById('rankingLista').innerHTML=[...lista].sort((a,b)=>b.pedidos-a.pedidos).map((c,i)=>{
+   let medalla=i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+   return `<div class="rank-row"><div style="width:26px;height:26px;background:${i<3?'#FFD700':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${i<3?13:10}px">${medalla}</div><div style="flex:1;overflow:hidden"><div style="font-weight:800;font-size:11px">${c.nombre}</div><div style="font-size:9px;color:#6b7280">${c.pedidos} pedidos • $${c.total.toLocaleString('es-MX')}</div></div><div style="font-weight:800;font-size:11px;color:#0a7a2e">${c.pedidos} ped.</div></div>`;
  }).join('') || 'Sin datos';
  lucide.createIcons();
+}
+
+// REPARTIDORES COMO IMAGEN
+function switchReps(tab){
+ document.getElementById('repsListado').style.display=tab==='listado'?'block':'none';
+ document.getElementById('repsNuevo').style.display=tab==='nuevo'?'block':'none';
+ document.getElementById('repsRanking').style.display=tab==='ranking'?'block':'none';
+ document.getElementById('rTabListado').className=tab==='listado'?'rep-tab active':'rep-tab';
+ document.getElementById('rTabNuevo').className=tab==='nuevo'?'rep-tab active':'rep-tab';
+ document.getElementById('rTabRanking').className=tab==='ranking'?'rep-tab active':'rep-tab';
+ lucide.createIcons();
+ if(tab!=='listado') return; renderReps();
+}
+function getIniciales(nombre){ return nombre.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
+function renderReps(){
+ const buscar=(document.getElementById('buscarRep')?.value||'').toLowerCase();
+ let lista=Object.entries(repartidoresDB).map(([id,r])=>({id,...r}));
+ // si no hay en firebase, usar fallback
+ if(!lista.length){
+   const fallback=JSON.parse(localStorage.getItem('repsData')||'[]');
+   lista=fallback.map((r,i)=>({id:'local_'+i,nombre:r,telefono:'+52 55 0000 0000',moto:'Honda CB125',estado:'Disponible',tarifaM:35,tarifaT:80}));
+ }
+ let filtrada=lista.filter(r=>!buscar || r.nombre.toLowerCase().includes(buscar) || (r.telefono||'').toLowerCase().includes(buscar));
+ // STATS
+ document.getElementById('repStatTotal').innerText=lista.length;
+ const hoyStr=new Date().toISOString().split('T')[0];
+ const activosHoy=[...new Set(ventasCache.filter(v=>v.fecha===hoyStr).map(v=>v.repartidor))].length;
+ document.getElementById('repStatActivos').innerText=activosHoy;
+ const entregasMes=ventasCache.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; }).length;
+ document.getElementById('repStatEntregas').innerText=entregasMes;
+
+ const totalPags=Math.max(1,Math.ceil(filtrada.length/REP_POR_PAG));
+ if(repPagina>totalPags) repPagina=totalPags;
+ const inicio=(repPagina-1)*REP_POR_PAG;
+ const page=filtrada.slice(inicio,inicio+REP_POR_PAG);
+ document.getElementById('repsMostrando').innerText=`Mostrando ${inicio+1}-${Math.min(inicio+REP_POR_PAG,filtrada.length)} de ${filtrada.length} repartidores`;
+ document.getElementById('repPag').innerText=repPagina;
+
+ const cont=document.getElementById('listaRepsImagen');
+ if(!page.length){ cont.innerHTML='<div style="text-align:center;color:#999;padding:20px;background:#fff;border-radius:12px">Sin repartidores</div>'; }
+ else{
+  cont.innerHTML=page.map(r=>{
+   const disp=r.estado!=='Inactivo';
+   const avatarColor=disp?'#c8e8b5':'#d1d5db';
+   const iniciales=getIniciales(r.nombre);
+   return `
+   <div class="rep-row">
+    <div class="rep-avatar" style="background:${avatarColor};color:${disp?'#2d5a2e':'#6b7280'}">${iniciales}</div>
+    <div class="rep-info">
+      <div class="rep-name">${r.nombre}</div>
+      <div class="rep-sub"><i data-lucide="phone" style="width:11px"></i> ${r.telefono||'+52 55 0000 0000'}</div>
+      <div class="rep-sub"><i data-lucide="bike" style="width:11px"></i> Moto: ${r.moto||'Honda CB125'}</div>
+    </div>
+    <div class="rep-badges">
+      <span class="rep-badge">Mandado $${r.tarifaM||35}</span>
+      <span class="rep-badge">Transporte $${r.tarifaT||80}</span>
+      <span class="rep-status ${disp?'disp':'inact'}">${disp?'Disponible':'Inactivo'}</span>
+      <button class="rep-btn" onclick="abrirRepEdit('${r.id}')"><i data-lucide="pencil" style="width:12px"></i> Editar</button>
+      <button class="rep-btn" onclick="abrirRepDel('${r.id}','${r.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:12px"></i> Eliminar</button>
+    </div>
+   </div>`;
+  }).join('');
+ }
+ // Ranking
+ const mapEntregas={};
+ ventasCache.forEach(v=>{ if(!mapEntregas[v.repartidor]) mapEntregas[v.repartidor]=0; mapEntregas[v.repartidor]++; });
+ const ranking=Object.entries(repartidoresDB).map(([id,r])=>({id,...r,entregas:mapEntregas[r.nombre]||0})).sort((a,b)=>b.entregas-a.entregas);
+ document.getElementById('rankingReps').innerHTML=ranking.map((r,i)=>{
+   let medalla=i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+   return `<div class="rank-row"><div style="width:26px;height:26px;background:${i<3?'#d6ecc0':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px">${medalla}</div><div style="flex:1"><b style="font-size:12px">${r.nombre}</b><br><small style="color:#6b7280;font-size:10px">${r.entregas} entregas • ${r.moto||''}</small></div><div style="font-weight:800;color:#0a7a2e;font-size:12px">${r.entregas}</div></div>`;
+ }).join('') || 'Sin datos';
+ lucide.createIcons();
+}
+function cambiarPagReps(d){ const total=Math.max(1,Math.ceil(Object.keys(repartidoresDB).length/REP_POR_PAG)); repPagina+=d; if(repPagina<1) repPagina=1; if(repPagina>total) repPagina=total; renderReps(); }
+function agregarRepNuevo(){
+ const nombre=document.getElementById('nuevoRepNombre').value.trim();
+ const tel=document.getElementById('nuevoRepTel').value.trim();
+ const moto=document.getElementById('nuevoRepMoto').value.trim();
+ if(!nombre){ alert('Pon nombre'); return; }
+ db.ref('repartidores').push({nombre, telefono:tel||'+52 55 0000 0000', moto:moto||'Honda CB125', estado:'Disponible', tarifaM:35, tarifaT:80, fecha:Date.now()}).then(()=>{
+   document.getElementById('nuevoRepNombre').value=''; document.getElementById('nuevoRepTel').value=''; document.getElementById('nuevoRepMoto').value='';
+   switchReps('listado');
+ });
+}
+function abrirRepEdit(id){
+ const r=repartidoresDB[id]; if(!r) return;
+ repEditId=id;
+ document.getElementById('repEditTitle').innerText='Editar Repartidor';
+ document.getElementById('reNombre').value=r.nombre||'';
+ document.getElementById('reTel').value=r.telefono||'';
+ document.getElementById('reMoto').value=r.moto||'';
+ document.getElementById('reEstado').value=r.estado||'Disponible';
+ document.getElementById('reTarifaM').value=r.tarifaM||35;
+ document.getElementById('reTarifaT').value=r.tarifaT||80;
+ document.getElementById('overlayRepEdit').style.display='flex';
+}
+function cerrarRepEdit(){ document.getElementById('overlayRepEdit').style.display='none'; repEditId=null; }
+function guardarRepEdit(){
+ if(!repEditId) return;
+ const data={ nombre:document.getElementById('reNombre').value.trim(), telefono:document.getElementById('reTel').value.trim(), moto:document.getElementById('reMoto').value.trim(), estado:document.getElementById('reEstado').value, tarifaM:parseFloat(document.getElementById('reTarifaM').value)||35, tarifaT:parseFloat(document.getElementById('reTarifaT').value)||80 };
+ if(!data.nombre){ alert('Nombre requerido'); return; }
+ db.ref('repartidores/'+repEditId).update(data).then(()=>{ cerrarRepEdit(); });
+}
+function abrirRepDel(id,nombre){ repDelId=id; document.getElementById('repDelName').innerText='Repartidor: '+nombre; document.getElementById('overlayRepDel').style.display='flex'; lucide.createIcons(); }
+function cerrarRepDel(){ document.getElementById('overlayRepDel').style.display='none'; repDelId=null; }
+function confirmarRepDel(){ if(!repDelId) return; db.ref('repartidores/'+repDelId).remove().then(()=>{ cerrarRepDel(); }); }
+function refreshRepsSelect(){
+ const sel=document.getElementById('repartidor');
+ const lista=Object.values(repartidoresDB).map(r=>r.nombre);
+ const unicos=[...new Set([...lista,...JSON.parse(localStorage.getItem('reps')||'[]')])];
+ sel.innerHTML='<option value="">Seleccionar repartidor</option>'+unicos.map(r=>`<option value="${r}">${r}</option>`).join('');
 }
 
 // HISTORIAL
@@ -399,12 +508,6 @@ function abrirDel(id){ idEliminar=id; document.getElementById('overlayDel').styl
 function cerrarDel(){ document.getElementById('overlayDel').style.display='none'; idEliminar=null; }
 function confirmarDel(){ if(!idEliminar) return; db.ref('ventas/'+idEliminar).remove().then(()=>{ cerrarDel(); }); }
 function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; mesSel=new Date().getMonth(); pagina=1; renderMeses(); aplicarFiltros(); }
-
-let reps=JSON.parse(localStorage.getItem('reps')||'["Juan","Carlos","Luis"]');
-function refreshReps(){ const sel=document.getElementById('repartidor'); sel.innerHTML='<option value="">Seleccionar repartidor</option>'+reps.map(r=>`<option value="${r}">${r}</option>`).join(''); document.getElementById('listaReps').innerHTML=reps.map(r=>`<div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between"><span style="display:flex;align-items:center;gap:8px;font-weight:600"><i data-lucide="bike" style="width:16px"></i> ${r}</span><button onclick="borrarRep('${r}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;display:flex;align-items:center;justify-content:center"><i data-lucide="x" style="width:14px"></i></button></div>`).join(''); lucide.createIcons(); }
-function addRepartidor(){ let n=document.getElementById('nuevoRep').value.trim(); if(!n) return; reps.push(n); localStorage.setItem('reps',JSON.stringify(reps)); document.getElementById('nuevoRep').value=''; refreshReps(); }
-function borrarRep(n){ reps=reps.filter(r=>r!==n); localStorage.setItem('reps',JSON.stringify(reps)); refreshReps(); }
-refreshReps();
 lucide.createIcons();
 </script>
 </body>
