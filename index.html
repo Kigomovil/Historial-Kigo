@@ -26,7 +26,7 @@
 .total-box{background:#d1e7d6;border:1.5px solid #a3c9a8;border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
 .btn-reg{width:100%;margin-top:16px;background:#0a7a2e;color:#fff;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:900px;background:#fff;border-top:1px solid #eee;display:flex;padding:8px 0 12px;z-index:10}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer;font-weight:600;border:none;background:transparent}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#888;cursor:pointer;font-weight:600;border:none;background:transparent}
 .nav-item.active{color:#0a7a2e}
 .filtros-top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .filtro-tab{padding:10px 16px;border-radius:12px;border:1.5px solid #d1d5db;background:#fff;font-weight:600;font-size:13px;cursor:pointer}
@@ -98,6 +98,33 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .rep-status.inact{background:#dc2626;color:#fff}
 .rep-btn{border:1px solid #d1d5db;background:#fff;border-radius:16px;padding:4px 8px;font-size:10px;font-weight:600;display:flex;align-items:center;gap:3px;cursor:pointer}
 .foto-preview{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #6fbf8a;display:none;margin-top:8px}
+/* PRESUPUESTO COMO IMAGEN */
+.presu-header{background:#fff;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:18px}
+.presu-title{font-weight:800;font-size:24px;color:#2d3a2e}
+.presu-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.presu-tab{padding:10px 18px;border-radius:14px;border:1.5px solid transparent;background:#e5e7eb;color:#4b5563;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.presu-tab.active{background:#10b981;color:#fff;border-color:#10b981;box-shadow:0 4px 12px rgba(16,185,129,.35)}
+.presu-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+@media(max-width:700px){.presu-stats{grid-template-columns:1fr}}
+.presu-stat{background:#fff;border-radius:14px;padding:16px;box-shadow:0 3px 12px rgba(0,0,0,.08);display:flex;align-items:center;gap:12px}
+.presu-stat-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.presu-icon-green{background:#c8e8b5;color:#0a7a2e}
+.presu-icon-orange{background:#ffdb99;color:#b45309}
+.presu-stat-label{font-size:12px;color:#6b7280}
+.presu-stat-num{font-size:22px;font-weight:900;color:#2d3a2e;line-height:1.1}
+.presu-detalle{background:#fff;border-radius:14px;padding:14px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.presu-detalle-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.presu-filtro{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.presu-date{border:1.5px solid #d1d5db;border-radius:10px;padding:6px 10px;font-size:12px;font-weight:600;background:#fff;display:flex;align-items:center;gap:6px}
+.presu-table{overflow:auto}
+.presu-table table{width:100%;border-collapse:collapse;min-width:650px}
+.presu-table th{font-size:11px;color:#6b7280;background:#f3f4f6;padding:8px 10px;text-align:left}
+.presu-table td{padding:8px 10px;font-size:12px;border-top:1px solid #f0f0f0}
+.presu-rep{display:flex;align-items:center;gap:8px}
+.presu-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;flex-shrink:0}
+.presu-badge{border-radius:10px;padding:4px 8px;font-size:11px;font-weight:700;border:none}
+.presu-badge.debe{background:#fed7aa;color:#9a3412}
+.presu-badge.pagado{background:#10b981;color:#fff}
 </style>
 </head>
 <body>
@@ -170,6 +197,27 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <div id="clientesRanking" style="display:none"><div class="card" style="margin:0"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Ranking por Pedidos</div><div id="rankingLista"></div></div></div>
 </div>
 
+<div id="vistaPresupuesto" class="card" style="display:none;background:#f0f2f1;box-shadow:none">
+<div class="presu-header"><div class="presu-title">Presupuesto / Valoraciones</div></div>
+<div class="presu-tabs">
+<button id="pTabDia" class="presu-tab active" onclick="switchPresu('dia')"><i data-lucide="calendar-days" style="width:16px"></i> Valoración por Día</button>
+<button id="pTabMes" class="presu-tab" onclick="switchPresu('mes')"><i data-lucide="calendar-range" style="width:16px"></i> Valoración por Mes</button>
+<button id="pTabCal" class="presu-tab" onclick="switchPresu('cal')"><i data-lucide="calendar" style="width:16px"></i> Valoración Calendario</button>
+</div>
+<div class="presu-stats">
+<div class="presu-stat"><div class="presu-stat-icon presu-icon-green"><i data-lucide="dollar-sign" style="width:20px"></i></div><div><div class="presu-stat-label">Ingresos Totales</div><div class="presu-stat-num" id="presuIngTot">$0</div></div></div>
+<div class="presu-stat"><div class="presu-stat-icon presu-icon-orange"><i data-lucide="credit-card" style="width:20px"></i></div><div><div class="presu-stat-label">Por Cobrar Repartidores</div><div class="presu-stat-num" id="presuPorCobrar">$0</div></div></div>
+<div class="presu-stat"><div class="presu-stat-icon presu-icon-green"><i data-lucide="scale" style="width:20px"></i></div><div><div class="presu-stat-label">Balance Neto</div><div class="presu-stat-num" id="presuBalance">$0</div></div></div>
+</div>
+<div class="presu-detalle">
+<div class="presu-detalle-head"><div style="font-weight:900;font-size:18px;color:#2d3a2e">Detalle Diario</div><div class="presu-filtro"><span style="font-size:11px;color:#6b7280">Filtrar por fecha:</span><div class="presu-date"><i data-lucide="calendar-days" style="width:14px"></i><input id="presuFecha" type="date" style="border:none;outline:none;background:transparent;font-size:12px;font-weight:600" onchange="renderPresupuesto()"></div><button class="presu-date" style="cursor:pointer" onclick="hoyPresu()"><i data-lucide="calendar-check" style="width:14px"></i> Hoy</button></div></div>
+<div class="presu-table"><table><thead><tr><th>Repartidor</th><th>Pedidos</th><th>Total generado</th><th>Comisión</th><th>Estado / Pago</th></tr></thead><tbody id="tbodyPresu"></tbody></table></div>
+<div style="font-size:11px;color:#6b7280;margin-top:10px" id="presuFooter">Mostrando 0 de 0 repartidores • Actualizado hoy</div>
+</div>
+<div id="presuMesView" style="display:none;margin-top:14px"><div class="presu-detalle"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Valoración por Mes</div><div id="presuMesLista"></div></div></div>
+<div id="presuCalView" style="display:none;margin-top:14px"><div class="presu-detalle"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Valoración Calendario</div><div id="presuCalGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div></div></div>
+</div>
+
 <div id="vistaRepartidores" class="card" style="display:none;background:#eef1ed;box-shadow:none;border-radius:20px">
 <div class="portal-title"><div class="portal-icon"><i data-lucide="bike" style="width:18px;color:#2d5a2e"></i></div> Portal Repartidores</div>
 <div class="rep-tabs">
@@ -177,7 +225,6 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <button id="rTabNuevo" class="rep-tab" onclick="switchReps('nuevo')">Agregar Nuevo</button>
 <button id="rTabRanking" class="rep-tab" onclick="switchReps('ranking')">Ranking</button>
 </div>
-
 <div id="repsListado">
 <div class="rep-stats">
 <div class="rep-stat"><div class="rep-stat-icon"><i data-lucide="users" style="width:18px"></i></div><div><div class="rep-stat-label">Total Repartidores</div><div class="rep-stat-num" id="repStatTotal">0</div></div></div>
@@ -187,7 +234,6 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <div class="rep-list-header"><div style="font-weight:800;font-size:16px;color:#2d3a2e">Repartidores</div><div class="rep-search"><i data-lucide="search" style="width:14px;color:#888"></i><input id="buscarRep" placeholder="Buscar por nombre o teléfono..." style="border:none;outline:none;font-size:12px;width:100%;background:transparent" oninput="renderReps()"></div></div>
 <div id="listaRepsImagen"></div>
 </div>
-
 <div id="repsNuevo" style="display:none"><div class="card" style="margin:0;background:#fff"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Agregar Nuevo Repartidor</div>
 <div class="label">Foto Repartidor (desde celular)</div><input id="nuevoRepFoto" type="file" accept="image/*" capture="environment" class="input" style="padding:8px" onchange="previewFoto(this,'nuevoPreview')"><img id="nuevoPreview" class="foto-preview">
 <div class="label">Nombre</div><input id="nuevoRepNombre" class="input" placeholder="Ej: Carlos Mendoza"><div class="label">Teléfono</div><input id="nuevoRepTel" class="input" placeholder="+52 55 1234 5678"><div class="label">Moto</div><input id="nuevoRepMoto" class="input" placeholder="Ej: Honda CB125"><button class="btn-reg" onclick="agregarRepNuevo()"><i data-lucide="plus" style="width:16px"></i> Guardar Repartidor</button></div></div>
@@ -195,7 +241,13 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 </div>
 
 </div>
-<div class="nav"><button id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><i data-lucide="clipboard-edit" style="width:20px"></i> Registro</button><button id="navHistorial" class="nav-item" onclick="showTab('Historial')"><i data-lucide="clock" style="width:20px"></i> Historial</button><button id="navClientes" class="nav-item" onclick="showTab('Clientes')"><i data-lucide="users" style="width:20px"></i> Clientes</button><button id="navRepartidores" class="nav-item" onclick="showTab('Repartidores')"><i data-lucide="user-cog" style="width:20px"></i> Repartidores</button></div>
+<div class="nav">
+<button id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><i data-lucide="clipboard-edit" style="width:20px"></i> Registro</button>
+<button id="navHistorial" class="nav-item" onclick="showTab('Historial')"><i data-lucide="clock" style="width:20px"></i> Historial</button>
+<button id="navClientes" class="nav-item" onclick="showTab('Clientes')"><i data-lucide="users" style="width:20px"></i> Clientes</button>
+<button id="navPresupuesto" class="nav-item" onclick="showTab('Presupuesto')"><i data-lucide="wallet" style="width:20px"></i> Presupuesto</button>
+<button id="navRepartidores" class="nav-item" onclick="showTab('Repartidores')"><i data-lucide="user-cog" style="width:20px"></i> Repartidores</button>
+</div>
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyAsRa2QW9-l3vuh_mWa0ZhJh6ZSPNRRIkM",
@@ -213,12 +265,12 @@ function clearInput(id){ const el=document.getElementById(id); el.value=''; if(e
 function resetFechaHoy(){ document.getElementById('fechaVenta').value=new Date().toISOString().split('T')[0]; }
 function setTipo(t){ tipoActual=t; document.getElementById('btnMoto').className=t==='moto'?'tipo active':'tipo'; document.getElementById('btnTrans').className=t==='transporte'?'tipo active':'tipo'; lucide.createIcons(); }
 function calcTotal(){ let p=parseFloat(document.getElementById('precio').value)||0; let d=parseFloat(document.getElementById('descuento').value)||0; let tot=p-d; if(tot<0) tot=0; document.getElementById('totalTxt').innerText='$ '+tot.toFixed(2); return tot; }
-function showTab(n){ document.getElementById('vistaRegistro').style.display=n==='Registro'?'block':'none'; document.getElementById('vistaHistorial').style.display=n==='Historial'?'block':'none'; document.getElementById('vistaClientes').style.display=n==='Clientes'?'block':'none'; document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none'; document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); document.getElementById('nav'+n).classList.add('active'); window.scrollTo(0,0); if(n==='Clientes') renderClientesImagen(); if(n==='Repartidores') renderReps(); }
+function showTab(n){ document.getElementById('vistaRegistro').style.display=n==='Registro'?'block':'none'; document.getElementById('vistaHistorial').style.display=n==='Historial'?'block':'none'; document.getElementById('vistaClientes').style.display=n==='Clientes'?'block':'none'; document.getElementById('vistaPresupuesto').style.display=n==='Presupuesto'?'block':'none'; document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none'; document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); document.getElementById('nav'+n).classList.add('active'); window.scrollTo(0,0); if(n==='Clientes') renderClientesImagen(); if(n==='Repartidores') renderReps(); if(n==='Presupuesto') renderPresupuesto(); }
 (function(){ resetFechaHoy(); document.getElementById('fechaTop').innerText=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}); })();
 const mesesN=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 let mesSel=new Date().getMonth();
 function renderMeses(){ document.getElementById('mesesBox').innerHTML=mesesN.map((m,i)=>`<button class="mes ${i===mesSel?'active':''}" onclick="selMes(${i})">${m}</button>`).join(''); document.getElementById('mesTitulo').innerText=mesesN[mesSel]+' 2026'; document.getElementById('filtroMesAnio').innerHTML=`<option>${mesesN[mesSel]} 2026</option>`; if(document.getElementById('statMesNombre')) document.getElementById('statMesNombre').innerText=mesesN[mesSel]; }
-function selMes(i){ mesSel=i; pagina=1; renderMeses(); aplicarFiltros(); renderClientesImagen(); renderReps(); }
+function selMes(i){ mesSel=i; pagina=1; renderMeses(); aplicarFiltros(); renderClientesImagen(); renderReps(); renderPresupuesto(); }
 renderMeses();
 function toggleMeses(){ const b=document.getElementById('bloqueMeses'); b.style.display=b.style.display==='none'?'block':'none'; }
 let filtroTiempo='todos';
@@ -231,15 +283,16 @@ let idEditar=null, idEliminar=null;
 let clientesDB={}, clienteEditId=null, clienteDelId=null, clienteDelNombre=null;
 let repartidoresDB={}, repEditId=null, repDelId=null;
 let fotoTempNuevo='', fotoTempEdit='';
+let presuTipo='dia';
 
 db.ref('clientes').on('value',s=>{ clientesDB=s.val()||{}; renderClientesImagen(); });
-db.ref('repartidores').on('value',s=>{ repartidoresDB=s.val()||{}; renderReps(); refreshRepsSelect(); });
+db.ref('repartidores').on('value',s=>{ repartidoresDB=s.val()||{}; renderReps(); refreshRepsSelect(); renderPresupuesto(); });
 db.ref('ventas').on('value',snap=>{
  const val=snap.val()||{};
  ventasCache=Object.entries(val).map(([id,v])=>({id,...v, pagaKigoBase:v.pagaKigoBase??v.pagaKigo??v.tarifaAplicada??Math.round((v.total||0)*0.2)})).sort((a,b)=>b.timestamp-a.timestamp);
  const repsUnicos=[...new Set(ventasCache.map(v=>v.repartidor).filter(Boolean))];
  document.getElementById('filtroRepartidor').innerHTML='<option value="">Filtrar por Repartidor</option>'+repsUnicos.map(r=>`<option value="${r}">${r}</option>`).join('');
- aplicarFiltros(); renderClientesImagen(); renderReps();
+ aplicarFiltros(); renderClientesImagen(); renderReps(); renderPresupuesto();
 });
 
 function previewFoto(input, previewId){
@@ -285,15 +338,99 @@ function renderClientesImagen(){
  document.getElementById('rankingLista').innerHTML=[...lista].sort((a,b)=>b.pedidos-a.pedidos).map((c,i)=>`<div class="rank-row"><div style="width:22px;height:22px;background:${i<3?'#FFD700':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${i<3?12:9}px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1"><b style="font-size:11px">${c.nombre}</b><br><small style="color:#6b7280;font-size:9px">${c.pedidos} pedidos</small></div><div style="font-weight:800;color:#0a7a2e;font-size:11px">${c.pedidos}</div></div>`).join('')||'Sin datos'; lucide.createIcons();
 }
 
-function switchReps(tab){ document.getElementById('repsListado').style.display=tab==='listado'?'block':'none'; document.getElementById('repsNuevo').style.display=tab==='nuevo'?'block':'none'; document.getElementById('repsRanking').style.display=tab==='ranking'?'block':'none'; document.getElementById('rTabListado').className=tab==='listado'?'rep-tab active':'rep-tab'; document.getElementById('rTabNuevo').className=tab==='nuevo'?'rep-tab active':'rep-tab'; document.getElementById('rTabRanking').className=tab==='ranking'?'rep-tab active':'rep-tab'; lucide.createIcons(); }
+// PRESUPUESTO / VALORACIONES COMO IMAGEN
+function switchPresu(t){
+ presuTipo=t;
+ document.getElementById('pTabDia').className=t==='dia'?'presu-tab active':'presu-tab';
+ document.getElementById('pTabMes').className=t==='mes'?'presu-tab active':'presu-tab';
+ document.getElementById('pTabCal').className=t==='cal'?'presu-tab active':'presu-tab';
+ document.getElementById('presuMesView').style.display=t==='mes'?'block':'none';
+ document.getElementById('presuCalView').style.display=t==='cal'?'block':'none';
+ document.querySelector('.presu-detalle').style.display=t==='dia'?'block':'none';
+ lucide.createIcons();
+ if(t!=='dia') renderPresupuesto();
+}
+function hoyPresu(){ document.getElementById('presuFecha').value=new Date().toISOString().split('T')[0]; renderPresupuesto(); }
 function getIniciales(nombre){ return nombre.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
-function toggleEstadoRep(id){ const r=repartidoresDB[id]; if(!r) return; const nuevo=r.estado==='Disponible'?'Inactivo':'Disponible'; db.ref('repartidores/'+id).update({estado:nuevo}); }
 function getTarifaRepartidor(nombreRepartidor, tipo){
  const entry=Object.values(repartidoresDB).find(r=>r.nombre===nombreRepartidor);
  if(!entry) return null;
  if(tipo==='moto') return parseFloat(entry.tarifaM)||35;
  return parseFloat(entry.tarifaT)||80;
 }
+function renderPresupuesto(){
+ if(!document.getElementById('presuFecha').value){ document.getElementById('presuFecha').value=new Date().toISOString().split('T')[0]; }
+ const fechaFiltro=document.getElementById('presuFecha').value;
+ let ventasDia=ventasCache.filter(v=>v.fecha===fechaFiltro);
+ if(presuTipo==='mes'){ ventasDia=ventasCache.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; }); }
+ if(presuTipo==='cal'){ ventasDia=ventasCache; }
+ // STATS
+ const ingresosTotales=ventasDia.reduce((a,b)=>a+(b.total||0),0);
+ const porCobrar=ventasDia.filter(v=>v.estado==='Debe').reduce((a,b)=>a+(b.pagaKigoBase??b.pagaKigo??0),0);
+ const balanceNeto=ventasDia.filter(v=>v.estado==='Pagado').reduce((a,b)=>a+((b.total||0)-(b.pagaKigoBase??0)),0) + ventasDia.filter(v=>v.estado==='Debe').reduce((a,b)=>a+(b.total||0),0) - porCobrar;
+ document.getElementById('presuIngTot').innerText='$'+ingresosTotales.toLocaleString('es-MX');
+ document.getElementById('presuPorCobrar').innerText='$'+porCobrar.toLocaleString('es-MX');
+ document.getElementById('presuBalance').innerText='$'+(ingresosTotales - ventasDia.reduce((a,b)=>a+(b.pagaKigoBase??0),0) + porCobrar).toLocaleString('es-MX');
+
+ // Detalle por repartidor
+ const map={};
+ ventasDia.forEach(v=>{
+   if(!map[v.repartidor]) map[v.repartidor]={pedidos:0,total:0,comision:0,debe:0,pagado:0,foto:'',id:''};
+   map[v.repartidor].pedidos++;
+   map[v.repartidor].total+=(v.total||0);
+   map[v.repartidor].comision+=(v.pagaKigoBase??v.pagaKigo??0);
+   if(v.estado==='Debe') map[v.repartidor].debe+=(v.pagaKigoBase??0);
+   else map[v.repartidor].pagado+=(v.pagaKigoBase??0);
+ });
+ Object.entries(repartidoresDB).forEach(([id,r])=>{ if(map[r.nombre]){ map[r.nombre].foto=r.foto||''; map[r.nombre].id=id; } });
+ const lista=Object.entries(map).map(([nombre,d])=>({nombre,...d}));
+ const tbody=document.getElementById('tbodyPresu');
+ if(!lista.length){ tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#999;padding:16px">Sin pedidos en esta fecha</td></tr>'; }
+ else{
+  tbody.innerHTML=lista.map(r=>{
+   const iniciales=getIniciales(r.nombre);
+   const col=r.nombre.includes('Carlos')?'#a8c9a0':r.nombre.includes('Ana')?'#6fa8dc':r.nombre.includes('Luis')?'#b0b0b0':'#9b8ec4';
+   const fotoHtml=r.foto?`<img src="${r.foto}" style="width:100%;height:100%;object-fit:cover">`:iniciales;
+   const debeTotal=r.debe;
+   const estadoHtml=debeTotal>0?`<span class="presu-badge debe">Debe $${debeTotal}</span>`:`<span class="presu-badge pagado">Pagado</span>`;
+   const repIdShort='REP-'+r.nombre.substring(0,4).toUpperCase()+'-'+(r.id?r.id.slice(-4):'0000');
+   return `<tr>
+     <td><div class="presu-rep"><div class="presu-avatar" style="background:${col};color:#fff">${fotoHtml}</div><div><b style="font-size:12px">${r.nombre}</b><br><small style="color:#6b7280;font-size:10px">ID: ${repIdShort}</small></div></div></td>
+     <td><b>${r.pedidos}</b></td>
+     <td><b>$${r.total.toLocaleString('es-MX')}</b></td>
+     <td><b>$${r.comision.toLocaleString('es-MX')}</b></td>
+     <td>${estadoHtml}</td>
+   </tr>`;
+  }).join('');
+ }
+ document.getElementById('presuFooter').innerText=`Mostrando ${lista.length} de ${Object.keys(repartidoresDB).length||lista.length} repartidores • Actualizado hoy ${new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}`;
+
+ // Mes view
+ const mesMap={};
+ ventasCache.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; }).forEach(v=>{
+   if(!mesMap[v.repartidor]) mesMap[v.repartidor]={pedidos:0,total:0,comision:0};
+   mesMap[v.repartidor].pedidos++; mesMap[v.repartidor].total+=(v.total||0); mesMap[v.repartidor].comision+=(v.pagaKigoBase??0);
+ });
+ document.getElementById('presuMesLista').innerHTML=Object.entries(mesMap).map(([n,d])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:12px"><b>${n}</b><span>${d.pedidos} pedidos • $${d.total.toLocaleString('es-MX')} • Comisión $${d.comision.toLocaleString('es-MX')}</span></div>`).join('')||'Sin datos este mes';
+
+ // Calendario view simple
+ const calGrid=document.getElementById('presuCalGrid');
+ if(presuTipo==='cal' && calGrid){
+   const diasEnMes=new Date(new Date().getFullYear(), mesSel+1,0).getDate();
+   let html='';
+   for(let i=1;i<=diasEnMes;i++){
+     const fechaStr=`${new Date().getFullYear()}-${String(mesSel+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+     const totalDia=ventasCache.filter(v=>v.fecha===fechaStr).reduce((a,b)=>a+(b.total||0),0);
+     html+=`<div style="background:#fff;border:1px solid #eee;border-radius:8px;padding:6px;text-align:center;font-size:10px"><b>${i}</b><br><small style="color:${totalDia>0?'#0a9a4a':'#999'}">$${totalDia.toLocaleString('es-MX')}</small></div>`;
+   }
+   calGrid.innerHTML=html;
+ }
+ lucide.createIcons();
+}
+
+// REPARTIDORES
+function switchReps(tab){ document.getElementById('repsListado').style.display=tab==='listado'?'block':'none'; document.getElementById('repsNuevo').style.display=tab==='nuevo'?'block':'none'; document.getElementById('repsRanking').style.display=tab==='ranking'?'block':'none'; document.getElementById('rTabListado').className=tab==='listado'?'rep-tab active':'rep-tab'; document.getElementById('rTabNuevo').className=tab==='nuevo'?'rep-tab active':'rep-tab'; document.getElementById('rTabRanking').className=tab==='ranking'?'rep-tab active':'rep-tab'; lucide.createIcons(); }
+function toggleEstadoRep(id){ const r=repartidoresDB[id]; if(!r) return; const nuevo=r.estado==='Disponible'?'Inactivo':'Disponible'; db.ref('repartidores/'+id).update({estado:nuevo}); }
 function renderReps(){
  const buscar=(document.getElementById('buscarRep')?.value||'').toLowerCase();
  let lista=Object.entries(repartidoresDB).map(([id,r])=>({id,...r}));
@@ -356,12 +493,10 @@ function cerrarDel(){ document.getElementById('overlayDel').style.display='none'
 function confirmarDel(){ if(!idEliminar) return; db.ref('ventas/'+idEliminar).remove().then(()=>{ cerrarDel(); }); }
 function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; mesSel=new Date().getMonth(); pagina=1; renderMeses(); aplicarFiltros(); }
 lucide.createIcons();
-
 function registrarVenta(){
  let cliente=document.getElementById('cliente').value.trim();
  let fechaInput=document.getElementById('fechaVenta').value;
  let precio=parseFloat(document.getElementById('precio').value)||0;
- let descuento=parseFloat(document.getElementById('descuento').value)||0;
  let repartidor=document.getElementById('repartidor').value;
  let total=calcTotal();
  if(!cliente||!fechaInput||precio<=0){ alert('Completa datos'); return; }
@@ -369,7 +504,7 @@ function registrarVenta(){
  let pagaKigoBase = tarifa!==null? tarifa : Math.round(total*0.2);
  let ganancia=total-pagaKigoBase;
  const f=new Date(fechaInput+'T12:00:00');
- const data={ cliente, tipo:tipoActual, precio, descuento, total, pagaKigo:pagaKigoBase, pagaKigoBase:pagaKigoBase, tarifaAplicada:pagaKigoBase, ganancia, repartidor, fecha:fechaInput, fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}), timestamp:Date.now(), estado:'Pagado', pedido:'#'+Math.floor(1000+Math.random()*9000) };
+ const data={ cliente, tipo:tipoActual, precio, descuento:parseFloat(document.getElementById('descuento').value)||0, total, pagaKigo:pagaKigoBase, pagaKigoBase:pagaKigoBase, tarifaAplicada:pagaKigoBase, ganancia, repartidor, fecha:fechaInput, fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}), timestamp:Date.now(), estado:'Pagado', pedido:'#'+Math.floor(1000+Math.random()*9000) };
  db.ref('ventas').push(data).then(()=>{
    const ov=document.getElementById('overlayExito'); ov.style.display='flex'; lucide.createIcons(); setTimeout(()=>ov.style.display='none',2000);
    setTimeout(()=>{ document.getElementById('cliente').value=''; document.getElementById('precio').value=''; document.getElementById('descuento').value=''; document.getElementById('repartidor').value=''; document.getElementById('totalTxt').innerText='$ 0.00'; document.getElementById('fechaVenta').value=new Date().toISOString().split('T')[0]; mesSel=new Date(fechaInput+'T12:00:00').getMonth(); renderMeses(); showTab('Historial'); aplicarFiltros(); },2100);
@@ -377,4 +512,4 @@ function registrarVenta(){
 }
 </script>
 </body>
-</html>                                                                                                                                                                                                                                                                                                                                                   
+</html>
