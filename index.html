@@ -73,7 +73,6 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .suggest-box{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #ddd;border-radius:12px;margin-top:6px;z-index:50;max-height:180px;overflow:auto;box-shadow:0 8px 20px rgba(0,0,0,.12);display:none}
 .suggest-item{padding:10px 12px;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f3f4f6}
 .suggest-item:hover{background:#f0fdf4}
-/* REPARTIDORES REDUCIDO */
 .portal-title{display:flex;align-items:center;gap:10px;font-weight:900;font-size:24px;color:#2d3a2e;margin-bottom:16px}
 .portal-icon{width:32px;height:32px;background:#d6ecc0;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .rep-tabs{display:flex;justify-content:center;gap:24px;margin-bottom:18px;flex-wrap:wrap}
@@ -109,15 +108,14 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <div id="overlayCliEdit"><div class="card-modal"><div style="font-weight:900;font-size:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><span>Editar Cliente</span><button onclick="cerrarCliEdit()" style="border:none;background:#f3f4f6;width:28px;height:28px;border-radius:50%;font-weight:800;cursor:pointer">x</button></div>
 <div class="label">Nombre / Empresa</div><input id="ceNombre" class="input" style="padding-right:14px"><div class="label">Dirección</div><input id="ceDir" class="input" style="padding-right:14px"><div class="label">Teléfono</div><input id="ceTel" class="input" style="padding-right:14px"><div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarCliEdit()">Guardar</button><button class="btn-si" onclick="cerrarCliEdit()" style="background:#6b7280">Cancelar</button></div></div></div>
 <div id="overlayCliDel"><div class="card-modal" style="text-align:center"><div style="width:64px;height:64px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="trash-2" style="width:28px;color:#dc2626"></i></div><div style="font-weight:900;font-size:18px">¿Deseas eliminar este cliente?</div><div style="font-size:12px;color:#6b7280;margin-top:6px" id="cliDelName">Esta acción no se puede deshacer</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn-si" onclick="confirmarCliDel()">Sí</button><button class="btn-no" onclick="cerrarCliDel()">No</button></div></div></div>
-
 <div id="overlayRepEdit"><div class="card-modal"><div style="font-weight:900;font-size:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><span id="repEditTitle">Editar Repartidor</span><button onclick="cerrarRepEdit()" style="border:none;background:#f3f4f6;width:28px;height:28px;border-radius:50%;font-weight:800;cursor:pointer">x</button></div>
 <div class="label">Foto Repartidor (desde celular)</div><input id="reFoto" type="file" accept="image/*" capture="environment" class="input" style="padding:8px" onchange="previewFoto(this,'editPreview')"><img id="editPreview" class="foto-preview">
 <div class="label">Nombre</div><input id="reNombre" class="input" style="padding-right:14px">
 <div class="label">Teléfono</div><input id="reTel" class="input" style="padding-right:14px">
 <div class="label">Moto</div><input id="reMoto" class="input" placeholder="Ej: Honda CB125" style="padding-right:14px">
 <div class="label">Estado</div><select id="reEstado" class="input" style="padding-right:14px"><option value="Disponible">Disponible</option><option value="Inactivo">Inactivo</option></select>
-<div class="label">Tarifa Mandado</div><input id="reTarifaM" type="number" class="input" style="padding-right:14px" value="35">
-<div class="label">Tarifa Transporte</div><input id="reTarifaT" type="number" class="input" style="padding-right:14px" value="80">
+<div class="label">Tarifa Mandado (lo que te paga)</div><input id="reTarifaM" type="number" class="input" style="padding-right:14px" value="35">
+<div class="label">Tarifa Transporte (lo que te paga)</div><input id="reTarifaT" type="number" class="input" style="padding-right:14px" value="80">
 <div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarRepEdit()">Guardar</button><button class="btn-si" onclick="cerrarRepEdit()" style="background:#6b7280">Cancelar</button></div>
 </div></div>
 <div id="overlayRepDel"><div class="card-modal" style="text-align:center"><div style="width:64px;height:64px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="trash-2" style="width:28px;color:#dc2626"></i></div><div style="font-weight:900;font-size:18px">¿Deseas eliminar este repartidor?</div><div style="font-size:12px;color:#6b7280;margin-top:6px" id="repDelName">Esta acción no se puede deshacer</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn-si" onclick="confirmarRepDel()">Sí</button><button class="btn-no" onclick="cerrarRepDel()">No</button></div></div></div>
@@ -225,20 +223,6 @@ renderMeses();
 function toggleMeses(){ const b=document.getElementById('bloqueMeses'); b.style.display=b.style.display==='none'?'block':'none'; }
 let filtroTiempo='todos';
 function filtrarTiempo(t){ filtroTiempo=t; document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById('fBusMes').classList.add('active'); document.getElementById(t==='todos'?'fTodos':t==='ayer'?'fAyer':t==='semana'?'fSemana':'fMes').classList.add('active'); pagina=1; aplicarFiltros(); }
-function mostrarExito(){ const ov=document.getElementById('overlayExito'); ov.style.display='flex'; lucide.createIcons(); setTimeout(()=>ov.style.display='none',2000); }
-function registrarVenta(){
- let cliente=document.getElementById('cliente').value.trim();
- let fechaInput=document.getElementById('fechaVenta').value;
- let precio=parseFloat(document.getElementById('precio').value)||0;
- let descuento=parseFloat(document.getElementById('descuento').value)||0;
- let repartidor=document.getElementById('repartidor').value;
- let total=calcTotal();
- if(!cliente||!fechaInput||precio<=0){ alert('Completa datos'); return; }
- let pagaKigo=Math.round(total*0.2); let ganancia=total-pagaKigo;
- const f=new Date(fechaInput+'T12:00:00');
- const data={ cliente, tipo:tipoActual, precio, descuento, total, pagaKigo, ganancia, pagaKigoBase:Math.round(total*0.2), repartidor, fecha:fechaInput, fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}), timestamp:Date.now(), estado:'Pagado', pedido:'#'+Math.floor(1000+Math.random()*9000) };
- db.ref('ventas').push(data).then(()=>{ mostrarExito(); ocultarSugerencias(); setTimeout(()=>{ document.getElementById('cliente').value=''; document.getElementById('precio').value=''; document.getElementById('descuento').value=''; document.getElementById('repartidor').value=''; document.getElementById('totalTxt').innerText='$ 0.00'; resetFechaHoy(); setTipo('moto'); mesSel=new Date(fechaInput+'T12:00:00').getMonth(); renderMeses(); showTab('Historial'); aplicarFiltros(); },2100); });
-}
 </script>
 <script>
 let ventasCache=[], ventasFiltradas=[];
@@ -252,252 +236,145 @@ db.ref('clientes').on('value',s=>{ clientesDB=s.val()||{}; renderClientesImagen(
 db.ref('repartidores').on('value',s=>{ repartidoresDB=s.val()||{}; renderReps(); refreshRepsSelect(); });
 db.ref('ventas').on('value',snap=>{
  const val=snap.val()||{};
- ventasCache=Object.entries(val).map(([id,v])=>({id,...v, pagaKigoBase:v.pagaKigoBase||Math.round((v.total||0)*0.2)})).sort((a,b)=>b.timestamp-a.timestamp);
+ ventasCache=Object.entries(val).map(([id,v])=>({id,...v, pagaKigoBase:v.pagaKigoBase??v.pagaKigo??v.tarifaAplicada??Math.round((v.total||0)*0.2)})).sort((a,b)=>b.timestamp-a.timestamp);
  const repsUnicos=[...new Set(ventasCache.map(v=>v.repartidor).filter(Boolean))];
  document.getElementById('filtroRepartidor').innerHTML='<option value="">Filtrar por Repartidor</option>'+repsUnicos.map(r=>`<option value="${r}">${r}</option>`).join('');
- aplicarFiltros();
- renderClientesImagen();
- renderReps();
+ aplicarFiltros(); renderClientesImagen(); renderReps();
 });
 
-// FOTO PREVIEW
 function previewFoto(input, previewId){
- const file=input.files[0];
- if(!file) return;
+ const file=input.files[0]; if(!file) return;
  const reader=new FileReader();
  reader.onload=e=>{
    document.getElementById(previewId).src=e.target.result;
    document.getElementById(previewId).style.display='block';
-   if(previewId==='nuevoPreview') fotoTempNuevo=e.target.result;
-   else fotoTempEdit=e.target.result;
+   if(previewId==='nuevoPreview') fotoTempNuevo=e.target.result; else fotoTempEdit=e.target.result;
  };
  reader.readAsDataURL(file);
 }
-
-// AUTOCOMPLETADO CLIENTE
-function obtenerNombresClientes(){
- const nombres=new Set();
- Object.values(clientesDB).forEach(c=>{ if(c.nombre) nombres.add(c.nombre); });
- ventasCache.forEach(v=>{ if(v.cliente) nombres.add(v.cliente); });
- return [...nombres];
-}
+function obtenerNombresClientes(){ const nombres=new Set(); Object.values(clientesDB).forEach(c=>{ if(c.nombre) nombres.add(c.nombre); }); ventasCache.forEach(v=>{ if(v.cliente) nombres.add(v.cliente); }); return [...nombres]; }
 function filtrarSugerencias(q){
- const box=document.getElementById('sugerenciasClientes');
- if(!q || q.length<1){ ocultarSugerencias(); return; }
- const todos=obtenerNombresClientes();
- const filtrados=todos.filter(n=>n.toLowerCase().includes(q.toLowerCase())).slice(0,8);
+ const box=document.getElementById('sugerenciasClientes'); if(!q||q.length<1){ ocultarSugerencias(); return; }
+ const todos=obtenerNombresClientes(); const filtrados=todos.filter(n=>n.toLowerCase().includes(q.toLowerCase())).slice(0,8);
  if(!filtrados.length){ ocultarSugerencias(); return; }
- box.innerHTML=filtrados.map(n=>`<div class="suggest-item" onclick="seleccionarCliente('${n.replace(/'/g,"\\'")}')"><span><i data-lucide="user" style="width:12px"></i> ${n}</span><small style="color:#0a9a4a">Usar</small></div>`).join('');
- box.style.display='block';
- lucide.createIcons();
+ box.innerHTML=filtrados.map(n=>`<div class="suggest-item" onclick="seleccionarCliente('${n.replace(/'/g,"\\'")}')"><span>${n}</span><small style="color:#0a9a4a">Usar</small></div>`).join(''); box.style.display='block'; lucide.createIcons();
 }
 function seleccionarCliente(nombre){ document.getElementById('cliente').value=nombre; ocultarSugerencias(); }
 function ocultarSugerencias(){ document.getElementById('sugerenciasClientes').style.display='none'; }
 document.addEventListener('click',e=>{ if(!e.target.closest('#cliente') &&!e.target.closest('#sugerenciasClientes')) ocultarSugerencias(); });
 
 function switchClientes(tab){
- document.getElementById('clientesListado').style.display=tab==='listado'?'block':'none';
- document.getElementById('clientesNuevo').style.display=tab==='nuevo'?'block':'none';
- document.getElementById('clientesRanking').style.display=tab==='ranking'?'block':'none';
- document.getElementById('cTabListado').className=tab==='listado'?'c-tab active':'c-tab';
- document.getElementById('cTabNuevo').className=tab==='nuevo'?'c-tab active':'c-tab';
- document.getElementById('cTabRanking').className=tab==='ranking'?'c-tab active':'c-tab';
- lucide.createIcons();
+ document.getElementById('clientesListado').style.display=tab==='listado'?'block':'none'; document.getElementById('clientesNuevo').style.display=tab==='nuevo'?'block':'none'; document.getElementById('clientesRanking').style.display=tab==='ranking'?'block':'none';
+ document.getElementById('cTabListado').className=tab==='listado'?'c-tab active':'c-tab'; document.getElementById('cTabNuevo').className=tab==='nuevo'?'c-tab active':'c-tab'; document.getElementById('cTabRanking').className=tab==='ranking'?'c-tab active':'c-tab'; lucide.createIcons();
 }
-function guardarNuevoCliente(){
- const nombre=document.getElementById('nCliNombre').value.trim();
- const dir=document.getElementById('nCliDir').value.trim();
- const tel=document.getElementById('nCliTel').value.trim();
- if(!nombre){ alert('Pon nombre'); return; }
- db.ref('clientes').push({nombre, direccion:dir||'sin especificación', telefono:tel||'sin especificación', fecha:Date.now()}).then(()=>{
-   document.getElementById('nCliNombre').value=''; document.getElementById('nCliDir').value=''; document.getElementById('nCliTel').value='';
-   switchClientes('listado');
- });
-}
-function abrirCliEdit(nombre){
- const entry=Object.entries(clientesDB).find(([id,c])=>c.nombre===nombre);
- if(entry){ clienteEditId=entry[0]; document.getElementById('ceNombre').value=entry[1].nombre||''; document.getElementById('ceDir').value=entry[1].direccion||''; document.getElementById('ceTel').value=entry[1].telefono||''; }
- else{ clienteEditId=null; document.getElementById('ceNombre').value=nombre; document.getElementById('ceDir').value='sin especificación'; document.getElementById('ceTel').value='sin especificación'; }
- document.getElementById('overlayCliEdit').style.display='flex'; clienteDelNombre=nombre;
-}
+function guardarNuevoCliente(){ const nombre=document.getElementById('nCliNombre').value.trim(); if(!nombre){ alert('Pon nombre'); return; } db.ref('clientes').push({nombre, direccion:document.getElementById('nCliDir').value.trim()||'sin especificación', telefono:document.getElementById('nCliTel').value.trim()||'sin especificación', fecha:Date.now()}).then(()=>{ document.getElementById('nCliNombre').value=''; document.getElementById('nCliDir').value=''; document.getElementById('nCliTel').value=''; switchClientes('listado'); }); }
+function abrirCliEdit(nombre){ const entry=Object.entries(clientesDB).find(([id,c])=>c.nombre===nombre); if(entry){ clienteEditId=entry[0]; document.getElementById('ceNombre').value=entry[1].nombre||''; document.getElementById('ceDir').value=entry[1].direccion||''; document.getElementById('ceTel').value=entry[1].telefono||''; } else{ clienteEditId=null; document.getElementById('ceNombre').value=nombre; } document.getElementById('overlayCliEdit').style.display='flex'; clienteDelNombre=nombre; }
 function cerrarCliEdit(){ document.getElementById('overlayCliEdit').style.display='none'; clienteEditId=null; }
-function guardarCliEdit(){
- const nuevoNombre=document.getElementById('ceNombre').value.trim();
- if(!nuevoNombre){ alert('Nombre requerido'); return; }
- if(clienteEditId){ db.ref('clientes/'+clienteEditId).update({nombre:nuevoNombre, direccion:document.getElementById('ceDir').value.trim()||'sin especificación', telefono:document.getElementById('ceTel').value.trim()||'sin especificación'}).then(()=>cerrarCliEdit()); }
- else{ db.ref('clientes').push({nombre:nuevoNombre, direccion:document.getElementById('ceDir').value.trim()||'sin especificación', telefono:document.getElementById('ceTel').value.trim()||'sin especificación', fecha:Date.now()}).then(()=>cerrarCliEdit()); }
- if(clienteDelNombre && clienteDelNombre!==nuevoNombre){ ventasCache.filter(v=>v.cliente===clienteDelNombre).forEach(v=>{ db.ref('ventas/'+v.id).update({cliente:nuevoNombre}); }); }
-}
+function guardarCliEdit(){ const nuevoNombre=document.getElementById('ceNombre').value.trim(); if(!nuevoNombre){ alert('Nombre requerido'); return; } if(clienteEditId){ db.ref('clientes/'+clienteEditId).update({nombre:nuevoNombre, direccion:document.getElementById('ceDir').value.trim()||'sin especificación', telefono:document.getElementById('ceTel').value.trim()||'sin especificación'}).then(()=>cerrarCliEdit()); } else{ db.ref('clientes').push({nombre:nuevoNombre, direccion:document.getElementById('ceDir').value.trim()||'sin especificación', telefono:document.getElementById('ceTel').value.trim()||'sin especificación', fecha:Date.now()}).then(()=>cerrarCliEdit()); } if(clienteDelNombre && clienteDelNombre!==nuevoNombre){ ventasCache.filter(v=>v.cliente===clienteDelNombre).forEach(v=>{ db.ref('ventas/'+v.id).update({cliente:nuevoNombre}); }); } }
 function abrirCliDel(nombre){ clienteDelNombre=nombre; const entry=Object.entries(clientesDB).find(([id,c])=>c.nombre===nombre); clienteDelId=entry?entry[0]:null; document.getElementById('cliDelName').innerText='Cliente: '+nombre; document.getElementById('overlayCliDel').style.display='flex'; lucide.createIcons(); }
 function cerrarCliDel(){ document.getElementById('overlayCliDel').style.display='none'; clienteDelId=null; clienteDelNombre=null; }
 function confirmarCliDel(){ if(clienteDelId){ db.ref('clientes/'+clienteDelId).remove(); } cerrarCliDel(); }
-
 function renderClientesImagen(){
- const map={};
- ventasCache.forEach(v=>{ if(!map[v.cliente]) map[v.cliente]={total:0, pedidos:0, ultima:0}; map[v.cliente].total+= (v.total||0); map[v.cliente].pedidos++; map[v.cliente].ultima=Math.max(map[v.cliente].ultima, v.timestamp||0); });
- Object.values(clientesDB).forEach(c=>{ if(!map[c.nombre]) map[c.nombre]={total:0, pedidos:0, ultima:c.fecha||0}; });
- const lista=Object.entries(map).map(([nombre, d])=>{ const extra=Object.values(clientesDB).find(x=>x.nombre===nombre); return { nombre, direccion: extra?extra.direccion:'sin especificación', telefono: extra?extra.telefono:'sin especificación', total:d.total, pedidos:d.pedidos, ultima:d.ultima }; });
+ const map={}; ventasCache.forEach(v=>{ if(!map[v.cliente]) map[v.cliente]={total:0, pedidos:0, ultima:0}; map[v.cliente].total+= (v.total||0); map[v.cliente].pedidos++; map[v.cliente].ultima=Math.max(map[v.cliente].ultima, v.timestamp||0); }); Object.values(clientesDB).forEach(c=>{ if(!map[c.nombre]) map[c.nombre]={total:0, pedidos:0, ultima:c.fecha||0}; });
+ const lista=Object.entries(map).map(([nombre,d])=>{ const extra=Object.values(clientesDB).find(x=>x.nombre===nombre); return { nombre, direccion: extra?extra.direccion:'sin especificación', telefono: extra?extra.telefono:'sin especificación', total:d.total, pedidos:d.pedidos, ultima:d.ultima }; });
  document.getElementById('statTotalClientes').innerText=lista.length;
  const ventasMes=ventasCache.filter(v=>{ const dd=new Date(v.fecha+'T12:00:00'); return dd.getMonth()===mesSel; });
- document.getElementById('statIngMes').innerText='$'+ventasMes.reduce((a,b)=>a+(b.total||0),0).toLocaleString('es-MX');
- document.getElementById('statMesNombre').innerText=mesesN[mesSel];
- document.getElementById('statMesDetalle').innerText=ventasMes.length+' pedidos en '+mesesN[mesSel];
- document.getElementById('statIngTotal').innerText='$'+ventasCache.reduce((a,b)=>a+(b.total||0),0).toLocaleString('es-MX');
- document.getElementById('statIngTotalSub').innerText='hasta hoy • '+ventasCache.length+' pedidos';
- document.getElementById('listaClientesImagen').innerHTML=[...lista].sort((a,b)=>b.total-a.total).map(c=>`
-   <div class="cliente-row">
-    <div class="cliente-row-left"><div class="c-name">${c.nombre}</div><div class="c-meta"><i data-lucide="map-pin" style="width:11px"></i> Dir: ${c.direccion}</div><div class="c-meta"><i data-lucide="phone" style="width:11px"></i> Tel: ${c.telefono}</div></div>
-    <div class="cliente-row-mid"><div style="text-align:center"><div class="c-label">Total pedidos</div><div class="c-val">${c.pedidos}</div></div><div style="text-align:left"><div class="c-label green">Ingresos totales</div><div class="c-val green">$${c.total.toLocaleString('es-MX')}</div></div></div>
-    <div style="display:flex;gap:4px"><button class="acc-btn" onclick="abrirCliEdit('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="pencil" style="width:12px"></i></button><button class="acc-btn" style="border-color:#fca5a5" onclick="abrirCliDel('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:12px;color:#dc2626"></i></button></div>
-   </div>`).join('') || '<div style="text-align:center;color:#999;padding:12px;background:#fff;border-radius:10px;font-size:11px">Sin clientes</div>';
- document.getElementById('rankingLista').innerHTML=[...lista].sort((a,b)=>b.pedidos-a.pedidos).map((c,i)=>`<div class="rank-row"><div style="width:22px;height:22px;background:${i<3?'#FFD700':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${i<3?12:9}px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1"><b style="font-size:11px">${c.nombre}</b><br><small style="color:#6b7280;font-size:9px">${c.pedidos} pedidos</small></div><div style="font-weight:800;color:#0a7a2e;font-size:11px">${c.pedidos}</div></div>`).join('')||'Sin datos';
- lucide.createIcons();
+ document.getElementById('statIngMes').innerText='$'+ventasMes.reduce((a,b)=>a+(b.total||0),0).toLocaleString('es-MX'); document.getElementById('statMesNombre').innerText=mesesN[mesSel]; document.getElementById('statMesDetalle').innerText=ventasMes.length+' pedidos en '+mesesN[mesSel];
+ document.getElementById('statIngTotal').innerText='$'+ventasCache.reduce((a,b)=>a+(b.total||0),0).toLocaleString('es-MX'); document.getElementById('statIngTotalSub').innerText='hasta hoy • '+ventasCache.length+' pedidos';
+ document.getElementById('listaClientesImagen').innerHTML=[...lista].sort((a,b)=>b.total-a.total).map(c=>`<div class="cliente-row"><div class="cliente-row-left"><div class="c-name">${c.nombre}</div><div class="c-meta"><i data-lucide="map-pin" style="width:11px"></i> Dir: ${c.direccion}</div><div class="c-meta"><i data-lucide="phone" style="width:11px"></i> Tel: ${c.telefono}</div></div><div class="cliente-row-mid"><div style="text-align:center"><div class="c-label">Total pedidos</div><div class="c-val">${c.pedidos}</div></div><div style="text-align:left"><div class="c-label green">Ingresos totales</div><div class="c-val green">$${c.total.toLocaleString('es-MX')}</div></div></div><div style="display:flex;gap:4px"><button class="acc-btn" onclick="abrirCliEdit('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="pencil" style="width:12px"></i></button><button class="acc-btn" style="border-color:#fca5a5" onclick="abrirCliDel('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:12px;color:#dc2626"></i></button></div></div>`).join('')||'Sin clientes';
+ document.getElementById('rankingLista').innerHTML=[...lista].sort((a,b)=>b.pedidos-a.pedidos).map((c,i)=>`<div class="rank-row"><div style="width:22px;height:22px;background:${i<3?'#FFD700':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${i<3?12:9}px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1"><b style="font-size:11px">${c.nombre}</b><br><small style="color:#6b7280;font-size:9px">${c.pedidos} pedidos</small></div><div style="font-weight:800;color:#0a7a2e;font-size:11px">${c.pedidos}</div></div>`).join('')||'Sin datos'; lucide.createIcons();
 }
 
-// REPARTIDORES REDUCIDO + TOGGLE + FOTO + SIN PAGINACIÓN
-function switchReps(tab){
- document.getElementById('repsListado').style.display=tab==='listado'?'block':'none';
- document.getElementById('repsNuevo').style.display=tab==='nuevo'?'block':'none';
- document.getElementById('repsRanking').style.display=tab==='ranking'?'block':'none';
- document.getElementById('rTabListado').className=tab==='listado'?'rep-tab active':'rep-tab';
- document.getElementById('rTabNuevo').className=tab==='nuevo'?'rep-tab active':'rep-tab';
- document.getElementById('rTabRanking').className=tab==='ranking'?'rep-tab active':'rep-tab';
- lucide.createIcons();
-}
+function switchReps(tab){ document.getElementById('repsListado').style.display=tab==='listado'?'block':'none'; document.getElementById('repsNuevo').style.display=tab==='nuevo'?'block':'none'; document.getElementById('repsRanking').style.display=tab==='ranking'?'block':'none'; document.getElementById('rTabListado').className=tab==='listado'?'rep-tab active':'rep-tab'; document.getElementById('rTabNuevo').className=tab==='nuevo'?'rep-tab active':'rep-tab'; document.getElementById('rTabRanking').className=tab==='ranking'?'rep-tab active':'rep-tab'; lucide.createIcons(); }
 function getIniciales(nombre){ return nombre.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
-function toggleEstadoRep(id){
- const r=repartidoresDB[id]; if(!r) return;
- const nuevo=r.estado==='Disponible'?'Inactivo':'Disponible';
- db.ref('repartidores/'+id).update({estado:nuevo});
+function toggleEstadoRep(id){ const r=repartidoresDB[id]; if(!r) return; const nuevo=r.estado==='Disponible'?'Inactivo':'Disponible'; db.ref('repartidores/'+id).update({estado:nuevo}); }
+function getTarifaRepartidor(nombreRepartidor, tipo){
+ const entry=Object.values(repartidoresDB).find(r=>r.nombre===nombreRepartidor);
+ if(!entry) return null;
+ if(tipo==='moto') return parseFloat(entry.tarifaM)||35;
+ return parseFloat(entry.tarifaT)||80;
 }
 function renderReps(){
  const buscar=(document.getElementById('buscarRep')?.value||'').toLowerCase();
  let lista=Object.entries(repartidoresDB).map(([id,r])=>({id,...r}));
- // STATS
  document.getElementById('repStatTotal').innerText=lista.length;
  const hoyStr=new Date().toISOString().split('T')[0];
- const activosHoy=[...new Set(ventasCache.filter(v=>v.fecha===hoyStr).map(v=>v.repartidor))].length;
- document.getElementById('repStatActivos').innerText=activosHoy || lista.filter(r=>r.estado==='Disponible').length;
+ document.getElementById('repStatActivos').innerText=[...new Set(ventasCache.filter(v=>v.fecha===hoyStr).map(v=>v.repartidor))].length || lista.filter(r=>r.estado==='Disponible').length;
  document.getElementById('repStatEntregas').innerText=ventasCache.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; }).length;
-
  let filtrada=lista.filter(r=>!buscar || r.nombre.toLowerCase().includes(buscar) || (r.telefono||'').toLowerCase().includes(buscar));
- // SIN PAGINACIÓN: UNO TRAS OTRO
  const cont=document.getElementById('listaRepsImagen');
  if(!filtrada.length){ cont.innerHTML='<div style="text-align:center;color:#999;padding:16px;background:#fff;border-radius:10px;font-size:11px">Sin repartidores</div>'; }
  else{
   cont.innerHTML=filtrada.map(r=>{
-   const disp=r.estado!=='Inactivo';
-   const iniciales=getIniciales(r.nombre);
-   const fotoHtml=r.foto?`<img src="${r.foto}" style="width:100%;height:100%;object-fit:cover">`:iniciales;
-   const bg=r.foto?'#fff':(disp?'#c8e8b5':'#d1d5db');
-   return `
-   <div class="rep-row">
-    <div class="rep-avatar" style="background:${bg};color:${disp?'#2d5a2e':'#6b7280'}">${fotoHtml}</div>
-    <div class="rep-info"><div class="rep-name">${r.nombre}</div><div class="rep-sub"><i data-lucide="phone" style="width:10px"></i> ${r.telefono||''}</div><div class="rep-sub"><i data-lucide="bike" style="width:10px"></i> ${r.moto||'Honda CB125'}</div></div>
-    <div class="rep-badges">
-      <span class="rep-badge">Mandado $${r.tarifaM||35}</span>
-      <span class="rep-badge">Transp $${r.tarifaT||80}</span>
-      <button class="rep-status ${disp?'disp':'inact'}" onclick="toggleEstadoRep('${r.id}')">${disp?'Disponible':'Inactivo'}</button>
-      <button class="rep-btn" onclick="abrirRepEdit('${r.id}')"><i data-lucide="pencil" style="width:10px"></i></button>
-      <button class="rep-btn" onclick="abrirRepDel('${r.id}','${r.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:10px"></i></button>
-    </div>
-   </div>`;
+   const disp=r.estado!=='Inactivo'; const iniciales=getIniciales(r.nombre); const fotoHtml=r.foto?`<img src="${r.foto}" style="width:100%;height:100%;object-fit:cover">`:iniciales; const bg=r.foto?'#fff':(disp?'#c8e8b5':'#d1d5db');
+   return `<div class="rep-row"><div class="rep-avatar" style="background:${bg};color:${disp?'#2d5a2e':'#6b7280'}">${fotoHtml}</div><div class="rep-info"><div class="rep-name">${r.nombre}</div><div class="rep-sub"><i data-lucide="phone" style="width:10px"></i> ${r.telefono||''}</div><div class="rep-sub"><i data-lucide="bike" style="width:10px"></i> ${r.moto||'Honda CB125'}</div></div><div class="rep-badges"><span class="rep-badge">Mandado $${r.tarifaM||35}</span><span class="rep-badge">Transp $${r.tarifaT||80}</span><button class="rep-status ${disp?'disp':'inact'}" onclick="toggleEstadoRep('${r.id}')">${disp?'Disponible':'Inactivo'}</button><button class="rep-btn" onclick="abrirRepEdit('${r.id}')"><i data-lucide="pencil" style="width:10px"></i></button><button class="rep-btn" onclick="abrirRepDel('${r.id}','${r.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:10px"></i></button></div></div>`;
   }).join('');
  }
- // Ranking
  const mapEntregas={}; ventasCache.forEach(v=>{ if(!mapEntregas[v.repartidor]) mapEntregas[v.repartidor]=0; mapEntregas[v.repartidor]++; });
  const ranking=lista.map(r=>({...r, entregas:mapEntregas[r.nombre]||0})).sort((a,b)=>b.entregas-a.entregas);
- document.getElementById('rankingReps').innerHTML=ranking.map((r,i)=>`<div class="rank-row"><div style="width:22px;height:22px;background:${i<3?'#d6ecc0':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1"><b style="font-size:11px">${r.nombre}</b><br><small style="color:#6b7280;font-size:9px">${r.entregas} entregas</small></div><div style="font-weight:800;color:#0a7a2e;font-size:11px">${r.entregas}</div></div>`).join('')||'Sin datos';
- lucide.createIcons();
+ document.getElementById('rankingReps').innerHTML=ranking.map((r,i)=>`<div class="rank-row"><div style="width:22px;height:22px;background:${i<3?'#d6ecc0':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1"><b style="font-size:11px">${r.nombre}</b><br><small style="color:#6b7280;font-size:9px">${r.entregas} entregas • M $${r.tarifaM||35} / T $${r.tarifaT||80}</small></div><div style="font-weight:800;color:#0a7a2e;font-size:11px">${r.entregas}</div></div>`).join('')||'Sin datos'; lucide.createIcons();
 }
-
-function agregarRepNuevo(){
- const nombre=document.getElementById('nuevoRepNombre').value.trim();
- const tel=document.getElementById('nuevoRepTel').value.trim();
- const moto=document.getElementById('nuevoRepMoto').value.trim();
- if(!nombre){ alert('Pon nombre'); return; }
- db.ref('repartidores').push({nombre, telefono:tel||'+52 55 0000 0000', moto:moto||'Honda CB125', estado:'Disponible', tarifaM:35, tarifaT:80, foto:fotoTempNuevo||'', fecha:Date.now()}).then(()=>{
-   document.getElementById('nuevoRepNombre').value=''; document.getElementById('nuevoRepTel').value=''; document.getElementById('nuevoRepMoto').value=''; document.getElementById('nuevoRepFoto').value=''; document.getElementById('nuevoPreview').style.display='none'; fotoTempNuevo='';
-   switchReps('listado');
- });
-}
-function abrirRepEdit(id){
- const r=repartidoresDB[id]; if(!r) return;
- repEditId=id;
- fotoTempEdit=r.foto||'';
- document.getElementById('repEditTitle').innerText='Editar Repartidor';
- document.getElementById('reNombre').value=r.nombre||'';
- document.getElementById('reTel').value=r.telefono||'';
- document.getElementById('reMoto').value=r.moto||'';
- document.getElementById('reEstado').value=r.estado||'Disponible';
- document.getElementById('reTarifaM').value=r.tarifaM||35;
- document.getElementById('reTarifaT').value=r.tarifaT||80;
- const prev=document.getElementById('editPreview');
- if(r.foto){ prev.src=r.foto; prev.style.display='block'; } else { prev.style.display='none'; }
- document.getElementById('reFoto').value='';
- document.getElementById('overlayRepEdit').style.display='flex';
-}
+function agregarRepNuevo(){ const nombre=document.getElementById('nuevoRepNombre').value.trim(); if(!nombre){ alert('Pon nombre'); return; } db.ref('repartidores').push({nombre, telefono:document.getElementById('nuevoRepTel').value.trim()||'+52 55 0000 0000', moto:document.getElementById('nuevoRepMoto').value.trim()||'Honda CB125', estado:'Disponible', tarifaM:35, tarifaT:80, foto:fotoTempNuevo||'', fecha:Date.now()}).then(()=>{ document.getElementById('nuevoRepNombre').value=''; document.getElementById('nuevoRepTel').value=''; document.getElementById('nuevoRepMoto').value=''; document.getElementById('nuevoRepFoto').value=''; document.getElementById('nuevoPreview').style.display='none'; fotoTempNuevo=''; switchReps('listado'); }); }
+function abrirRepEdit(id){ const r=repartidoresDB[id]; if(!r) return; repEditId=id; fotoTempEdit=r.foto||''; document.getElementById('repEditTitle').innerText='Editar Repartidor'; document.getElementById('reNombre').value=r.nombre||''; document.getElementById('reTel').value=r.telefono||''; document.getElementById('reMoto').value=r.moto||''; document.getElementById('reEstado').value=r.estado||'Disponible'; document.getElementById('reTarifaM').value=r.tarifaM||35; document.getElementById('reTarifaT').value=r.tarifaT||80; const prev=document.getElementById('editPreview'); if(r.foto){ prev.src=r.foto; prev.style.display='block'; } else { prev.style.display='none'; } document.getElementById('reFoto').value=''; document.getElementById('overlayRepEdit').style.display='flex'; }
 function cerrarRepEdit(){ document.getElementById('overlayRepEdit').style.display='none'; repEditId=null; fotoTempEdit=''; }
-function guardarRepEdit(){
- if(!repEditId) return;
- const data={ nombre:document.getElementById('reNombre').value.trim(), telefono:document.getElementById('reTel').value.trim(), moto:document.getElementById('reMoto').value.trim(), estado:document.getElementById('reEstado').value, tarifaM:parseFloat(document.getElementById('reTarifaM').value)||35, tarifaT:parseFloat(document.getElementById('reTarifaT').value)||80, foto:fotoTempEdit||repartidoresDB[repEditId].foto||'' };
- if(!data.nombre){ alert('Nombre requerido'); return; }
- db.ref('repartidores/'+repEditId).update(data).then(()=>{ cerrarRepEdit(); });
-}
+function guardarRepEdit(){ if(!repEditId) return; const data={ nombre:document.getElementById('reNombre').value.trim(), telefono:document.getElementById('reTel').value.trim(), moto:document.getElementById('reMoto').value.trim(), estado:document.getElementById('reEstado').value, tarifaM:parseFloat(document.getElementById('reTarifaM').value)||35, tarifaT:parseFloat(document.getElementById('reTarifaT').value)||80, foto:fotoTempEdit||repartidoresDB[repEditId].foto||'' }; if(!data.nombre){ alert('Nombre requerido'); return; } db.ref('repartidores/'+repEditId).update(data).then(()=>{ cerrarRepEdit(); }); }
 function abrirRepDel(id,nombre){ repDelId=id; document.getElementById('repDelName').innerText='Repartidor: '+nombre; document.getElementById('overlayRepDel').style.display='flex'; lucide.createIcons(); }
 function cerrarRepDel(){ document.getElementById('overlayRepDel').style.display='none'; repDelId=null; }
 function confirmarRepDel(){ if(!repDelId) return; db.ref('repartidores/'+repDelId).remove().then(()=>{ cerrarRepDel(); }); }
-function refreshRepsSelect(){
- const sel=document.getElementById('repartidor');
- const lista=Object.values(repartidoresDB).map(r=>r.nombre);
- const unicos=[...new Set([...lista,...JSON.parse(localStorage.getItem('reps')||'[]')])];
- sel.innerHTML='<option value="">Seleccionar repartidor</option>'+unicos.map(r=>`<option value="${r}">${r}</option>`).join('');
-}
+function refreshRepsSelect(){ const sel=document.getElementById('repartidor'); const lista=Object.values(repartidoresDB).map(r=>r.nombre); const unicos=[...new Set([...lista,...JSON.parse(localStorage.getItem('reps')||'[]')])]; sel.innerHTML='<option value="">Seleccionar repartidor</option>'+unicos.map(r=>`<option value="${r}">${r}</option>`).join(''); }
 
-// HISTORIAL
 function aplicarFiltros(){
- let lista=[...ventasCache];
- const q=document.getElementById('buscarCliente').value.toLowerCase();
- const rep=document.getElementById('filtroRepartidor').value;
- const fechaEx=document.getElementById('filtroFechaExacta').value;
+ let lista=[...ventasCache]; const q=document.getElementById('buscarCliente').value.toLowerCase(); const rep=document.getElementById('filtroRepartidor').value; const fechaEx=document.getElementById('filtroFechaExacta').value;
  lista=lista.filter(v=>{ if(!v.fecha) return true; const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; });
  if(filtroTiempo==='ayer'){ const ayer=new Date(); ayer.setDate(ayer.getDate()-1); const ayStr=ayer.toISOString().split('T')[0]; lista=lista.filter(v=>v.fecha===ayStr); }
  if(filtroTiempo==='semana'){ const hace7=new Date(); hace7.setDate(new Date().getDate()-7); lista=lista.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d>=hace7; }); }
- if(q) lista=lista.filter(v=>v.cliente.toLowerCase().includes(q));
- if(rep) lista=lista.filter(v=>v.repartidor===rep);
- if(fechaEx) lista=lista.filter(v=>v.fecha===fechaEx);
- ventasFiltradas=lista;
- renderTablaPaginada();
+ if(q) lista=lista.filter(v=>v.cliente.toLowerCase().includes(q)); if(rep) lista=lista.filter(v=>v.repartidor===rep); if(fechaEx) lista=lista.filter(v=>v.fecha===fechaEx); ventasFiltradas=lista; renderTablaPaginada();
 }
 function renderTablaPaginada(){
- const total=ventasFiltradas.length;
- const totalPags=Math.max(1,Math.ceil(total/POR_PAGINA));
- if(pagina>totalPags) pagina=totalPags;
- document.getElementById('pagActual').innerText=pagina+' / '+totalPags;
- const inicio=(pagina-1)*POR_PAGINA;
- const lista=ventasFiltradas.slice(inicio,inicio+POR_PAGINA);
- const tbody=document.getElementById('tbodyVentas');
- document.getElementById('countOrdenes').innerText=total;
- document.getElementById('mostrandoTxt').innerText=`Mostrando ${lista.length} de ${total} resultados`;
+ const total=ventasFiltradas.length; const totalPags=Math.max(1,Math.ceil(total/POR_PAGINA)); if(pagina>totalPags) pagina=totalPags;
+ document.getElementById('pagActual').innerText=pagina+' / '+totalPags; const inicio=(pagina-1)*POR_PAGINA; const lista=ventasFiltradas.slice(inicio,inicio+POR_PAGINA); const tbody=document.getElementById('tbodyVentas');
+ document.getElementById('countOrdenes').innerText=total; document.getElementById('mostrandoTxt').innerText=`Mostrando ${lista.length} de ${total} resultados`;
  if(!lista.length){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">Sin ventas en '+mesesN[mesSel]+'</td></tr>'; return; }
  tbody.innerHTML=lista.map(v=>{
-   const esPagado=v.estado==='Pagado';
-   const pagaMostrar=esPagado?(v.pagaKigoBase||v.pagaKigo||0):0;
-   const ganMostrar=esPagado?((v.total||0)-pagaMostrar):(v.total||0);
-   return `<tr><td><b>${v.pedido}</b><br><small style="color:#6b7280">${v.fecha}</small></td><td><div style="display:flex;gap:8px;align-items:center"><div style="width:28px;height:28px;background:#0a9a4a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="bike" style="width:14px"></i></div><div><b>${v.cliente}</b><br><small style="color:#6b7280">${v.tipo==='moto'?'Moto Mandado':'Transporte'}</small></div></div></td><td>${v.repartidor||'--'}</td><td><b>$${(v.total||0).toLocaleString('es-MX')}</b></td><td>$${pagaMostrar.toLocaleString('es-MX')}</td><td style="color:#0a9a4a;font-weight:700">$${ganMostrar.toLocaleString('es-MX')}</td><td><button class="${esPagado?'badge-pagado':'badge-debe'}" onclick="toggleEstado('${v.id}')">${esPagado?'Pagado':'Debe'}</button></td><td><button class="acc-btn" onclick="abrirEdit('${v.id}')"><i data-lucide="pencil" style="width:14px"></i></button><button class="acc-btn" style="border-color:#fca5a5" onclick="abrirDel('${v.id}')"><i data-lucide="trash-2" style="width:14px;color:#dc2626"></i></button></td></tr>`;
- }).join('');
- lucide.createIcons();
+   const esPagado=v.estado==='Pagado'; const pagaMostrar=esPagado?(v.pagaKigoBase??v.pagaKigo??0):0; const ganMostrar=esPagado?((v.total||0)-pagaMostrar):(v.total||0);
+   return `<tr><td><b>${v.pedido}</b><br><small style="color:#6b7280">${v.fecha}</small></td><td><div style="display:flex;gap:8px;align-items:center"><div style="width:28px;height:28px;background:#0a9a4a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="bike" style="width:14px"></i></div><div><b>${v.cliente}</b><br><small style="color:#6b7280">${v.tipo==='moto'?'Moto Mandado':'Transporte'} • Cuota $${pagaMostrar}</small></div></div></td><td>${v.repartidor||'--'}</td><td><b>$${(v.total||0).toLocaleString('es-MX')}</b></td><td>$${pagaMostrar.toLocaleString('es-MX')}</td><td style="color:#0a9a4a;font-weight:700">$${ganMostrar.toLocaleString('es-MX')}</td><td><button class="${esPagado?'badge-pagado':'badge-debe'}" onclick="toggleEstado('${v.id}')">${esPagado?'Pagado':'Debe'}</button></td><td><button class="acc-btn" onclick="abrirEdit('${v.id}')"><i data-lucide="pencil" style="width:14px"></i></button><button class="acc-btn" style="border-color:#fca5a5" onclick="abrirDel('${v.id}')"><i data-lucide="trash-2" style="width:14px;color:#dc2626"></i></button></td></tr>`;
+ }).join(''); lucide.createIcons();
 }
 function cambiarPag(dir){ const totalPags=Math.max(1,Math.ceil(ventasFiltradas.length/POR_PAGINA)); pagina+=dir; if(pagina<1) pagina=1; if(pagina>totalPags) pagina=totalPags; renderTablaPaginada(); document.getElementById('tablaWrap').scrollTop=0; }
-function toggleEstado(id){ const v=ventasCache.find(x=>x.id===id); if(!v) return; if(v.estado==='Pagado'){ db.ref('ventas/'+id).update({estado:'Debe', pagaKigo:0, ganancia:v.total}); }else{ const base=v.pagaKigoBase||Math.round((v.total||0)*0.2); db.ref('ventas/'+id).update({estado:'Pagado', pagaKigo:base, ganancia:(v.total||0)-base}); } }
+function toggleEstado(id){ const v=ventasCache.find(x=>x.id===id); if(!v) return; if(v.estado==='Pagado'){ db.ref('ventas/'+id).update({estado:'Debe', pagaKigo:0, ganancia:v.total}); }else{ const base=v.pagaKigoBase??v.pagaKigo??0; db.ref('ventas/'+id).update({estado:'Pagado', pagaKigo:base, ganancia:(v.total||0)-base}); } }
 function abrirEdit(id){ const v=ventasCache.find(x=>x.id===id); if(!v) return; idEditar=id; document.getElementById('ePedido').value=v.pedido||''; document.getElementById('eCliente').value=v.cliente||''; document.getElementById('eFecha').value=v.fecha||''; document.getElementById('eRep').value=v.repartidor||''; document.getElementById('eTipo').value=v.tipo||'moto'; document.getElementById('eTotal').value=v.total||0; document.getElementById('overlayEdit').style.display='flex'; }
 function cerrarEdit(){ document.getElementById('overlayEdit').style.display='none'; idEditar=null; }
-function guardarEdit(){ if(!idEditar) return; const total=parseFloat(document.getElementById('eTotal').value)||0; const base=Math.round(total*0.2); const v=ventasCache.find(x=>x.id===idEditar); const esPagado=v.estado==='Pagado'; const data={ pedido:document.getElementById('ePedido').value, cliente:document.getElementById('eCliente').value, fecha:document.getElementById('eFecha').value, repartidor:document.getElementById('eRep').value, tipo:document.getElementById('eTipo').value, total:total, pagaKigoBase:base, pagaKigo:esPagado?base:0, ganancia:esPagado?total-base:total }; db.ref('ventas/'+idEditar).update(data).then(()=>{ cerrarEdit(); }); }
+function guardarEdit(){
+ if(!idEditar) return; const total=parseFloat(document.getElementById('eTotal').value)||0; const nombreRep=document.getElementById('eRep').value; const tipo=document.getElementById('eTipo').value;
+ const tarifaActual=getTarifaRepartidor(nombreRep, tipo);
+ const base=tarifaActual!==null?tarifaActual:(ventasCache.find(x=>x.id===idEditar)?.pagaKigoBase?? Math.round(total*0.2));
+ const v=ventasCache.find(x=>x.id===idEditar); const esPagado=v.estado==='Pagado';
+ const data={ pedido:document.getElementById('ePedido').value, cliente:document.getElementById('eCliente').value, fecha:document.getElementById('eFecha').value, repartidor:nombreRep, tipo:tipo, total:total, pagaKigoBase:base, pagaKigo:esPagado?base:0, ganancia:esPagado?total-base:total }; db.ref('ventas/'+idEditar).update(data).then(()=>{ cerrarEdit(); });
+}
 function abrirDel(id){ idEliminar=id; document.getElementById('overlayDel').style.display='flex'; lucide.createIcons(); }
 function cerrarDel(){ document.getElementById('overlayDel').style.display='none'; idEliminar=null; }
 function confirmarDel(){ if(!idEliminar) return; db.ref('ventas/'+idEliminar).remove().then(()=>{ cerrarDel(); }); }
 function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; mesSel=new Date().getMonth(); pagina=1; renderMeses(); aplicarFiltros(); }
 lucide.createIcons();
+
+function registrarVenta(){
+ let cliente=document.getElementById('cliente').value.trim();
+ let fechaInput=document.getElementById('fechaVenta').value;
+ let precio=parseFloat(document.getElementById('precio').value)||0;
+ let descuento=parseFloat(document.getElementById('descuento').value)||0;
+ let repartidor=document.getElementById('repartidor').value;
+ let total=calcTotal();
+ if(!cliente||!fechaInput||precio<=0){ alert('Completa datos'); return; }
+ let tarifa=getTarifaRepartidor(repartidor, tipoActual);
+ let pagaKigoBase = tarifa!==null? tarifa : Math.round(total*0.2);
+ let ganancia=total-pagaKigoBase;
+ const f=new Date(fechaInput+'T12:00:00');
+ const data={ cliente, tipo:tipoActual, precio, descuento, total, pagaKigo:pagaKigoBase, pagaKigoBase:pagaKigoBase, tarifaAplicada:pagaKigoBase, ganancia, repartidor, fecha:fechaInput, fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}), timestamp:Date.now(), estado:'Pagado', pedido:'#'+Math.floor(1000+Math.random()*9000) };
+ db.ref('ventas').push(data).then(()=>{
+   const ov=document.getElementById('overlayExito'); ov.style.display='flex'; lucide.createIcons(); setTimeout(()=>ov.style.display='none',2000);
+   setTimeout(()=>{ document.getElementById('cliente').value=''; document.getElementById('precio').value=''; document.getElementById('descuento').value=''; document.getElementById('repartidor').value=''; document.getElementById('totalTxt').innerText='$ 0.00'; document.getElementById('fechaVenta').value=new Date().toISOString().split('T')[0]; mesSel=new Date(fechaInput+'T12:00:00').getMonth(); renderMeses(); showTab('Historial'); aplicarFiltros(); },2100);
+ });
+}
 </script>
 </body>
-</html>                                                                                                                                                                                                                  
+</html>                                                                                                                                                                                                                                                                                                                                                   
