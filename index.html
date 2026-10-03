@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Registro de Venta</title>
+<title>Registro de Venta - Kigo</title>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#f2f4f3}
-.app{max-width:480px;margin:0 auto;background:#f5f5f5;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:90px}
+.app{max-width:900px;margin:0 auto;background:#f5f5f5;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:90px}
 .card{background:#fff;border-radius:20px;margin:12px 14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
 .top-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:#666;margin-bottom:10px}
 .title{color:#0a7a2e;font-weight:900;font-size:28px;letter-spacing:-.5px;margin:6px 0 16px}
+.title-h{color:#111827;font-weight:900;font-size:32px;letter-spacing:-.5px;margin:0}
+.sub-h{color:#6b7280;font-size:14px;margin:4px 0 16px}
 .label{font-size:13px;font-weight:500;color:#333;margin:14px 0 6px}
 .input-wrap{position:relative;display:flex;align-items:center}
 .input{width:100%;padding:12px 38px 12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:14px;background:#fff;outline:none}
@@ -21,18 +23,37 @@
 .tipo-box{display:flex;gap:8px}
 .tipo{flex:1;padding:11px;border-radius:12px;border:1.5px solid #0a7a2e;background:#fff;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer}
 .tipo.active{background:#0a7a2e;color:#fff}
-.tipo.active i{color:#fff!important}
 .total-box{background:#d1e7d6;border:1.5px solid #a3c9a8;border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
 .btn-reg{width:100%;margin-top:16px;background:#0a7a2e;color:#fff;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #eee;display:flex;padding:8px 0 12px;z-index:10}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:900px;background:#fff;border-top:1px solid #eee;display:flex;padding:8px 0 12px;z-index:10}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer;font-weight:600;border:none;background:transparent}
 .nav-item.active{color:#0a7a2e}
-.dot{width:6px;height:6px;background:#0a7a2e;border-radius:50%;margin-bottom:2px}
+/* HISTORIAL NUEVO */
+.filtros-top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filtro-tab{padding:10px 16px;border-radius:12px;border:1.5px solid #d1d5db;background:#fff;font-weight:600;font-size:13px;cursor:pointer}
+.filtro-tab.active{background:#0a9a4a;color:#fff;border-color:#0a9a4a;box-shadow:0 2px 8px rgba(10,154,74,.3)}
+.meses-title{font-size:12px;font-weight:700;color:#6b7280;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+.meses-box{display:flex;gap:6px;flex-wrap:wrap}
+.mes{padding:8px 12px;border-radius:10px;border:1.5px solid #d1d5db;background:#fff;font-size:13px;font-weight:600;cursor:pointer}
+.mes.active{background:#0a9a4a;color:#fff;border-color:#0a9a4a}
+.mes.past{background:#f3f4f6;color:#9ca3af}
+.barra-filtros{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;padding:8px;display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.search-input{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #d1d5db;border-radius:10px;padding:8px 12px;flex:1;min-width:140px}
+.search-input input,.search-input select{border:none;outline:none;font-size:13px;width:100%;background:transparent}
+.btn-limpiar{background:#0a9a4a;color:#fff;border:none;border-radius:10px;padding:9px 12px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.tabla-wrap{overflow:auto;margin-top:14px;border-radius:12px;border:1px solid #eee}
+table{width:100%;border-collapse:collapse;min-width:800px}
+th{font-size:11px;color:#6b7280;background:#f9fafb;padding:10px 12px;text-align:left;font-weight:700}
+td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:middle}
+.badge-pagado{background:#0a9a4a;color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.badge-debe{background:#dc2626;color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700}
+.acc-btn{width:30px;height:30px;border-radius:8px;border:1px solid #ddd;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin-right:4px}
 </style>
 </head>
 <body>
 <div class="app">
 
+<!-- REGISTRO -->
 <div id="vistaRegistro" class="card">
 <div class="top-line"><span id="fechaTop">02 Oct 2026 - 9:41 PM</span><span style="display:flex;align-items:center;gap:4px"><i data-lucide="sun" style="width:14px;height:14px;color:#f59e0b"></i> 24°C</span></div>
 <div class="title">Registro de Venta</div>
@@ -41,6 +62,12 @@
 <div class="input-wrap">
 <input id="cliente" class="input" placeholder="Ej: Juan Pérez" oninput="calcTotal()">
 <button class="btn-x" onclick="clearInput('cliente')">x</button>
+</div>
+
+<div class="label">Fecha</div>
+<div class="input-wrap">
+<input id="fechaVenta" type="date" class="input">
+<button class="btn-x" onclick="resetFechaHoy()">x</button>
 </div>
 
 <div class="label">Tipo de Servicio</div>
@@ -57,12 +84,7 @@
 
 <div class="label">Repartidor</div>
 <div class="input-wrap">
-<select id="repartidor" class="input" style="padding-right:38px">
-<option value="">Seleccionar repartidor</option>
-<option value="Juan">Juan</option>
-<option value="Carlos">Carlos</option>
-<option value="Luis">Luis</option>
-</select>
+<select id="repartidor" class="input"><option value="">Seleccionar repartidor</option></select>
 <button class="btn-x" onclick="clearInput('repartidor')">x</button>
 </div>
 
@@ -73,44 +95,75 @@
 </div>
 
 <div class="total-box">
-<span style="font-size:14px">Total</span>
+<span>Total</span>
 <span id="totalTxt" style="font-size:28px;font-weight:900;color:#0a7a2e">$ 0.00</span>
 </div>
 
 <button class="btn-reg" onclick="registrarVenta()"><i data-lucide="check" style="width:20px"></i> Registrar Venta</button>
 </div>
 
+<!-- HISTORIAL NUEVO COMO IMAGEN -->
 <div id="vistaHistorial" class="card" style="display:none">
-<div class="title" style="font-size:22px">Historial</div>
-<div id="listaVentas"></div>
+<div class="title-h">Historial de Ventas</div>
+<div class="sub-h">Historial de pedidos y pagos • <span id="mesTitulo">Octubre 2026</span></div>
+
+<div class="filtros-top">
+<button class="filtro-tab active" onclick="filtrarTiempo('todos')" id="fTodos">Todos</button>
+<button class="filtro-tab" onclick="filtrarTiempo('ayer')" id="fAyer">Ayer</button>
+<button class="filtro-tab" onclick="filtrarTiempo('semana')" id="fSemana">Esta Semana</button>
+<button class="filtro-tab" onclick="filtrarTiempo('mes')" id="fMes">Este Mes</button>
+<button class="filtro-tab active" style="background:#0a9a4a;color:#fff" onclick="toggleMeses()" id="fBusMes">Búsqueda por Mes</button>
+</div>
+
+<div id="bloqueMeses">
+<div class="meses-title"><i data-lucide="calendar" style="width:14px"></i> MESES DE 2026</div>
+<div class="meses-box" id="mesesBox"></div>
+</div>
+
+<div class="barra-filtros">
+<div class="search-input"><i data-lucide="search" style="width:16px"></i><input id="buscarCliente" placeholder="Buscar por Cliente" oninput="aplicarFiltros()"></div>
+<div class="search-input"><i data-lucide="users" style="width:16px"></i><select id="filtroRepartidor" onchange="aplicarFiltros()"><option value="">Filtrar por Repartidor</option></select></div>
+<div class="search-input"><i data-lucide="calendar" style="width:16px"></i><select id="filtroMesAnio" onchange="aplicarFiltros()"><option>Octubre 2026</option></select></div>
+<div class="search-input"><i data-lucide="calendar-days" style="width:16px"></i><input id="filtroFechaExacta" type="date" value="2026-10-02" onchange="aplicarFiltros()"></div>
+<button class="btn-limpiar" onclick="limpiarFiltros()"><i data-lucide="plus-circle" style="width:16px"></i> Limpiar filtros</button>
+</div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+<div style="font-weight:800">Órdenes (<span id="countOrdenes">0</span>)</div>
+<div style="font-size:12px;color:#666">Ordenado por: <b style="color:#0a7a2e">Número más alto</b> <i data-lucide="arrow-up-down" style="width:14px;color:#0a7a2e"></i></div>
+</div>
+
+<div class="tabla-wrap">
+<table>
+<thead><tr><th>PEDIDO</th><th>CLIENTE Y SERVICIO</th><th>REPARTIDOR</th><th>TOTAL</th><th>PAGA A KIGO</th><th>GANANCIA</th><th>ESTADO</th><th>ACCIONES</th></tr></thead>
+<tbody id="tbodyVentas"></tbody>
+</table>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:#666">
+<span id="mostrandoTxt">Mostrando 0 de 0 resultados</span>
+<div style="display:flex;gap:6px"><button class="filtro-tab" style="padding:6px 10px">‹ Anterior</button><button class="filtro-tab active" style="padding:6px 14px">1</button><button class="filtro-tab" style="padding:6px 10px">Siguiente ›</button></div>
+</div>
 </div>
 
 <div id="vistaClientes" class="card" style="display:none">
-<div class="title" style="font-size:22px">Clientes</div>
-<div id="listaClientes" style="font-size:13px;color:#666">Se genera automático al registrar</div>
+<div class="title-h" style="font-size:22px">Clientes</div>
+<div id="listaClientes"></div>
 </div>
-
 <div id="vistaRepartidores" class="card" style="display:none">
-<div class="title" style="font-size:22px">Repartidores</div>
+<div class="title-h" style="font-size:22px">Repartidores</div>
 <div style="display:flex;gap:8px;margin-top:10px">
-<div style="position:relative;flex:1">
-<input id="nuevoRep" class="input" placeholder="Nombre repartidor">
-<button class="btn-x" onclick="clearInput('nuevoRep')">x</button>
-</div>
+<div style="position:relative;flex:1"><input id="nuevoRep" class="input" placeholder="Nombre repartidor"><button class="btn-x" onclick="clearInput('nuevoRep')">x</button></div>
 <button onclick="addRepartidor()" style="background:#0a7a2e;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800"><i data-lucide="plus" style="width:18px"></i></button>
 </div>
 <div id="listaReps" style="margin-top:12px"></div>
 </div>
-
 </div>
-
 <div class="nav">
-<button id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><div class="dot"></div><i data-lucide="clipboard-edit" style="width:20px"></i> Registro</button>
+<button id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><i data-lucide="clipboard-edit" style="width:20px"></i> Registro</button>
 <button id="navHistorial" class="nav-item" onclick="showTab('Historial')"><i data-lucide="clock" style="width:20px"></i> Historial</button>
 <button id="navClientes" class="nav-item" onclick="showTab('Clientes')"><i data-lucide="users" style="width:20px"></i> Clientes</button>
 <button id="navRepartidores" class="nav-item" onclick="showTab('Repartidores')"><i data-lucide="user-cog" style="width:20px"></i> Repartidores</button>
 </div>
-
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyAsRa2QW9-l3vuh_mWa0ZhJh6ZSPNRRIkM",
@@ -125,47 +178,52 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 let tipoActual='moto';
 function clearInput(id){ const el=document.getElementById(id); el.value=''; if(el.tagName==='SELECT') el.selectedIndex=0; calcTotal(); }
+function resetFechaHoy(){ const hoy=new Date().toISOString().split('T')[0]; document.getElementById('fechaVenta').value=hoy; }
 function setTipo(t){ tipoActual=t; document.getElementById('btnMoto').className=t==='moto'?'tipo active':'tipo'; document.getElementById('btnTrans').className=t==='transporte'?'tipo active':'tipo'; lucide.createIcons(); }
-function calcTotal(){
- let p=parseFloat(document.getElementById('precio').value)||0;
- let d=parseFloat(document.getElementById('descuento').value)||0;
- let tot=p-d; if(tot<0) tot=0;
- document.getElementById('totalTxt').innerText='$ '+tot.toFixed(2);
- return tot;
-}
-function showTab(n){
- document.getElementById('vistaRegistro').style.display=n==='Registro'?'block':'none';
- document.getElementById('vistaHistorial').style.display=n==='Historial'?'block':'none';
- document.getElementById('vistaClientes').style.display=n==='Clientes'?'block':'none';
- document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none';
- document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
- document.getElementById('nav'+n).classList.add('active');
- window.scrollTo(0,0);
-}
+function calcTotal(){ let p=parseFloat(document.getElementById('precio').value)||0; let d=parseFloat(document.getElementById('descuento').value)||0; let tot=p-d; if(tot<0) tot=0; document.getElementById('totalTxt').innerText='$ '+tot.toFixed(2); return tot; }
+function showTab(n){ document.getElementById('vistaRegistro').style.display=n==='Registro'?'block':'none'; document.getElementById('vistaHistorial').style.display=n==='Historial'?'block':'none'; document.getElementById('vistaClientes').style.display=n==='Clientes'?'block':'none'; document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none'; document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active')); document.getElementById('nav'+n).classList.add('active'); window.scrollTo(0,0); }
+// Fecha automatica hoy
+(function(){ const hoy=new Date().toISOString().split('T')[0]; document.getElementById('fechaVenta').value=hoy; document.getElementById('filtroFechaExacta').value=hoy; const ahora=new Date(); document.getElementById('fechaTop').innerText=ahora.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+ahora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}); })();
+// Meses 2026
+const mesesN=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+let mesSel=9; // Octubre
+function renderMeses(){ document.getElementById('mesesBox').innerHTML=mesesN.map((m,i)=>`<button class="mes ${i<=mesSel?'active':''}" onclick="selMes(${i})">${m}</button>`).join(''); }
+function selMes(i){ mesSel=i; renderMeses(); document.getElementById('mesTitulo').innerText=mesesN[i]+' 2026'; document.getElementById('filtroMesAnio').innerHTML=`<option>${mesesN[i]} 2026</option>`; aplicarFiltros(); }
+renderMeses();
+function toggleMeses(){ const b=document.getElementById('bloqueMeses'); b.style.display=b.style.display==='none'?'block':'none'; }
+function filtrarTiempo(t){ document.querySelectorAll('.filtros-top.filtro-tab').forEach(b=>b.classList.remove('active')); if(t==='todos') document.getElementById('fTodos').classList.add('active'); if(t==='ayer') document.getElementById('fAyer').classList.add('active'); if(t==='semana') document.getElementById('fSemana').classList.add('active'); if(t==='mes') document.getElementById('fMes').classList.add('active'); filtroTiempo=t; aplicarFiltros(); }
+let filtroTiempo='todos';
 </script>
 <script>
 function registrarVenta(){
  let cliente=document.getElementById('cliente').value.trim();
+ let fechaInput=document.getElementById('fechaVenta').value;
  let precio=parseFloat(document.getElementById('precio').value)||0;
  let descuento=parseFloat(document.getElementById('descuento').value)||0;
  let repartidor=document.getElementById('repartidor').value;
  let total=calcTotal();
  if(!cliente){ alert('Pon nombre del cliente'); return; }
+ if(!fechaInput){ alert('Pon fecha'); return; }
  if(precio<=0){ alert('Pon precio'); return; }
+ let pagaKigo=Math.round(total*0.2);
+ let ganancia=total-pagaKigo;
+ const f=new Date(fechaInput+'T12:00:00');
  const data={
-   cliente, tipo:tipoActual, precio, descuento, total, repartidor,
-   fecha:new Date().toISOString().split('T')[0],
-   fechaTxt:new Date().toLocaleString('es-MX'),
-   timestamp:Date.now()
+   cliente, tipo:tipoActual, precio, descuento, total, pagaKigo, ganancia, repartidor,
+   fecha:fechaInput,
+   fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' • '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}),
+   timestamp:f.getTime(),
+   estado:'Pagado',
+   pedido:'#'+Math.floor(1000+Math.random()*9000)
  };
  db.ref('ventas').push(data).then(()=>{
-   // limpiar con X automatico
    document.getElementById('cliente').value='';
    document.getElementById('precio').value='';
    document.getElementById('descuento').value='';
    document.getElementById('repartidor').value='';
+   resetFechaHoy();
    calcTotal();
-   lucide.createIcons();
+   showTab('Historial');
  });
 }
 
@@ -173,31 +231,52 @@ let ventasCache=[];
 db.ref('ventas').on('value',snap=>{
  const val=snap.val()||{};
  ventasCache=Object.entries(val).map(([id,v])=>({id,...v})).sort((a,b)=>b.timestamp-a.timestamp);
- renderHistorial();
+ // llenar filtro repartidor
+ const repsUnicos=[...new Set(ventasCache.map(v=>v.repartidor).filter(Boolean))];
+ document.getElementById('filtroRepartidor').innerHTML='<option value="">Filtrar por Repartidor</option>'+repsUnicos.map(r=>`<option value="${r}">${r}</option>`).join('');
+ aplicarFiltros();
  renderClientes();
 });
 
-function renderHistorial(){
- const box=document.getElementById('listaVentas');
- if(!ventasCache.length){ box.innerHTML='<div style="text-align:center;color:#999;padding:20px">Sin ventas</div>'; return; }
- box.innerHTML=ventasCache.map(v=>`
-  <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
-    <div style="width:36px;height:36px;background:#0a7a2e;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="${v.tipo==='moto'?'bike':'car'}" style="width:18px"></i></div>
-    <div style="flex:1">
-      <div style="font-weight:800;font-size:13px">${v.cliente} - ${v.tipo==='moto'?'Moto Mandado':'Transporte'}</div>
-      <div style="font-size:11px;color:#666">${v.fechaTxt} • ${v.repartidor||'Sin rep'}</div>
-      <div style="font-size:12px;color:#0a7a2e;font-weight:800">$${v.total} ${v.descuento>0?`(Desc $${v.descuento})`:''}</div>
-    </div>
-    <button onclick="borrarVenta('${v.id}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer"><i data-lucide="x" style="width:14px"></i></button>
-  </div>
+function aplicarFiltros(){
+ let lista=[...ventasCache];
+ const q=document.getElementById('buscarCliente').value.toLowerCase();
+ const rep=document.getElementById('filtroRepartidor').value;
+ const fechaEx=document.getElementById('filtroFechaExacta').value;
+ // filtro por mes seleccionado
+ lista=lista.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel && d.getFullYear()===2026; });
+ if(filtroTiempo==='ayer'){ const ayer=new Date(); ayer.setDate(ayer.getDate()-1); const ayStr=ayer.toISOString().split('T')[0]; lista=lista.filter(v=>v.fecha===ayStr); }
+ if(filtroTiempo==='semana'){ const hoy=new Date(); const hace7=new Date(); hace7.setDate(hoy.getDate()-7); lista=lista.filter(v=>{ const d=new Date(v.fecha); return d>=hace7; }); }
+ if(filtroTiempo==='mes'){ /* ya filtrado por mes */ }
+ if(q) lista=lista.filter(v=>v.cliente.toLowerCase().includes(q));
+ if(rep) lista=lista.filter(v=>v.repartidor===rep);
+ if(fechaEx) lista=lista.filter(v=>v.fecha===fechaEx);
+ renderTabla(lista);
+}
+
+function renderTabla(lista){
+ const tbody=document.getElementById('tbodyVentas');
+ document.getElementById('countOrdenes').innerText=lista.length;
+ document.getElementById('mostrandoTxt').innerText=`Mostrando ${lista.length} de ${lista.length} resultados`;
+ if(!lista.length){ tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">Sin resultados</td></tr>'; return; }
+ tbody.innerHTML=lista.map((v,i)=>`
+  <tr>
+    <td><b>${v.pedido||'#'+(1248-i)}</b><br><small style="color:#6b7280;display:flex;align-items:center;gap:4px"><i data-lucide="calendar" style="width:12px"></i> ${v.fecha} • ${v.fechaTxt.split('•')[1]||''}</small></td>
+    <td><div style="display:flex;gap:8px;align-items:center"><div style="width:28px;height:28px;background:#0a9a4a;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="bike" style="width:14px"></i></div><div><b>${v.cliente}</b><br><small style="color:#6b7280">Motocicleta • ${v.tipo==='moto'?'Entrega Express':'Entrega Estándar'}</small></div></div></td>
+    <td>${v.repartidor||'--'}</td>
+    <td><b>$${(v.total||0).toLocaleString('es-MX')}</b></td>
+    <td>$${(v.pagaKigo||0).toLocaleString('es-MX')}</td>
+    <td style="color:#0a9a4a;font-weight:700">$${(v.ganancia||0).toLocaleString('es-MX')}</td>
+    <td>${v.estado==='Pagado'?'<span class="badge-pagado"><i data-lucide="check-circle" style="width:14px"></i> Pagado</span>':'<span class="badge-debe">Debe</span>'}</td>
+    <td><button class="acc-btn" onclick="editarEstado('${v.id}')"><i data-lucide="pencil" style="width:14px"></i></button><button class="acc-btn" style="border-color:#fca5a5" onclick="borrarVenta('${v.id}')"><i data-lucide="trash-2" style="width:14px;color:#dc2626"></i></button></td>
+  </tr>
  `).join('');
  lucide.createIcons();
 }
 
-function borrarVenta(id){
- if(!confirm('¿Borrar esta venta?')) return;
- db.ref('ventas/'+id).remove();
-}
+function borrarVenta(id){ if(!confirm('¿Borrar esta venta?')) return; db.ref('ventas/'+id).remove(); }
+function editarEstado(id){ const v=ventasCache.find(x=>x.id===id); if(!v) return; const nuevo=v.estado==='Pagado'?'Debe':'Pagado'; db.ref('ventas/'+id).update({estado:nuevo}); }
+function limpiarFiltros(){ document.getElementById('buscarCliente').value=''; document.getElementById('filtroRepartidor').value=''; document.getElementById('filtroFechaExacta').value=''; filtroTiempo='todos'; document.querySelectorAll('.filtro-tab').forEach(b=>b.classList.remove('active')); document.getElementById('fTodos').classList.add('active'); mesSel=new Date().getMonth(); renderMeses(); aplicarFiltros(); }
 
 function renderClientes(){
  const map={};
@@ -209,16 +288,12 @@ function renderClientes(){
   <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
     <div style="width:32px;height:32px;background:#fff;border:1px solid #ddd;border-radius:50%;display:flex;align-items:center;justify-content:center"><i data-lucide="user" style="width:16px"></i></div>
     <div style="flex:1"><b>${nombre}</b><br><small>${d.veces} compras - $${d.total.toFixed(2)}</small></div>
-    <button onclick="borrarCliente('${nombre}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900;display:flex;align-items:center;justify-content:center"><i data-lucide="trash-2" style="width:14px"></i></button>
+    <button onclick="borrarCliente('${nombre}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;display:flex;align-items:center;justify-content:center"><i data-lucide="x" style="width:14px"></i></button>
   </div>
  `).join('');
  lucide.createIcons();
 }
-
-function borrarCliente(nombre){
- if(!confirm('¿Borrar todas las ventas de '+nombre+'?')) return;
- ventasCache.filter(v=>v.cliente===nombre).forEach(v=>{ db.ref('ventas/'+v.id).remove(); });
-}
+function borrarCliente(nombre){ if(!confirm('¿Borrar todas las ventas de '+nombre+'?')) return; ventasCache.filter(v=>v.cliente===nombre).forEach(v=>{ db.ref('ventas/'+v.id).remove(); }); }
 
 let reps=JSON.parse(localStorage.getItem('reps')||'["Juan","Carlos","Luis"]');
 function refreshReps(){
@@ -227,22 +302,14 @@ function refreshReps(){
  document.getElementById('listaReps').innerHTML=reps.map(r=>`
   <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
     <span style="display:flex;align-items:center;gap:8px;font-weight:600"><i data-lucide="bike" style="width:16px"></i> ${r}</span>
-    <button onclick="borrarRep('${r}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900;display:flex;align-items:center;justify-content:center"><i data-lucide="x" style="width:14px"></i></button>
+    <button onclick="borrarRep('${r}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;display:flex;align-items:center;justify-content:center"><i data-lucide="x" style="width:14px"></i></button>
   </div>
  `).join('');
  lucide.createIcons();
 }
-function addRepartidor(){
- let n=document.getElementById('nuevoRep').value.trim();
- if(!n) return;
- reps.push(n); localStorage.setItem('reps',JSON.stringify(reps)); document.getElementById('nuevoRep').value=''; refreshReps();
-}
-function borrarRep(n){
- reps=reps.filter(r=>r!==n); localStorage.setItem('reps',JSON.stringify(reps)); refreshReps();
-}
+function addRepartidor(){ let n=document.getElementById('nuevoRep').value.trim(); if(!n) return; reps.push(n); localStorage.setItem('reps',JSON.stringify(reps)); document.getElementById('nuevoRep').value=''; refreshReps(); }
+function borrarRep(n){ reps=reps.filter(r=>r!==n); localStorage.setItem('reps',JSON.stringify(reps)); refreshReps(); }
 refreshReps();
-const ahora=new Date();
-document.getElementById('fechaTop').innerText=ahora.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+ahora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true});
 lucide.createIcons();
 </script>
 </body>
