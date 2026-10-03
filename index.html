@@ -51,26 +51,26 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
 .btn-si{background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;flex:1;cursor:pointer}
 .btn-no{background:#0a9a4a;color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;flex:1;cursor:pointer}
-/* ESTILOS NUEVOS CLIENTES COMO IMAGEN */
-.clientes-tabs{display:flex;gap:10px;overflow:auto;padding-bottom:4px;margin-bottom:18px}
-.c-tab{padding:12px 22px;border-radius:50px;border:1.5px solid #d1d5db;background:#d1d5db;white-space:nowrap;font-weight:700;font-size:15px;color:#6b7280;display:flex;align-items:center;gap:8px;cursor:pointer}
-.c-tab.active{background:#fff;border-color:#0a9a4a;color:#0a7a2e;box-shadow:0 0 12px rgba(10,154,74,.25)}
-.stats-clientes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+/* CLIENTES REDUCIDO */
+.clientes-tabs{display:flex;gap:8px;overflow:auto;padding-bottom:4px;margin-bottom:14px}
+.c-tab{padding:9px 16px;border-radius:50px;border:1.5px solid #d1d5db;background:#d1d5db;white-space:nowrap;font-weight:700;font-size:13px;color:#6b7280;display:flex;align-items:center;gap:6px;cursor:pointer}
+.c-tab.active{background:#fff;border-color:#0a9a4a;color:#0a7a2e;box-shadow:0 0 10px rgba(10,154,74,.22)}
+.stats-clientes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
 @media(max-width:700px){.stats-clientes{grid-template-columns:1fr;}}
-.stat-card{background:radial-gradient(ellipse at top, #1a2e1f 0%, #000 60%);border:2px solid #0a9a4a;border-radius:16px;padding:18px 16px;color:#fff;box-shadow:0 0 18px rgba(10,154,74,.35)}
-.stat-card.s-top{display:flex;align-items:center;gap:8px;font-size:13px;color:#86efac;font-weight:600}
-.stat-card.s-num{font-size:42px;font-weight:900;text-align:center;margin:6px 0 2px;line-height:1}
-.stat-card.s-sub{font-size:12px;text-align:center;color:#a7f3d0}
-.cliente-row{background:#fff;border-radius:16px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 14px rgba(0,0,0,.07);margin-bottom:12px;gap:10px}
-.cliente-row.c-left{flex:1}
-.cliente-row.c-name{font-weight:800;font-size:17px;color:#111827;margin-bottom:4px}
-.cliente-row.c-meta{display:flex;align-items:center;gap:6px;font-size:12px;color:#374151;margin-top:3px}
-.cliente-row.c-center{text-align:center;min-width:110px}
-.cliente-row.c-right{text-align:right;min-width:120px}
-.c-label{font-size:12px;color:#6b7280}
-.c-val{font-size:20px;font-weight:700;color:#374151}
-.c-val.green{color:#111827;font-size:22px}
-.c-label.green{color:#0a7a2e;font-weight:700}
+.stat-card{background:radial-gradient(ellipse at top, #1a2e1f 0%, #000 65%);border:1.5px solid #0a9a4a;border-radius:14px;padding:14px 12px;color:#fff;box-shadow:0 0 14px rgba(10,154,74,.28)}
+.s-top{display:flex;align-items:center;gap:6px;font-size:11px;color:#86efac;font-weight:600}
+.s-num{font-size:30px;font-weight:900;text-align:center;margin:4px 0 1px;line-height:1}
+.s-sub{font-size:10px;text-align:center;color:#a7f3d0}
+.cliente-row{background:#fff;border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:1.6fr.6fr.8fr;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:8px;gap:8px}
+.c-name{font-weight:800;font-size:13px;color:#111827;margin-bottom:2px}
+.c-meta{display:flex;align-items:center;gap:4px;font-size:10px;color:#374151;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-center{text-align:center}
+.c-right{text-align:right}
+.c-label{font-size:10px;color:#6b7280}
+.c-label.green{color:#0a7a2e;font-weight:700;font-size:10px}
+.c-val{font-size:14px;font-weight:700;color:#374151}
+.c-val.green{color:#111827;font-size:15px;font-weight:800}
+.rank-row{background:#fff;border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,.05);margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -104,35 +104,24 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:12px;color:#666"><span id="mostrandoTxt">Mostrando 0 de 0 resultados</span><div style="display:flex;gap:6px"><button class="filtro-tab" style="padding:6px 10px" onclick="cambiarPag(-1)">‹ Anterior</button><button class="filtro-tab active" style="padding:6px 14px" id="pagActual">1</button><button class="filtro-tab" style="padding:6px 10px" onclick="cambiarPag(1)">Siguiente ›</button></div></div>
 </div>
 
-<!-- CLIENTES NUEVO COMO IMAGEN -->
 <div id="vistaClientes" class="card" style="display:none;background:#f5f5f5;box-shadow:none">
 <div class="clientes-tabs">
-<button id="cTabListado" class="c-tab active" onclick="switchClientes('listado')"><i data-lucide="list-ordered" style="width:18px"></i> Listado de Clientes</button>
-<button id="cTabNuevo" class="c-tab" onclick="switchClientes('nuevo')"><i data-lucide="plus" style="width:18px"></i> Agregar Nuevo</button>
-<button id="cTabRanking" class="c-tab" onclick="switchClientes('ranking')"><i data-lucide="trophy" style="width:18px"></i> Ranking</button>
+<button id="cTabListado" class="c-tab active" onclick="switchClientes('listado')"><i data-lucide="list-ordered" style="width:16px"></i> Listado de Clientes</button>
+<button id="cTabNuevo" class="c-tab" onclick="switchClientes('nuevo')"><i data-lucide="plus" style="width:16px"></i> Agregar Nuevo</button>
+<button id="cTabRanking" class="c-tab" onclick="switchClientes('ranking')"><i data-lucide="trophy" style="width:16px"></i> Ranking</button>
 </div>
 
 <div id="clientesListado">
 <div class="stats-clientes">
-<div class="stat-card"><div class="s-top"><i data-lucide="trending-up" style="width:18px"></i> Total Clientes</div><div class="s-num" id="statTotalClientes">0</div><div class="s-sub">registrados</div></div>
-<div class="stat-card"><div class="s-top"><i data-lucide="user" style="width:18px"></i> Activos Hoy</div><div class="s-num" id="statActivosHoy">0</div><div class="s-sub" id="statSemana">+0 esta semana</div></div>
-<div class="stat-card"><div class="s-top"><i data-lucide="percent" style="width:18px"></i> Tasa Conversión</div><div class="s-num" id="statTasa">0%</div><div class="s-sub">promedio global</div></div>
+<div class="stat-card"><div class="s-top"><i data-lucide="users" style="width:14px"></i> Total Clientes</div><div class="s-num" id="statTotalClientes">0</div><div class="s-sub">registrados</div></div>
+<div class="stat-card"><div class="s-top"><i data-lucide="calendar" style="width:14px"></i> Ingresos este mes</div><div class="s-num" style="font-size:18px;margin-top:8px" id="statMesNombre">Octubre</div><div class="s-num" id="statIngMes" style="font-size:22px">$0</div><div class="s-sub" id="statMesDetalle">0 pedidos</div></div>
+<div class="stat-card"><div class="s-top"><i data-lucide="wallet" style="width:14px"></i> Ingresos totales</div><div class="s-num" id="statIngTotal" style="font-size:22px">$0</div><div class="s-sub" id="statIngTotalSub">hasta hoy</div></div>
 </div>
 <div id="listaClientesImagen"></div>
 </div>
 
-<div id="clientesNuevo" style="display:none">
-<div class="card" style="margin:0"><div style="font-weight:900;font-size:20px;margin-bottom:12px">Agregar Nuevo Cliente</div>
-<div class="label">Nombre / Empresa</div><input id="nCliNombre" class="input" placeholder="Ej: Ana García">
-<div class="label">Dirección</div><input id="nCliDir" class="input" placeholder="Ej: Av. Reforma 1280, CDMX">
-<div class="label">Teléfono</div><input id="nCliTel" class="input" placeholder="Ej: +52 55 2345 6789">
-<button class="btn-reg" onclick="guardarNuevoCliente()"><i data-lucide="save" style="width:18px"></i> Guardar Cliente</button>
-</div>
-</div>
-
-<div id="clientesRanking" style="display:none">
-<div class="card" style="margin:0"><div style="font-weight:900;font-size:18px;margin-bottom:10px">Ranking por Ingresos</div><div id="rankingLista"></div></div>
-</div>
+<div id="clientesNuevo" style="display:none"><div class="card" style="margin:0"><div style="font-weight:900;font-size:18px;margin-bottom:12px">Agregar Nuevo Cliente</div><div class="label">Nombre / Empresa</div><input id="nCliNombre" class="input" placeholder="Ej: Ana García"><div class="label">Dirección</div><input id="nCliDir" class="input" placeholder="Ej: Av. Reforma 1280, CDMX"><div class="label">Teléfono</div><input id="nCliTel" class="input" placeholder="Ej: +52 55 2345 6789"><button class="btn-reg" onclick="guardarNuevoCliente()"><i data-lucide="save" style="width:16px"></i> Guardar Cliente</button></div></div>
+<div id="clientesRanking" style="display:none"><div class="card" style="margin:0"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Ranking por Pedidos</div><div id="rankingLista"></div></div></div>
 </div>
 
 <div id="vistaRepartidores" class="card" style="display:none"><div class="title-h" style="font-size:22px">Repartidores</div><div style="display:flex;gap:8px;margin-top:10px"><div style="position:relative;flex:1"><input id="nuevoRep" class="input" placeholder="Nombre repartidor"><button class="btn-x" onclick="clearInput('nuevoRep')">x</button></div><button onclick="addRepartidor()" style="background:#0a7a2e;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800"><i data-lucide="plus" style="width:18px"></i></button></div><div id="listaReps" style="margin-top:12px"></div></div>
@@ -159,8 +148,8 @@ function showTab(n){ document.getElementById('vistaRegistro').style.display=n===
 (function(){ resetFechaHoy(); document.getElementById('fechaTop').innerText=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true}); })();
 const mesesN=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 let mesSel=new Date().getMonth();
-function renderMeses(){ document.getElementById('mesesBox').innerHTML=mesesN.map((m,i)=>`<button class="mes ${i===mesSel?'active':''}" onclick="selMes(${i})">${m}</button>`).join(''); document.getElementById('mesTitulo').innerText=mesesN[mesSel]+' 2026'; document.getElementById('filtroMesAnio').innerHTML=`<option>${mesesN[mesSel]} 2026</option>`; }
-function selMes(i){ mesSel=i; pagina=1; renderMeses(); aplicarFiltros(); }
+function renderMeses(){ document.getElementById('mesesBox').innerHTML=mesesN.map((m,i)=>`<button class="mes ${i===mesSel?'active':''}" onclick="selMes(${i})">${m}</button>`).join(''); document.getElementById('mesTitulo').innerText=mesesN[mesSel]+' 2026'; document.getElementById('filtroMesAnio').innerHTML=`<option>${mesesN[mesSel]} 2026</option>`; if(document.getElementById('statMesNombre')) document.getElementById('statMesNombre').innerText=mesesN[mesSel]; }
+function selMes(i){ mesSel=i; pagina=1; renderMeses(); aplicarFiltros(); renderClientesImagen(); }
 renderMeses();
 function toggleMeses(){ const b=document.getElementById('bloqueMeses'); b.style.display=b.style.display==='none'?'block':'none'; }
 let filtroTiempo='todos';
@@ -196,7 +185,6 @@ db.ref('ventas').on('value',snap=>{
  renderClientesImagen();
 });
 
-// CLIENTES TABS
 function switchClientes(tab){
  document.getElementById('clientesListado').style.display=tab==='listado'?'block':'none';
  document.getElementById('clientesNuevo').style.display=tab==='nuevo'?'block':'none';
@@ -205,10 +193,8 @@ function switchClientes(tab){
  document.getElementById('cTabNuevo').className=tab==='nuevo'?'c-tab active':'c-tab';
  document.getElementById('cTabRanking').className=tab==='ranking'?'c-tab active':'c-tab';
  lucide.createIcons();
- if(tab!=='listado') return;
- renderClientesImagen();
+ if(tab==='listado'||tab==='ranking') renderClientesImagen();
 }
-
 function guardarNuevoCliente(){
  const nombre=document.getElementById('nCliNombre').value.trim();
  const dir=document.getElementById('nCliDir').value.trim();
@@ -221,56 +207,43 @@ function guardarNuevoCliente(){
 }
 
 function renderClientesImagen(){
- // Agrupar ventas por cliente
  const map={};
  ventasCache.forEach(v=>{
-   if(!map[v.cliente]) map[v.cliente]={total:0, pedidos:0, ultima:0, fechas:[]};
+   if(!map[v.cliente]) map[v.cliente]={total:0, pedidos:0, ultima:0};
    map[v.cliente].total+= (v.total||0);
    map[v.cliente].pedidos++;
    map[v.cliente].ultima=Math.max(map[v.cliente].ultima, v.timestamp||0);
-   map[v.cliente].fechas.push(v.fecha);
  });
- // Unir con clientesDB registrados manualmente
- Object.values(clientesDB).forEach(c=>{
-   if(!map[c.nombre]) map[c.nombre]={total:0, pedidos:0, ultima:c.fecha||0, fechas:[]};
- });
+ Object.values(clientesDB).forEach(c=>{ if(!map[c.nombre]) map[c.nombre]={total:0, pedidos:0, ultima:c.fecha||0}; });
 
  const lista=Object.entries(map).map(([nombre, d])=>{
-   // buscar datos extra en clientesDB
    const extra=Object.values(clientesDB).find(x=>x.nombre===nombre);
-   return {
-     nombre,
-     direccion: extra?extra.direccion:'sin especificación',
-     telefono: extra?extra.telefono:'sin especificación',
-     total:d.total,
-     pedidos:d.pedidos,
-     ultima:d.ultima
-   };
- }).sort((a,b)=>b.total-a.total);
+   return { nombre, direccion: extra?extra.direccion:'sin especificación', telefono: extra?extra.telefono:'sin especificación', total:d.total, pedidos:d.pedidos, ultima:d.ultima };
+ });
 
  // STATS
  const totalClientes=lista.length;
  document.getElementById('statTotalClientes').innerText=totalClientes;
- const hoyStr=new Date().toISOString().split('T')[0];
- const activosHoy=ventasCache.filter(v=>v.fecha===hoyStr).map(v=>v.cliente);
- const activosUnicos=[...new Set(activosHoy)].length;
- document.getElementById('statActivosHoy').innerText=activosUnicos;
- const hace7=new Date(); hace7.setDate(hace7.getDate()-7);
- const nuevosSemana=Object.values(clientesDB).filter(c=>c.fecha>hace7.getTime()).length + ventasCache.filter(v=> new Date(v.fecha+'T12:00:00')>=hace7 &&!Object.values(clientesDB).some(cd=>cd.nombre===v.cliente)).length;
- document.getElementById('statSemana').innerText='+'+nuevosSemana+' esta semana';
- const tasa= totalClientes>0? Math.min(98, Math.round((lista.filter(x=>x.pedidos>1).length/totalClientes)*100) || 24) : 0;
- document.getElementById('statTasa').innerText=tasa+'%';
+ const ventasMes=ventasCache.filter(v=>{ const dd=new Date(v.fecha+'T12:00:00'); return dd.getMonth()===mesSel; });
+ const ingMes=ventasMes.reduce((a,b)=>a+(b.total||0),0);
+ document.getElementById('statIngMes').innerText='$'+ingMes.toLocaleString('es-MX');
+ document.getElementById('statMesNombre').innerText=mesesN[mesSel];
+ document.getElementById('statMesDetalle').innerText=ventasMes.length+' pedidos en '+mesesN[mesSel];
+ const ingTotal=ventasCache.reduce((a,b)=>a+(b.total||0),0);
+ document.getElementById('statIngTotal').innerText='$'+ingTotal.toLocaleString('es-MX');
+ document.getElementById('statIngTotalSub').innerText='hasta hoy • '+ventasCache.length+' pedidos';
 
- // LISTADO COMO IMAGEN
+ // LISTADO REDUCIDO Y CENTRADO
  const cont=document.getElementById('listaClientesImagen');
- if(!lista.length){ cont.innerHTML='<div style="text-align:center;color:#999;padding:20px;background:#fff;border-radius:16px">Sin clientes aún - se crean automático al vender</div>'; }
+ if(!lista.length){ cont.innerHTML='<div style="text-align:center;color:#999;padding:16px;background:#fff;border-radius:12px;font-size:12px">Sin clientes aún</div>'; }
  else{
-  cont.innerHTML=lista.map(c=>`
+  const sorted=[...lista].sort((a,b)=>b.total-a.total);
+  cont.innerHTML=sorted.map(c=>`
    <div class="cliente-row">
-    <div class="c-left" style="flex:1">
+    <div style="overflow:hidden">
       <div class="c-name">${c.nombre}</div>
-      <div class="c-meta"><i data-lucide="map-pin" style="width:14px;color:#6b7280"></i> Dir: ${c.direccion}</div>
-      <div class="c-meta"><i data-lucide="phone" style="width:14px;color:#6b7280"></i> Tel: ${c.telefono}</div>
+      <div class="c-meta"><i data-lucide="map-pin" style="width:12px"></i> Dir: ${c.direccion}</div>
+      <div class="c-meta"><i data-lucide="phone" style="width:12px"></i> Tel: ${c.telefono}</div>
     </div>
     <div class="c-center">
       <div class="c-label">Total pedidos</div>
@@ -284,14 +257,25 @@ function renderClientesImagen(){
   `).join('');
  }
 
- // RANKING
- document.getElementById('rankingLista').innerHTML=lista.slice(0,20).map((c,i)=>`
-  <div class="cliente-row"><div style="font-weight:900;font-size:18px;width:30px">#${i+1}</div><div style="flex:1"><b>${c.nombre}</b><br><small style="color:#6b7280">${c.pedidos} pedidos</small></div><div style="font-weight:800;color:#0a7a2e">$${c.total.toLocaleString('es-MX')}</div></div>
- `).join('') || 'Sin datos';
+ // RANKING POR PEDIDOS CON MEDALLAS - REDUCIDO
+ const rankSorted=[...lista].sort((a,b)=>b.pedidos-a.pedidos);
+ document.getElementById('rankingLista').innerHTML=rankSorted.map((c,i)=>{
+   let medalla='';
+   if(i===0) medalla='<div style="width:28px;height:28px;background:#FFD700;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🥇</div>';
+   else if(i===1) medalla='<div style="width:28px;height:28px;background:#C0C0C0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🥈</div>';
+   else if(i===2) medalla='<div style="width:28px;height:28px;background:#CD7F32;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🥉</div>';
+   else medalla=`<div style="width:28px;height:28px;background:#f3f4f6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#6b7280">#${i+1}</div>`;
+   return `
+   <div class="rank-row">
+    ${medalla}
+    <div style="flex:1;overflow:hidden"><div style="font-weight:800;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nombre}</div><div style="font-size:10px;color:#6b7280">${c.pedidos} pedidos • $${c.total.toLocaleString('es-MX')}</div></div>
+    <div style="font-weight:800;font-size:12px;color:#0a7a2e">${c.pedidos} ped.</div>
+   </div>`;
+ }).join('') || 'Sin datos';
  lucide.createIcons();
 }
 
-// HISTORIAL LOGICA 300 + PAGADO/DEBE
+// HISTORIAL
 function aplicarFiltros(){
  let lista=[...ventasCache];
  const q=document.getElementById('buscarCliente').value.toLowerCase();
