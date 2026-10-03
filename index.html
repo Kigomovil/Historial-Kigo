@@ -46,12 +46,11 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .badge-pagado{background:#0a9a4a;color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;cursor:pointer;border:none}
 .badge-debe{background:#dc2626;color:#fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;border:none}
 .acc-btn{width:30px;height:30px;border-radius:8px;border:1px solid #ddd;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin-right:4px}
-#overlayExito,#overlayEdit,#overlayDel{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
+#overlayExito,#overlayEdit,#overlayDel,#overlayCliEdit,#overlayCliDel{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
 .card-modal{background:#fff;border-radius:20px;padding:22px;width:95%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.25);animation:pop.25s ease}
 @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
 .btn-si{background:#dc2626;color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;flex:1;cursor:pointer}
 .btn-no{background:#0a9a4a;color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;flex:1;cursor:pointer}
-/* CLIENTES REDUCIDO */
 .clientes-tabs{display:flex;gap:8px;overflow:auto;padding-bottom:4px;margin-bottom:14px}
 .c-tab{padding:9px 16px;border-radius:50px;border:1.5px solid #d1d5db;background:#d1d5db;white-space:nowrap;font-weight:700;font-size:13px;color:#6b7280;display:flex;align-items:center;gap:6px;cursor:pointer}
 .c-tab.active{background:#fff;border-color:#0a9a4a;color:#0a7a2e;box-shadow:0 0 10px rgba(10,154,74,.22)}
@@ -61,16 +60,19 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .s-top{display:flex;align-items:center;gap:6px;font-size:11px;color:#86efac;font-weight:600}
 .s-num{font-size:30px;font-weight:900;text-align:center;margin:4px 0 1px;line-height:1}
 .s-sub{font-size:10px;text-align:center;color:#a7f3d0}
-.cliente-row{background:#fff;border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:1.6fr.6fr.8fr;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:8px;gap:8px}
-.c-name{font-weight:800;font-size:13px;color:#111827;margin-bottom:2px}
-.c-meta{display:flex;align-items:center;gap:4px;font-size:10px;color:#374151;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.c-center{text-align:center}
-.c-right{text-align:right}
-.c-label{font-size:10px;color:#6b7280}
-.c-label.green{color:#0a7a2e;font-weight:700;font-size:10px}
-.c-val{font-size:14px;font-weight:700;color:#374151}
-.c-val.green{color:#111827;font-size:15px;font-weight:800}
+.cliente-row{background:#fff;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:8px}
+.cliente-row-left{flex:1.4;overflow:hidden}
+.cliente-row-mid{display:flex;gap:18px;align-items:center;flex:1;justify-content:flex-start;margin-left:10px}
+.c-name{font-weight:800;font-size:12px;color:#111827;margin-bottom:2px}
+.c-meta{display:flex;align-items:center;gap:4px;font-size:9.5px;color:#374151;margin-top:2px}
+.c-label{font-size:9px;color:#6b7280}
+.c-label.green{color:#0a7a2e;font-weight:700;font-size:9px}
+.c-val{font-size:13px;font-weight:700;color:#374151}
+.c-val.green{color:#111827;font-size:13px;font-weight:800}
 .rank-row{background:#fff;border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,.05);margin-bottom:6px}
+.suggest-box{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #ddd;border-radius:12px;margin-top:6px;z-index:50;max-height:180px;overflow:auto;box-shadow:0 8px 20px rgba(0,0,0,.12);display:none}
+.suggest-item{padding:10px 12px;font-size:13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f3f4f6}
+.suggest-item:hover{background:#f0fdf4}
 </style>
 </head>
 <body>
@@ -79,11 +81,26 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <div class="label">Número Pedido</div><input id="ePedido" class="input" style="padding-right:14px"><div class="label">Nombre Cliente</div><input id="eCliente" class="input" style="padding-right:14px"><div class="label">Fecha</div><input id="eFecha" type="date" class="input" style="padding-right:14px"><div class="label">Repartidor</div><input id="eRep" class="input" style="padding-right:14px"><div class="label">Tipo Servicio</div><select id="eTipo" class="input" style="padding-right:14px"><option value="moto">Moto Mandado</option><option value="transporte">Transporte</option></select><div class="label">Precio / Total</div><input id="eTotal" type="number" class="input" style="padding-right:14px"><div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarEdit()">Guardar</button><button class="btn-si" onclick="cerrarEdit()" style="background:#6b7280">Cancelar</button></div></div></div>
 <div id="overlayDel"><div class="card-modal" style="text-align:center"><div style="width:64px;height:64px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="trash-2" style="width:28px;color:#dc2626"></i></div><div style="font-weight:900;font-size:18px">¿Deseas confirmar la eliminación de este pedido?</div><div style="font-size:12px;color:#6b7280;margin-top:6px">Esta acción no se puede deshacer</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn-si" onclick="confirmarDel()">Sí</button><button class="btn-no" onclick="cerrarDel()">No</button></div></div></div>
 
+<div id="overlayCliEdit"><div class="card-modal"><div style="font-weight:900;font-size:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center"><span>Editar Cliente</span><button onclick="cerrarCliEdit()" style="border:none;background:#f3f4f6;width:28px;height:28px;border-radius:50%;font-weight:800;cursor:pointer">x</button></div>
+<div class="label">Nombre / Empresa</div><input id="ceNombre" class="input" style="padding-right:14px">
+<div class="label">Dirección</div><input id="ceDir" class="input" style="padding-right:14px">
+<div class="label">Teléfono</div><input id="ceTel" class="input" style="padding-right:14px">
+<div style="display:flex;gap:8px;margin-top:16px"><button class="btn-no" onclick="guardarCliEdit()">Guardar</button><button class="btn-si" onclick="cerrarCliEdit()" style="background:#6b7280">Cancelar</button></div>
+</div></div>
+<div id="overlayCliDel"><div class="card-modal" style="text-align:center"><div style="width:64px;height:64px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><i data-lucide="trash-2" style="width:28px;color:#dc2626"></i></div><div style="font-weight:900;font-size:18px">¿Deseas eliminar este cliente?</div><div style="font-size:12px;color:#6b7280;margin-top:6px" id="cliDelName">Esta acción no se puede deshacer</div><div style="display:flex;gap:10px;margin-top:18px"><button class="btn-si" onclick="confirmarCliDel()">Sí</button><button class="btn-no" onclick="cerrarCliDel()">No</button></div></div></div>
+
 <div class="app">
 <div id="vistaRegistro" class="card">
 <div class="top-line"><span id="fechaTop"></span><span style="display:flex;align-items:center;gap:4px"><i data-lucide="sun" style="width:14px;height:14px;color:#f59e0b"></i> 24°C</span></div>
 <div class="title">Registro de Venta</div>
-<div class="label">Nombre del Cliente</div><div class="input-wrap"><input id="cliente" class="input" placeholder="Ej: Juan Pérez" oninput="calcTotal()"><button class="btn-x" onclick="clearInput('cliente')">x</button></div>
+<div class="label">Nombre del Cliente</div>
+<div class="input-wrap" style="flex-direction:column;align-items:stretch">
+<div style="position:relative;width:100%;display:flex;align-items:center">
+<input id="cliente" class="input" placeholder="Ej: Juan Pérez" oninput="calcTotal(); filtrarSugerencias(this.value)" autocomplete="off">
+<button class="btn-x" onclick="clearInput('cliente'); ocultarSugerencias()">x</button>
+</div>
+<div id="sugerenciasClientes" class="suggest-box"></div>
+</div>
 <div class="label">Fecha</div><div class="input-wrap"><input id="fechaVenta" type="date" class="input"><button class="btn-x" onclick="resetFechaHoy()">x</button></div>
 <div class="label">Tipo de Servicio</div><div class="tipo-box"><button id="btnMoto" class="tipo active" onclick="setTipo('moto')"><i data-lucide="bike" style="width:18px"></i> Moto Mandado</button><button id="btnTrans" class="tipo" onclick="setTipo('transporte')"><i data-lucide="car" style="width:18px"></i> Transporte</button></div>
 <div class="label">Precio</div><div class="input-wrap"><input id="precio" type="number" class="input" placeholder="$ 0.00" oninput="calcTotal()"><button class="btn-x" onclick="clearInput('precio')">x</button></div>
@@ -140,7 +157,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 let tipoActual='moto';
-function clearInput(id){ const el=document.getElementById(id); el.value=''; if(el.tagName==='SELECT') el.selectedIndex=0; calcTotal(); }
+function clearInput(id){ const el=document.getElementById(id); el.value=''; if(el.tagName==='SELECT') el.selectedIndex=0; calcTotal(); if(id==='cliente') ocultarSugerencias(); }
 function resetFechaHoy(){ document.getElementById('fechaVenta').value=new Date().toISOString().split('T')[0]; }
 function setTipo(t){ tipoActual=t; document.getElementById('btnMoto').className=t==='moto'?'tipo active':'tipo'; document.getElementById('btnTrans').className=t==='transporte'?'tipo active':'tipo'; lucide.createIcons(); }
 function calcTotal(){ let p=parseFloat(document.getElementById('precio').value)||0; let d=parseFloat(document.getElementById('descuento').value)||0; let tot=p-d; if(tot<0) tot=0; document.getElementById('totalTxt').innerText='$ '+tot.toFixed(2); return tot; }
@@ -166,14 +183,14 @@ function registrarVenta(){
  let pagaKigo=Math.round(total*0.2); let ganancia=total-pagaKigo;
  const f=new Date(fechaInput+'T12:00:00');
  const data={ cliente, tipo:tipoActual, precio, descuento, total, pagaKigo, ganancia, pagaKigoBase:Math.round(total*0.2), repartidor, fecha:fechaInput, fechaTxt:f.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}), timestamp:Date.now(), estado:'Pagado', pedido:'#'+Math.floor(1000+Math.random()*9000) };
- db.ref('ventas').push(data).then(()=>{ mostrarExito(); setTimeout(()=>{ document.getElementById('cliente').value=''; document.getElementById('precio').value=''; document.getElementById('descuento').value=''; document.getElementById('repartidor').value=''; document.getElementById('totalTxt').innerText='$ 0.00'; resetFechaHoy(); setTipo('moto'); mesSel=new Date(fechaInput+'T12:00:00').getMonth(); renderMeses(); showTab('Historial'); aplicarFiltros(); },2100); });
+ db.ref('ventas').push(data).then(()=>{ mostrarExito(); ocultarSugerencias(); setTimeout(()=>{ document.getElementById('cliente').value=''; document.getElementById('precio').value=''; document.getElementById('descuento').value=''; document.getElementById('repartidor').value=''; document.getElementById('totalTxt').innerText='$ 0.00'; resetFechaHoy(); setTipo('moto'); mesSel=new Date(fechaInput+'T12:00:00').getMonth(); renderMeses(); showTab('Historial'); aplicarFiltros(); },2100); });
 }
 </script>
 <script>
 let ventasCache=[], ventasFiltradas=[];
 let pagina=1; const POR_PAGINA=300;
 let idEditar=null, idEliminar=null;
-let clientesDB={};
+let clientesDB={}, clienteEditId=null, clienteDelId=null, clienteDelNombre=null;
 
 db.ref('clientes').on('value',s=>{ clientesDB=s.val()||{}; renderClientesImagen(); });
 db.ref('ventas').on('value',snap=>{
@@ -184,6 +201,30 @@ db.ref('ventas').on('value',snap=>{
  aplicarFiltros();
  renderClientesImagen();
 });
+
+// AUTOCOMPLETADO CLIENTE EN REGISTRO
+function obtenerNombresClientes(){
+ const nombres=new Set();
+ Object.values(clientesDB).forEach(c=>{ if(c.nombre) nombres.add(c.nombre); });
+ ventasCache.forEach(v=>{ if(v.cliente) nombres.add(v.cliente); });
+ return [...nombres];
+}
+function filtrarSugerencias(q){
+ const box=document.getElementById('sugerenciasClientes');
+ if(!q || q.length<1){ ocultarSugerencias(); return; }
+ const todos=obtenerNombresClientes();
+ const filtrados=todos.filter(n=>n.toLowerCase().includes(q.toLowerCase())).slice(0,8);
+ if(!filtrados.length){ ocultarSugerencias(); return; }
+ box.innerHTML=filtrados.map(n=>`<div class="suggest-item" onclick="seleccionarCliente('${n.replace(/'/g,"\\'")}')"><span><i data-lucide="user" style="width:12px"></i> ${n}</span><small style="color:#0a9a4a">Usar</small></div>`).join('');
+ box.style.display='block';
+ lucide.createIcons();
+}
+function seleccionarCliente(nombre){
+ document.getElementById('cliente').value=nombre;
+ ocultarSugerencias();
+}
+function ocultarSugerencias(){ document.getElementById('sugerenciasClientes').style.display='none'; }
+document.addEventListener('click',e=>{ if(!e.target.closest('#cliente') &&!e.target.closest('#sugerenciasClientes')) ocultarSugerencias(); });
 
 function switchClientes(tab){
  document.getElementById('clientesListado').style.display=tab==='listado'?'block':'none';
@@ -206,6 +247,55 @@ function guardarNuevoCliente(){
  });
 }
 
+// EDITAR / ELIMINAR CLIENTE
+function abrirCliEdit(nombre){
+ const entry=Object.entries(clientesDB).find(([id,c])=>c.nombre===nombre);
+ if(entry){
+   clienteEditId=entry[0];
+   document.getElementById('ceNombre').value=entry[1].nombre||'';
+   document.getElementById('ceDir').value=entry[1].direccion||'';
+   document.getElementById('ceTel').value=entry[1].telefono||'';
+ }else{
+   clienteEditId=null;
+   document.getElementById('ceNombre').value=nombre;
+   document.getElementById('ceDir').value='sin especificación';
+   document.getElementById('ceTel').value='sin especificación';
+ }
+ document.getElementById('overlayCliEdit').style.display='flex';
+ clienteDelNombre=nombre;
+}
+function cerrarCliEdit(){ document.getElementById('overlayCliEdit').style.display='none'; clienteEditId=null; }
+function guardarCliEdit(){
+ const nuevoNombre=document.getElementById('ceNombre').value.trim();
+ const nuevaDir=document.getElementById('ceDir').value.trim();
+ const nuevoTel=document.getElementById('ceTel').value.trim();
+ if(!nuevoNombre){ alert('Nombre requerido'); return; }
+ if(clienteEditId){
+   db.ref('clientes/'+clienteEditId).update({nombre:nuevoNombre, direccion:nuevaDir||'sin especificación', telefono:nuevoTel||'sin especificación'}).then(()=>cerrarCliEdit());
+ }else{
+   db.ref('clientes').push({nombre:nuevoNombre, direccion:nuevaDir||'sin especificación', telefono:nuevoTel||'sin especificación', fecha:Date.now()}).then(()=>cerrarCliEdit());
+ }
+ if(clienteDelNombre && clienteDelNombre!==nuevoNombre){
+   ventasCache.filter(v=>v.cliente===clienteDelNombre).forEach(v=>{ db.ref('ventas/'+v.id).update({cliente:nuevoNombre}); });
+ }
+}
+
+function abrirCliDel(nombre){
+ clienteDelNombre=nombre;
+ const entry=Object.entries(clientesDB).find(([id,c])=>c.nombre===nombre);
+ clienteDelId=entry?entry[0]:null;
+ document.getElementById('cliDelName').innerText='Cliente: '+nombre;
+ document.getElementById('overlayCliDel').style.display='flex';
+ lucide.createIcons();
+}
+function cerrarCliDel(){ document.getElementById('overlayCliDel').style.display='none'; clienteDelId=null; clienteDelNombre=null; }
+function confirmarCliDel(){
+ if(clienteDelId){ db.ref('clientes/'+clienteDelId).remove(); }
+ // Si quieres borrar también histórico de ese cliente, descomenta:
+ // ventasCache.filter(v=>v.cliente===clienteDelNombre).forEach(v=>{ db.ref('ventas/'+v.id).remove(); });
+ cerrarCliDel();
+}
+
 function renderClientesImagen(){
  const map={};
  ventasCache.forEach(v=>{
@@ -215,13 +305,11 @@ function renderClientesImagen(){
    map[v.cliente].ultima=Math.max(map[v.cliente].ultima, v.timestamp||0);
  });
  Object.values(clientesDB).forEach(c=>{ if(!map[c.nombre]) map[c.nombre]={total:0, pedidos:0, ultima:c.fecha||0}; });
-
  const lista=Object.entries(map).map(([nombre, d])=>{
    const extra=Object.values(clientesDB).find(x=>x.nombre===nombre);
    return { nombre, direccion: extra?extra.direccion:'sin especificación', telefono: extra?extra.telefono:'sin especificación', total:d.total, pedidos:d.pedidos, ultima:d.ultima };
  });
 
- // STATS
  const totalClientes=lista.length;
  document.getElementById('statTotalClientes').innerText=totalClientes;
  const ventasMes=ventasCache.filter(v=>{ const dd=new Date(v.fecha+'T12:00:00'); return dd.getMonth()===mesSel; });
@@ -233,44 +321,37 @@ function renderClientesImagen(){
  document.getElementById('statIngTotal').innerText='$'+ingTotal.toLocaleString('es-MX');
  document.getElementById('statIngTotalSub').innerText='hasta hoy • '+ventasCache.length+' pedidos';
 
- // LISTADO REDUCIDO Y CENTRADO
  const cont=document.getElementById('listaClientesImagen');
  if(!lista.length){ cont.innerHTML='<div style="text-align:center;color:#999;padding:16px;background:#fff;border-radius:12px;font-size:12px">Sin clientes aún</div>'; }
  else{
   const sorted=[...lista].sort((a,b)=>b.total-a.total);
   cont.innerHTML=sorted.map(c=>`
    <div class="cliente-row">
-    <div style="overflow:hidden">
+    <div class="cliente-row-left">
       <div class="c-name">${c.nombre}</div>
-      <div class="c-meta"><i data-lucide="map-pin" style="width:12px"></i> Dir: ${c.direccion}</div>
-      <div class="c-meta"><i data-lucide="phone" style="width:12px"></i> Tel: ${c.telefono}</div>
+      <div class="c-meta"><i data-lucide="map-pin" style="width:11px"></i> Dir: ${c.direccion}</div>
+      <div class="c-meta"><i data-lucide="phone" style="width:11px"></i> Tel: ${c.telefono}</div>
     </div>
-    <div class="c-center">
-      <div class="c-label">Total pedidos</div>
-      <div class="c-val">${c.pedidos}</div>
+    <div class="cliente-row-mid">
+      <div style="text-align:center"><div class="c-label">Total pedidos</div><div class="c-val">${c.pedidos}</div></div>
+      <div style="text-align:left"><div class="c-label green">Ingresos totales</div><div class="c-val green">$${c.total.toLocaleString('es-MX')}</div></div>
     </div>
-    <div class="c-right">
-      <div class="c-label green">Ingresos totales</div>
-      <div class="c-val green">$${c.total.toLocaleString('es-MX')}</div>
+    <div style="display:flex;gap:4px">
+      <button class="acc-btn" onclick="abrirCliEdit('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="pencil" style="width:12px"></i></button>
+      <button class="acc-btn" style="border-color:#fca5a5" onclick="abrirCliDel('${c.nombre.replace(/'/g,"\\'")}')"><i data-lucide="trash-2" style="width:12px;color:#dc2626"></i></button>
     </div>
    </div>
   `).join('');
  }
 
- // RANKING POR PEDIDOS CON MEDALLAS - REDUCIDO
  const rankSorted=[...lista].sort((a,b)=>b.pedidos-a.pedidos);
  document.getElementById('rankingLista').innerHTML=rankSorted.map((c,i)=>{
    let medalla='';
-   if(i===0) medalla='<div style="width:28px;height:28px;background:#FFD700;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🥇</div>';
-   else if(i===1) medalla='<div style="width:28px;height:28px;background:#C0C0C0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🥈</div>';
-   else if(i===2) medalla='<div style="width:28px;height:28px;background:#CD7F32;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🥉</div>';
-   else medalla=`<div style="width:28px;height:28px;background:#f3f4f6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#6b7280">#${i+1}</div>`;
-   return `
-   <div class="rank-row">
-    ${medalla}
-    <div style="flex:1;overflow:hidden"><div style="font-weight:800;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nombre}</div><div style="font-size:10px;color:#6b7280">${c.pedidos} pedidos • $${c.total.toLocaleString('es-MX')}</div></div>
-    <div style="font-weight:800;font-size:12px;color:#0a7a2e">${c.pedidos} ped.</div>
-   </div>`;
+   if(i===0) medalla='<div style="width:26px;height:26px;background:#FFD700;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px">🥇</div>';
+   else if(i===1) medalla='<div style="width:26px;height:26px;background:#C0C0C0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px">🥈</div>';
+   else if(i===2) medalla='<div style="width:26px;height:26px;background:#CD7F32;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px">🥉</div>';
+   else medalla=`<div style="width:26px;height:26px;background:#f3f4f6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#6b7280">#${i+1}</div>`;
+   return `<div class="rank-row">${medalla}<div style="flex:1;overflow:hidden"><div style="font-weight:800;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.nombre}</div><div style="font-size:9px;color:#6b7280">${c.pedidos} pedidos • $${c.total.toLocaleString('es-MX')}</div></div><div style="font-weight:800;font-size:11px;color:#0a7a2e">${c.pedidos} ped.</div></div>`;
  }).join('') || 'Sin datos';
  lucide.createIcons();
 }
