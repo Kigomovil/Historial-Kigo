@@ -8,11 +8,11 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#e8e8e8;display:flex;justify-content:center}
-.phone{width:100%;max-width:410px;background:#f5f5f5;min-height:100dvh;position:relative;box-shadow:0 0 0 12px #111, 0 0 0 14px #333;border-radius:40px;overflow:hidden;margin:20px 10px}
-.top{padding:14px 18px 8px;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600}
-.card{background:#fff;border-radius:20px;margin:8px 14px;padding:16px 16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.title{color:#0a7a2e;font-weight:900;font-size:28px;letter-spacing:-.5px;margin:4px 0 16px}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#f2f4f3}
+.app{max-width:480px;margin:0 auto;background:#f5f5f5;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:90px}
+.card{background:#fff;border-radius:20px;margin:12px 14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.top-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:#666;margin-bottom:10px}
+.title{color:#0a7a2e;font-weight:900;font-size:28px;letter-spacing:-.5px;margin:6px 0 16px}
 .label{font-size:13px;font-weight:500;color:#333;margin:14px 0 6px}
 .input-wrap{position:relative;display:flex;align-items:center}
 .input{width:100%;padding:12px 38px 12px 14px;border:1.5px solid #ddd;border-radius:12px;font-size:14px;background:#fff;outline:none}
@@ -21,19 +21,20 @@
 .tipo-box{display:flex;gap:8px}
 .tipo{flex:1;padding:11px;border-radius:12px;border:1.5px solid #0a7a2e;background:#fff;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer}
 .tipo.active{background:#0a7a2e;color:#fff}
+.tipo.active i{color:#fff!important}
 .total-box{background:#d1e7d6;border:1.5px solid #a3c9a8;border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:16px}
 .btn-reg{width:100%;margin-top:16px;background:#0a7a2e;color:#fff;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
-.nav{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;display:flex;padding:8px 0 18px}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer;font-weight:600}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #eee;display:flex;padding:8px 0 12px;z-index:10}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#888;cursor:pointer;font-weight:600;border:none;background:transparent}
 .nav-item.active{color:#0a7a2e}
 .dot{width:6px;height:6px;background:#0a7a2e;border-radius:50%;margin-bottom:2px}
 </style>
 </head>
 <body>
-<div class="phone">
-<div class="top"><span id="fechaTop">02 Oct 2026 - 9:41 PM</span><span>☀️ 24°C</span></div>
+<div class="app">
 
 <div id="vistaRegistro" class="card">
+<div class="top-line"><span id="fechaTop">02 Oct 2026 - 9:41 PM</span><span style="display:flex;align-items:center;gap:4px"><i data-lucide="sun" style="width:14px;height:14px;color:#f59e0b"></i> 24°C</span></div>
 <div class="title">Registro de Venta</div>
 
 <div class="label">Nombre del Cliente</div>
@@ -44,8 +45,8 @@
 
 <div class="label">Tipo de Servicio</div>
 <div class="tipo-box">
-<button id="btnMoto" class="tipo active" onclick="setTipo('moto')">🏍️ Moto Mandado</button>
-<button id="btnTrans" class="tipo" onclick="setTipo('transporte')">🚗 Transporte</button>
+<button id="btnMoto" class="tipo active" onclick="setTipo('moto')"><i data-lucide="bike" style="width:18px"></i> Moto Mandado</button>
+<button id="btnTrans" class="tipo" onclick="setTipo('transporte')"><i data-lucide="car" style="width:18px"></i> Transporte</button>
 </div>
 
 <div class="label">Precio</div>
@@ -76,7 +77,7 @@
 <span id="totalTxt" style="font-size:28px;font-weight:900;color:#0a7a2e">$ 0.00</span>
 </div>
 
-<button class="btn-reg" onclick="registrarVenta()">✓ Registrar Venta</button>
+<button class="btn-reg" onclick="registrarVenta()"><i data-lucide="check" style="width:20px"></i> Registrar Venta</button>
 </div>
 
 <div id="vistaHistorial" class="card" style="display:none">
@@ -96,18 +97,18 @@
 <input id="nuevoRep" class="input" placeholder="Nombre repartidor">
 <button class="btn-x" onclick="clearInput('nuevoRep')">x</button>
 </div>
-<button onclick="addRepartidor()" style="background:#0a7a2e;color:#fff;border:none;border-radius:10px;padding:0 14px;font-weight:800">+</button>
+<button onclick="addRepartidor()" style="background:#0a7a2e;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:800"><i data-lucide="plus" style="width:18px"></i></button>
 </div>
 <div id="listaReps" style="margin-top:12px"></div>
 </div>
 
-<div class="nav">
-<div id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><div class="dot"></div>📝 Registro</div>
-<div id="navHistorial" class="nav-item" onclick="showTab('Historial')">🕒 Historial</div>
-<div id="navClientes" class="nav-item" onclick="showTab('Clientes')">👥 Clientes</div>
-<div id="navRepartidores" class="nav-item" onclick="showTab('Repartidores')">👤 Repartidores</div>
 </div>
 
+<div class="nav">
+<button id="navRegistro" class="nav-item active" onclick="showTab('Registro')"><div class="dot"></div><i data-lucide="clipboard-edit" style="width:20px"></i> Registro</button>
+<button id="navHistorial" class="nav-item" onclick="showTab('Historial')"><i data-lucide="clock" style="width:20px"></i> Historial</button>
+<button id="navClientes" class="nav-item" onclick="showTab('Clientes')"><i data-lucide="users" style="width:20px"></i> Clientes</button>
+<button id="navRepartidores" class="nav-item" onclick="showTab('Repartidores')"><i data-lucide="user-cog" style="width:20px"></i> Repartidores</button>
 </div>
 
 <script>
@@ -123,8 +124,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 let tipoActual='moto';
-function clearInput(id){ document.getElementById(id).value=''; calcTotal(); }
-function setTipo(t){ tipoActual=t; document.getElementById('btnMoto').className=t==='moto'?'tipo active':'tipo'; document.getElementById('btnTrans').className=t==='transporte'?'tipo active':'tipo'; }
+function clearInput(id){ const el=document.getElementById(id); el.value=''; if(el.tagName==='SELECT') el.selectedIndex=0; calcTotal(); }
+function setTipo(t){ tipoActual=t; document.getElementById('btnMoto').className=t==='moto'?'tipo active':'tipo'; document.getElementById('btnTrans').className=t==='transporte'?'tipo active':'tipo'; lucide.createIcons(); }
 function calcTotal(){
  let p=parseFloat(document.getElementById('precio').value)||0;
  let d=parseFloat(document.getElementById('descuento').value)||0;
@@ -139,6 +140,7 @@ function showTab(n){
  document.getElementById('vistaRepartidores').style.display=n==='Repartidores'?'block':'none';
  document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
  document.getElementById('nav'+n).classList.add('active');
+ window.scrollTo(0,0);
 }
 </script>
 <script>
@@ -157,12 +159,13 @@ function registrarVenta(){
    timestamp:Date.now()
  };
  db.ref('ventas').push(data).then(()=>{
-   alert('✅ Venta registrada en Firebase nueva');
+   // limpiar con X automatico
    document.getElementById('cliente').value='';
    document.getElementById('precio').value='';
    document.getElementById('descuento').value='';
    document.getElementById('repartidor').value='';
    calcTotal();
+   lucide.createIcons();
  });
 }
 
@@ -179,14 +182,16 @@ function renderHistorial(){
  if(!ventasCache.length){ box.innerHTML='<div style="text-align:center;color:#999;padding:20px">Sin ventas</div>'; return; }
  box.innerHTML=ventasCache.map(v=>`
   <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+    <div style="width:36px;height:36px;background:#0a7a2e;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff"><i data-lucide="${v.tipo==='moto'?'bike':'car'}" style="width:18px"></i></div>
     <div style="flex:1">
       <div style="font-weight:800;font-size:13px">${v.cliente} - ${v.tipo==='moto'?'Moto Mandado':'Transporte'}</div>
-      <div style="font-size:11px;color:#666">${v.fechaTxt} • Rep: ${v.repartidor||'--'}</div>
+      <div style="font-size:11px;color:#666">${v.fechaTxt} • ${v.repartidor||'Sin rep'}</div>
       <div style="font-size:12px;color:#0a7a2e;font-weight:800">$${v.total} ${v.descuento>0?`(Desc $${v.descuento})`:''}</div>
     </div>
-    <button onclick="borrarVenta('${v.id}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer">x</button>
+    <button onclick="borrarVenta('${v.id}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer"><i data-lucide="x" style="width:14px"></i></button>
   </div>
  `).join('');
+ lucide.createIcons();
 }
 
 function borrarVenta(id){
@@ -202,10 +207,12 @@ function renderClientes(){
  if(!arr.length){ box.innerHTML='Se genera automático al registrar'; return; }
  box.innerHTML=arr.map(([nombre,d])=>`
   <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
-    <div style="flex:1"><b>${nombre}</b><br><small>${d.veces} compras - Total $${d.total.toFixed(2)}</small></div>
-    <button onclick="borrarCliente('${nombre}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900">x</button>
+    <div style="width:32px;height:32px;background:#fff;border:1px solid #ddd;border-radius:50%;display:flex;align-items:center;justify-content:center"><i data-lucide="user" style="width:16px"></i></div>
+    <div style="flex:1"><b>${nombre}</b><br><small>${d.veces} compras - $${d.total.toFixed(2)}</small></div>
+    <button onclick="borrarCliente('${nombre}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900;display:flex;align-items:center;justify-content:center"><i data-lucide="trash-2" style="width:14px"></i></button>
   </div>
  `).join('');
+ lucide.createIcons();
 }
 
 function borrarCliente(nombre){
@@ -213,17 +220,17 @@ function borrarCliente(nombre){
  ventasCache.filter(v=>v.cliente===nombre).forEach(v=>{ db.ref('ventas/'+v.id).remove(); });
 }
 
-// Repartidores
 let reps=JSON.parse(localStorage.getItem('reps')||'["Juan","Carlos","Luis"]');
 function refreshReps(){
  const sel=document.getElementById('repartidor');
  sel.innerHTML='<option value="">Seleccionar repartidor</option>'+reps.map(r=>`<option value="${r}">${r}</option>`).join('');
  document.getElementById('listaReps').innerHTML=reps.map(r=>`
   <div style="background:#f9f9f9;border:1px solid #eee;border-radius:12px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
-    <span style="font-weight:600">${r}</span>
-    <button onclick="borrarRep('${r}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900">x</button>
+    <span style="display:flex;align-items:center;gap:8px;font-weight:600"><i data-lucide="bike" style="width:16px"></i> ${r}</span>
+    <button onclick="borrarRep('${r}')" style="width:28px;height:28px;border-radius:50%;border:1px solid #ffcccc;background:#fff;color:#E53935;font-weight:900;display:flex;align-items:center;justify-content:center"><i data-lucide="x" style="width:14px"></i></button>
   </div>
  `).join('');
+ lucide.createIcons();
 }
 function addRepartidor(){
  let n=document.getElementById('nuevoRep').value.trim();
@@ -231,12 +238,9 @@ function addRepartidor(){
  reps.push(n); localStorage.setItem('reps',JSON.stringify(reps)); document.getElementById('nuevoRep').value=''; refreshReps();
 }
 function borrarRep(n){
- if(!confirm('¿Borrar repartidor '+n+'?')) return;
  reps=reps.filter(r=>r!==n); localStorage.setItem('reps',JSON.stringify(reps)); refreshReps();
 }
 refreshReps();
-
-// Fecha top
 const ahora=new Date();
 document.getElementById('fechaTop').innerText=ahora.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' - '+ahora.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',hour12:true});
 lucide.createIcons();
