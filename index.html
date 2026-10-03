@@ -98,7 +98,6 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .rep-status.inact{background:#dc2626;color:#fff}
 .rep-btn{border:1px solid #d1d5db;background:#fff;border-radius:16px;padding:4px 8px;font-size:10px;font-weight:600;display:flex;align-items:center;gap:3px;cursor:pointer}
 .foto-preview{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #6fbf8a;display:none;margin-top:8px}
-/* PRESUPUESTO COMO IMAGEN */
 .presu-header{background:#fff;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:18px}
 .presu-title{font-weight:800;font-size:24px;color:#2d3a2e}
 .presu-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
@@ -112,10 +111,12 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 .presu-icon-orange{background:#ffdb99;color:#b45309}
 .presu-stat-label{font-size:12px;color:#6b7280}
 .presu-stat-num{font-size:22px;font-weight:900;color:#2d3a2e;line-height:1.1}
+.presu-stat-sub{font-size:10px;color:#6b7280;margin-top:2px}
 .presu-detalle{background:#fff;border-radius:14px;padding:14px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
 .presu-detalle-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
 .presu-filtro{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .presu-date{border:1.5px solid #d1d5db;border-radius:10px;padding:6px 10px;font-size:12px;font-weight:600;background:#fff;display:flex;align-items:center;gap:6px}
+.presu-select{border:1.5px solid #10b981;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;background:#f0fdf4;width:100%;max-width:280px;outline:none}
 .presu-table{overflow:auto}
 .presu-table table{width:100%;border-collapse:collapse;min-width:650px}
 .presu-table th{font-size:11px;color:#6b7280;background:#f3f4f6;padding:8px 10px;text-align:left}
@@ -205,13 +206,21 @@ td{padding:10px 12px;font-size:13px;border-top:1px solid #f0f0f0;vertical-align:
 <button id="pTabCal" class="presu-tab" onclick="switchPresu('cal')"><i data-lucide="calendar" style="width:16px"></i> Valoración Calendario</button>
 </div>
 <div class="presu-stats">
-<div class="presu-stat"><div class="presu-stat-icon presu-icon-green"><i data-lucide="dollar-sign" style="width:20px"></i></div><div><div class="presu-stat-label">Ingresos Totales</div><div class="presu-stat-num" id="presuIngTot">$0</div></div></div>
-<div class="presu-stat"><div class="presu-stat-icon presu-icon-orange"><i data-lucide="credit-card" style="width:20px"></i></div><div><div class="presu-stat-label">Por Cobrar Repartidores</div><div class="presu-stat-num" id="presuPorCobrar">$0</div></div></div>
-<div class="presu-stat"><div class="presu-stat-icon presu-icon-green"><i data-lucide="scale" style="width:20px"></i></div><div><div class="presu-stat-label">Balance Neto</div><div class="presu-stat-num" id="presuBalance">$0</div></div></div>
+<div class="presu-stat"><div class="presu-stat-icon presu-icon-green"><i data-lucide="dollar-sign" style="width:20px"></i></div><div><div class="presu-stat-label">Ingresos Kigo (Pagado)</div><div class="presu-stat-num" id="presuIngTot">$0</div><div class="presu-stat-sub" id="presuIngSub">repartidores pagaron</div></div></div>
+<div class="presu-stat"><div class="presu-stat-icon presu-icon-orange"><i data-lucide="credit-card" style="width:20px"></i></div><div style="flex:1"><div class="presu-stat-label" id="presuCobrarLabel">Por Cobrar Repartidores</div><div class="presu-stat-num" id="presuPorCobrar">$0</div><div class="presu-stat-sub" id="presuCobrarSub">Todos los repartidores</div></div></div>
+<div class="presu-stat"><div class="presu-stat-icon presu-icon-green"><i data-lucide="scale" style="width:20px"></i></div><div><div class="presu-stat-label">Balance Neto Kigo</div><div class="presu-stat-num" id="presuBalance">$0</div><div class="presu-stat-sub">Pagado + Por Cobrar</div></div></div>
+</div>
+<!-- SELECTOR REPARTIDOR A LO LARGO -->
+<div style="background:#fff;border-radius:12px;padding:10px 14px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<div style="font-weight:800;font-size:12px;color:#2d3a2e;display:flex;align-items:center;gap:6px"><i data-lucide="user-check" style="width:14px"></i> Filtrar por Repartidor:</div>
+<select id="presuRepSelect" class="presu-select" onchange="renderPresupuesto()">
+<option value="TODOS">Todos - Total General</option>
+</select>
+<div id="presuRepDetalle" style="font-size:11px;color:#6b7280;font-weight:600;margin-left:auto"></div>
 </div>
 <div class="presu-detalle">
 <div class="presu-detalle-head"><div style="font-weight:900;font-size:18px;color:#2d3a2e">Detalle Diario</div><div class="presu-filtro"><span style="font-size:11px;color:#6b7280">Filtrar por fecha:</span><div class="presu-date"><i data-lucide="calendar-days" style="width:14px"></i><input id="presuFecha" type="date" style="border:none;outline:none;background:transparent;font-size:12px;font-weight:600" onchange="renderPresupuesto()"></div><button class="presu-date" style="cursor:pointer" onclick="hoyPresu()"><i data-lucide="calendar-check" style="width:14px"></i> Hoy</button></div></div>
-<div class="presu-table"><table><thead><tr><th>Repartidor</th><th>Pedidos</th><th>Total generado</th><th>Comisión</th><th>Estado / Pago</th></tr></thead><tbody id="tbodyPresu"></tbody></table></div>
+<div class="presu-table"><table><thead><tr><th>Repartidor</th><th>Pedidos</th><th>Total generado</th><th>Comisión Kigo</th><th>Estado / Pago</th></tr></thead><tbody id="tbodyPresu"></tbody></table></div>
 <div style="font-size:11px;color:#6b7280;margin-top:10px" id="presuFooter">Mostrando 0 de 0 repartidores • Actualizado hoy</div>
 </div>
 <div id="presuMesView" style="display:none;margin-top:14px"><div class="presu-detalle"><div style="font-weight:900;font-size:16px;margin-bottom:10px">Valoración por Mes</div><div id="presuMesLista"></div></div></div>
@@ -286,13 +295,13 @@ let fotoTempNuevo='', fotoTempEdit='';
 let presuTipo='dia';
 
 db.ref('clientes').on('value',s=>{ clientesDB=s.val()||{}; renderClientesImagen(); });
-db.ref('repartidores').on('value',s=>{ repartidoresDB=s.val()||{}; renderReps(); refreshRepsSelect(); renderPresupuesto(); });
+db.ref('repartidores').on('value',s=>{ repartidoresDB=s.val()||{}; renderReps(); refreshRepsSelect(); renderPresupuesto(); refreshPresuSelect(); });
 db.ref('ventas').on('value',snap=>{
  const val=snap.val()||{};
  ventasCache=Object.entries(val).map(([id,v])=>({id,...v, pagaKigoBase:v.pagaKigoBase??v.pagaKigo??v.tarifaAplicada??Math.round((v.total||0)*0.2)})).sort((a,b)=>b.timestamp-a.timestamp);
  const repsUnicos=[...new Set(ventasCache.map(v=>v.repartidor).filter(Boolean))];
  document.getElementById('filtroRepartidor').innerHTML='<option value="">Filtrar por Repartidor</option>'+repsUnicos.map(r=>`<option value="${r}">${r}</option>`).join('');
- aplicarFiltros(); renderClientesImagen(); renderReps(); renderPresupuesto();
+ aplicarFiltros(); renderClientesImagen(); renderReps(); renderPresupuesto(); refreshPresuSelect();
 });
 
 function previewFoto(input, previewId){
@@ -338,7 +347,7 @@ function renderClientesImagen(){
  document.getElementById('rankingLista').innerHTML=[...lista].sort((a,b)=>b.pedidos-a.pedidos).map((c,i)=>`<div class="rank-row"><div style="width:22px;height:22px;background:${i<3?'#FFD700':'#f3f4f6'};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${i<3?12:9}px">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</div><div style="flex:1"><b style="font-size:11px">${c.nombre}</b><br><small style="color:#6b7280;font-size:9px">${c.pedidos} pedidos</small></div><div style="font-weight:800;color:#0a7a2e;font-size:11px">${c.pedidos}</div></div>`).join('')||'Sin datos'; lucide.createIcons();
 }
 
-// PRESUPUESTO / VALORACIONES COMO IMAGEN
+// PRESUPUESTO CORREGIDO - INGRESOS KIGO REAL + SELECTOR REPARTIDOR
 function switchPresu(t){
  presuTipo=t;
  document.getElementById('pTabDia').className=t==='dia'?'presu-tab active':'presu-tab';
@@ -346,9 +355,8 @@ function switchPresu(t){
  document.getElementById('pTabCal').className=t==='cal'?'presu-tab active':'presu-tab';
  document.getElementById('presuMesView').style.display=t==='mes'?'block':'none';
  document.getElementById('presuCalView').style.display=t==='cal'?'block':'none';
- document.querySelector('.presu-detalle').style.display=t==='dia'?'block':'none';
- lucide.createIcons();
- if(t!=='dia') renderPresupuesto();
+ document.querySelectorAll('.presu-detalle')[0].style.display=t==='dia'?'block':'none';
+ lucide.createIcons(); renderPresupuesto();
 }
 function hoyPresu(){ document.getElementById('presuFecha').value=new Date().toISOString().split('T')[0]; renderPresupuesto(); }
 function getIniciales(nombre){ return nombre.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
@@ -358,23 +366,57 @@ function getTarifaRepartidor(nombreRepartidor, tipo){
  if(tipo==='moto') return parseFloat(entry.tarifaM)||35;
  return parseFloat(entry.tarifaT)||80;
 }
+function refreshPresuSelect(){
+ const sel=document.getElementById('presuRepSelect');
+ if(!sel) return;
+ const actual=sel.value;
+ const lista=Object.values(repartidoresDB).map(r=>r.nombre);
+ const unicos=[...new Set([...lista,...ventasCache.map(v=>v.repartidor).filter(Boolean)])].sort();
+ sel.innerHTML='<option value="TODOS">Todos - Total General</option>'+unicos.map(n=>`<option value="${n}">${n}</option>`).join('');
+ if(unicos.includes(actual)) sel.value=actual;
+}
 function renderPresupuesto(){
  if(!document.getElementById('presuFecha').value){ document.getElementById('presuFecha').value=new Date().toISOString().split('T')[0]; }
  const fechaFiltro=document.getElementById('presuFecha').value;
- let ventasDia=ventasCache.filter(v=>v.fecha===fechaFiltro);
- if(presuTipo==='mes'){ ventasDia=ventasCache.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; }); }
- if(presuTipo==='cal'){ ventasDia=ventasCache; }
- // STATS
- const ingresosTotales=ventasDia.reduce((a,b)=>a+(b.total||0),0);
- const porCobrar=ventasDia.filter(v=>v.estado==='Debe').reduce((a,b)=>a+(b.pagaKigoBase??b.pagaKigo??0),0);
- const balanceNeto=ventasDia.filter(v=>v.estado==='Pagado').reduce((a,b)=>a+((b.total||0)-(b.pagaKigoBase??0)),0) + ventasDia.filter(v=>v.estado==='Debe').reduce((a,b)=>a+(b.total||0),0) - porCobrar;
- document.getElementById('presuIngTot').innerText='$'+ingresosTotales.toLocaleString('es-MX');
- document.getElementById('presuPorCobrar').innerText='$'+porCobrar.toLocaleString('es-MX');
- document.getElementById('presuBalance').innerText='$'+(ingresosTotales - ventasDia.reduce((a,b)=>a+(b.pagaKigoBase??0),0) + porCobrar).toLocaleString('es-MX');
+ const repFiltro=document.getElementById('presuRepSelect')?.value||'TODOS';
+ let ventasDia=ventasCache;
+ if(presuTipo==='dia') ventasDia=ventasCache.filter(v=>v.fecha===fechaFiltro);
+ if(presuTipo==='mes') ventasDia=ventasCache.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; });
+ // Base para stats globales (sin filtro rep)
+ const ingresosKigoPagado = ventasDia.filter(v=>v.estado==='Pagado').reduce((a,b)=>a+(b.pagaKigoBase??b.pagaKigo??0),0);
+ const porCobrarTotal = ventasDia.filter(v=>v.estado==='Debe').reduce((a,b)=>a+(b.pagaKigoBase??b.pagaKigo??0),0);
+ // Si hay filtro repartidor específico, recalcular por cobrar solo de él
+ let porCobrarMostrar=porCobrarTotal;
+ let labelCobrar='Todos los repartidores';
+ let subCobrar='Total general por cobrar';
+ let detalleRep='';
+ if(repFiltro!=='TODOS'){
+   const porCobrarRep=ventasDia.filter(v=>v.repartidor===repFiltro && v.estado==='Debe').reduce((a,b)=>a+(b.pagaKigoBase??0),0);
+   const pagadoRep=ventasDia.filter(v=>v.repartidor===repFiltro && v.estado==='Pagado').reduce((a,b)=>a+(b.pagaKigoBase??0),0);
+   porCobrarMostrar=porCobrarRep;
+   labelCobrar=`Por Cobrar: ${repFiltro}`;
+   subCobrar=`Debe $${porCobrarRep.toLocaleString('es-MX')} • Pagado $${pagadoRep.toLocaleString('es-MX')}`;
+   detalleRep=`${repFiltro} te debe: $${porCobrarRep.toLocaleString('es-MX')} | Ya te pagó: $${pagadoRep.toLocaleString('es-MX')}`;
+ } else {
+   detalleRep=`Total por cobrar a todos: $${porCobrarTotal.toLocaleString('es-MX')}`;
+ }
+ document.getElementById('presuIngTot').innerText='$'+ingresosKigoPagado.toLocaleString('es-MX');
+ document.getElementById('presuPorCobrar').innerText='$'+porCobrarMostrar.toLocaleString('es-MX');
+ document.getElementById('presuCobrarLabel').innerText=labelCobrar;
+ document.getElementById('presuCobrarSub').innerText=subCobrar;
+ document.getElementById('presuRepDetalle').innerText=detalleRep;
+ // Balance Neto = Pagado + Por Cobrar (proyección si todos pagan) - para el filtro, si es individual, balance = pagadoRep + debeRep
+ let balanceNeto=ingresosKigoPagado+porCobrarTotal;
+ if(repFiltro!=='TODOS'){
+   const pagadoRep=ventasDia.filter(v=>v.repartidor===repFiltro && v.estado==='Pagado').reduce((a,b)=>a+(b.pagaKigoBase??0),0);
+   balanceNeto=pagadoRep+porCobrarMostrar;
+ }
+ document.getElementById('presuBalance').innerText='$'+balanceNeto.toLocaleString('es-MX');
 
- // Detalle por repartidor
+ // Tabla detalle
  const map={};
  ventasDia.forEach(v=>{
+   if(repFiltro!=='TODOS' && v.repartidor!==repFiltro) return;
    if(!map[v.repartidor]) map[v.repartidor]={pedidos:0,total:0,comision:0,debe:0,pagado:0,foto:'',id:''};
    map[v.repartidor].pedidos++;
    map[v.repartidor].total+=(v.total||0);
@@ -385,45 +427,37 @@ function renderPresupuesto(){
  Object.entries(repartidoresDB).forEach(([id,r])=>{ if(map[r.nombre]){ map[r.nombre].foto=r.foto||''; map[r.nombre].id=id; } });
  const lista=Object.entries(map).map(([nombre,d])=>({nombre,...d}));
  const tbody=document.getElementById('tbodyPresu');
- if(!lista.length){ tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#999;padding:16px">Sin pedidos en esta fecha</td></tr>'; }
+ if(!lista.length){ tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#999;padding:16px">Sin pedidos para este filtro</td></tr>'; }
  else{
   tbody.innerHTML=lista.map(r=>{
    const iniciales=getIniciales(r.nombre);
-   const col=r.nombre.includes('Carlos')?'#a8c9a0':r.nombre.includes('Ana')?'#6fa8dc':r.nombre.includes('Luis')?'#b0b0b0':'#9b8ec4';
-   const fotoHtml=r.foto?`<img src="${r.foto}" style="width:100%;height:100%;object-fit:cover">`:iniciales;
-   const debeTotal=r.debe;
-   const estadoHtml=debeTotal>0?`<span class="presu-badge debe">Debe $${debeTotal}</span>`:`<span class="presu-badge pagado">Pagado</span>`;
+   const col='#a8c9a0'; const fotoHtml=r.foto?`<img src="${r.foto}" style="width:100%;height:100%;object-fit:cover">`:iniciales;
+   const estadoHtml=r.debe>0?`<span class="presu-badge debe">Debe $${r.debe.toLocaleString('es-MX')}</span>`:`<span class="presu-badge pagado">Pagado $${r.pagado.toLocaleString('es-MX')}</span>`;
    const repIdShort='REP-'+r.nombre.substring(0,4).toUpperCase()+'-'+(r.id?r.id.slice(-4):'0000');
-   return `<tr>
-     <td><div class="presu-rep"><div class="presu-avatar" style="background:${col};color:#fff">${fotoHtml}</div><div><b style="font-size:12px">${r.nombre}</b><br><small style="color:#6b7280;font-size:10px">ID: ${repIdShort}</small></div></div></td>
-     <td><b>${r.pedidos}</b></td>
-     <td><b>$${r.total.toLocaleString('es-MX')}</b></td>
-     <td><b>$${r.comision.toLocaleString('es-MX')}</b></td>
-     <td>${estadoHtml}</td>
-   </tr>`;
+   return `<tr><td><div class="presu-rep"><div class="presu-avatar" style="background:${col};color:#fff">${fotoHtml}</div><div><b style="font-size:12px">${r.nombre}</b><br><small style="color:#6b7280;font-size:10px">ID: ${repIdShort}</small></div></div></td><td><b>${r.pedidos}</b></td><td><b>$${r.total.toLocaleString('es-MX')}</b></td><td><b>$${r.comision.toLocaleString('es-MX')}</b></td><td>${estadoHtml}</td></tr>`;
   }).join('');
  }
  document.getElementById('presuFooter').innerText=`Mostrando ${lista.length} de ${Object.keys(repartidoresDB).length||lista.length} repartidores • Actualizado hoy ${new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}`;
-
  // Mes view
  const mesMap={};
  ventasCache.filter(v=>{ const d=new Date(v.fecha+'T12:00:00'); return d.getMonth()===mesSel; }).forEach(v=>{
-   if(!mesMap[v.repartidor]) mesMap[v.repartidor]={pedidos:0,total:0,comision:0};
+   if(repFiltro!=='TODOS' && v.repartidor!==repFiltro) return;
+   if(!mesMap[v.repartidor]) mesMap[v.repartidor]={pedidos:0,total:0,comision:0,debe:0,pagado:0};
    mesMap[v.repartidor].pedidos++; mesMap[v.repartidor].total+=(v.total||0); mesMap[v.repartidor].comision+=(v.pagaKigoBase??0);
+   if(v.estado==='Debe') mesMap[v.repartidor].debe+=(v.pagaKigoBase??0); else mesMap[v.repartidor].pagado+=(v.pagaKigoBase??0);
  });
- document.getElementById('presuMesLista').innerHTML=Object.entries(mesMap).map(([n,d])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:12px"><b>${n}</b><span>${d.pedidos} pedidos • $${d.total.toLocaleString('es-MX')} • Comisión $${d.comision.toLocaleString('es-MX')}</span></div>`).join('')||'Sin datos este mes';
-
- // Calendario view simple
+ document.getElementById('presuMesLista').innerHTML=Object.entries(mesMap).map(([n,d])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:12px"><b>${n}</b><span>${d.pedidos} ped • $${d.total.toLocaleString('es-MX')} • Comisión $${d.comision.toLocaleString('es-MX')} • Debe $${d.debe.toLocaleString('es-MX')}</span></div>`).join('')||'Sin datos este mes';
+ // Calendario
  const calGrid=document.getElementById('presuCalGrid');
  if(presuTipo==='cal' && calGrid){
    const diasEnMes=new Date(new Date().getFullYear(), mesSel+1,0).getDate();
-   let html='';
-   for(let i=1;i<=diasEnMes;i++){
+   let html=''; for(let i=1;i<=diasEnMes;i++){
      const fechaStr=`${new Date().getFullYear()}-${String(mesSel+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
-     const totalDia=ventasCache.filter(v=>v.fecha===fechaStr).reduce((a,b)=>a+(b.total||0),0);
+     let filtrados=ventasCache.filter(v=>v.fecha===fechaStr);
+     if(repFiltro!=='TODOS') filtrados=filtrados.filter(v=>v.repartidor===repFiltro);
+     const totalDia=filtrados.filter(v=>v.estado==='Pagado').reduce((a,b)=>a+(b.pagaKigoBase??0),0);
      html+=`<div style="background:#fff;border:1px solid #eee;border-radius:8px;padding:6px;text-align:center;font-size:10px"><b>${i}</b><br><small style="color:${totalDia>0?'#0a9a4a':'#999'}">$${totalDia.toLocaleString('es-MX')}</small></div>`;
-   }
-   calGrid.innerHTML=html;
+   } calGrid.innerHTML=html;
  }
  lucide.createIcons();
 }
